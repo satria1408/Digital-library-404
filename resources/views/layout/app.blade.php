@@ -6,14 +6,30 @@
     <title>Aplikasi Perpustakaan</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html,
+        body{
+            margin:0;
+            padding:0;
+            min-height:100%;
+            background:#0f172a;
+        }
+
+        .navbar{
+            margin:0 !important;
+            border-radius:0 !important;
+        }
+    </style>
 </head>
-<body class="bg-light">
+
+<body>
 
     @auth
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
 
-            <a class="navbar-brand" href="#">
+            <a class="navbar-brand fw-bold" href="#">
                 Perpustakaan
             </a>
 
@@ -22,59 +38,50 @@
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNav">
-
                 <span class="navbar-toggler-icon"></span>
-
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
 
                 <ul class="navbar-nav me-auto">
 
-                    {{-- ADMIN --}}
                     @if(Auth::user()->role == 'admin')
 
                         <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
-                                href="{{ route('admin.dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}"
+                               href="{{ route('admin.dashboard') }}">
                                 Dashboard
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}"
-                                href="{{ route('books.index') }}">
+                            <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}"
+                               href="{{ route('books.index') }}">
                                 Kelola Buku
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
-                                href="{{ route('users.index') }}">
+                            <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}"
+                               href="{{ route('users.index') }}">
                                 Kelola Anggota
                             </a>
                         </li>
 
                         <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}"
-                                href="{{ route('transactions.index') }}">
+                            <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}"
+                               href="{{ route('transactions.index') }}">
                                 Transaksi
                             </a>
                         </li>
 
                     @endif
 
-                    {{-- SISWA --}}
                     @if(Auth::user()->role == 'siswa')
 
                         <li class="nav-item">
-                            <a
-                                class="nav-link {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}"
-                                href="{{ route('siswa.dashboard') }}">
+                            <a class="nav-link {{ request()->routeIs('siswa.dashboard') ? 'active' : '' }}"
+                               href="{{ route('siswa.dashboard') }}">
                                 Dashboard & Peminjaman
                             </a>
                         </li>
@@ -94,70 +101,26 @@
                         </span>
                     </span>
 
-                    <form
-                        action="{{ route('logout') }}"
-                        method="POST"
-                        class="d-inline">
-
+                    <form action="{{ route('logout') }}" method="POST">
                         @csrf
 
-                        <button
-                            type="submit"
-                            class="btn btn-danger btn-sm">
+                        <button type="submit" class="btn btn-danger btn-sm">
                             Logout
                         </button>
-
                     </form>
 
                 </div>
 
             </div>
-
         </div>
     </nav>
     @endauth
 
-    <div class="container">
+    @yield('content')
 
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-
-                {{ session('success') }}
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-                </button>
-
-            </div>
-        @endif
-
-        @if(session('error'))
-            <div class="alert alert-danger alert-dismissible fade show">
-
-                {{ session('error') }}
-
-                <button
-                    type="button"
-                    class="btn-close"
-                    data-bs-dismiss="alert">
-                </button>
-
-            </div>
-        @endif
-
-        @yield('content')
-
-    </div>
-
-    {{-- Bootstrap JS --}}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-    {{-- SweetAlert2 --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {{-- Stack Script dari halaman lain --}}
     @stack('scripts')
 
 </body>

@@ -1,4 +1,4 @@
-@extends('layout.app')
+@extends('layout.auth')
 
 @section('content')
 <style>
