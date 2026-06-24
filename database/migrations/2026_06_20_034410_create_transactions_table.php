@@ -16,7 +16,13 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Relasi ke Siswa 
             $table->foreignId('book_id')->constrained()->onDelete('cascade'); // Relasi ke Buku 
             $table->date('tanggal_pinjam'); 
-            $table->date('tanggal_kembali')->nullable(); // Nullable jika belum dikembalikan 
+            
+            // TAMBAHAN BARU: Batas waktu (deadline) yang dipilih siswa dari kalender
+            $table->date('tanggal_deadline'); 
+
+            // Tetap nullable: Diisi nanti saat siswa menekan tombol "Kembalikan"
+            $table->date('tanggal_kembali')->nullable(); 
+            
             $table->enum('status', ['pinjam', 'kembali']); 
             $table->timestamps(); 
         });

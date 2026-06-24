@@ -15,26 +15,23 @@ class TransactionController extends Controller
     {
         $query = Transaction::with(['user', 'book', 'denda'])->latest();
 
-        // Filter nama peminjam
         if ($request->search) {
             $query->whereHas('user', function ($q) use ($request) {
                 $q->where('nama_lengkap', 'like', '%'.$request->search.'%');
             });
         }
 
-        // Filter status keterlambatan
+        // PERBAIKAN FILTER KETERLAMBATAN: Berpatokan pada tanggal_deadline
         if ($request->keterlambatan === 'terlambat') {
             $query->where('status', 'pinjam')
-                  ->whereNotNull('tanggal_kembali')
-                  ->whereDate('tanggal_kembali', '<', Carbon::today());
+                  ->whereDate('tanggal_deadline', '<', Carbon::today());
         } elseif ($request->keterlambatan === 'tidak_terlambat') {
             $query->where(function ($q) {
                 $q->where('status', 'kembali')
-                  ->orWhereDate('tanggal_kembali', '>=', Carbon::today());
+                  ->orWhereDate('tanggal_deadline', '>=', Carbon::today());
             });
         }
 
-        // Filter status pinjam/kembali
         if ($request->status) {
             $query->where('status', $request->status);
         }
@@ -53,12 +50,13 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
+        // Validasi menangkap input kalender pengembalian sebagai tanggal_deadline
         $request->validate([
-            'user_id'         => 'required|exists:users,id',
-            'book_id'         => 'required|exists:books,id',
-            'tanggal_pinjam'  => 'required|date',
-            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-            'status'          => 'required',
+            'user_id'          => 'required|exists:users,id',
+            'book_id'          => 'required|exists:books,id',
+            'tanggal_pinjam'   => 'required|date',
+            'tanggal_kembali'  => 'required|date|after_or_equal:tanggal_pinjam', // Ini nama input dari kalender Blade kamu
+            'status'           => 'required',
         ]);
 
         $book = Book::findOrFail($request->book_id);
@@ -67,19 +65,23 @@ class TransactionController extends Controller
             return back()->with('error', 'Stok buku habis!');
         }
 
+        // Logic menentukan nilai awal tanggal_kembali riil berdasarkan status saat buat transaksi
+        $tanggalKembaliRiil = ($request->status == 'kembali') ? Carbon::today() : null;
+
         $transaction = Transaction::create([
-            'user_id'         => $request->user_id,
-            'book_id'         => $request->book_id,
-            'tanggal_pinjam'  => $request->tanggal_pinjam,
-            'tanggal_kembali' => $request->tanggal_kembali,
-            'status'          => $request->status,
+            'user_id'          => $request->user_id,
+            'book_id'          => $request->book_id,
+            'tanggal_pinjam'   => $request->tanggal_pinjam,
+            'tanggal_deadline' => $request->tanggal_kembali, // Input kalender dipetakan ke deadline
+            'tanggal_kembali'  => $tanggalKembaliRiil,       // Diisi tanggal riil jika statusnya langsung 'kembali'
+            'status'           => $request->status,
         ]);
 
         if ($request->status == 'pinjam') {
             $book->decrement('stok');
         }
 
-        $this->cekDanda($transaction);
+        $this->cekDenda($transaction);
 
         return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan');
     }
@@ -100,33 +102,40 @@ class TransactionController extends Controller
         $request->validate([
             'status'          => 'required',
             'tanggal_pinjam'  => 'required|date',
-            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
+            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam', // Input dari form edit/kalender
         ]);
 
+        $tanggalKembaliRiil = $transaction->tanggal_kembali;
+
+        // JIKA STATUS BERUBAH DARI PINJAM KE KEMBALI (Siswa memulangkan buku)
         if ($transaction->status == 'pinjam' && $request->status == 'kembali') {
             $book->increment('stok');
+            $tanggalKembaliRiil = Carbon::today(); // Set tanggal kembali asli ke hari ini
 
             if ($transaction->denda && $transaction->denda->status == 'belum_bayar') {
                 $transaction->denda->update(['status' => 'lunas']);
             }
         }
 
+        // JIKA STATUS BERUBAH DARI KEMBALI KE PINJAM (Kembali dipinjam lagi)
         if ($transaction->status == 'kembali' && $request->status == 'pinjam') {
             if ($book->stok < 1) {
                 return back()->with('error', 'Stok buku tidak cukup.');
             }
             $book->decrement('stok');
+            $tanggalKembaliRiil = null; // Kosongkan kembali tanggal realisasinya
         }
 
         $transaction->update([
-            'user_id'         => $transaction->user_id,
-            'book_id'         => $transaction->book_id,
-            'tanggal_pinjam'  => $request->tanggal_pinjam,
-            'tanggal_kembali' => $request->tanggal_kembali,
-            'status'          => $request->status,
+            'user_id'          => $transaction->user_id,
+            'book_id'          => $transaction->book_id,
+            'tanggal_pinjam'   => $request->tanggal_pinjam,
+            'tanggal_deadline' => $request->tanggal_kembali, // Sinkronisasi target batas waktu
+            'tanggal_kembali'  => $tanggalKembaliRiil,
+            'status'           => $request->status,
         ]);
 
-        $this->cekDanda($transaction->fresh());
+        $this->cekDenda($transaction->fresh());
 
         return redirect()->route('transactions.index')->with('success', 'Data transaksi diperbarui');
     }
@@ -160,9 +169,10 @@ class TransactionController extends Controller
         return redirect()->route('dendas.index')->with('success', 'Denda berhasil dilunasi');
     }
 
-    private function cekDanda(Transaction $transaction): void
+    private function cekDenda(Transaction $transaction): void
     {
-        if ($transaction->status !== 'pinjam' || !$transaction->tanggal_kembali) {
+        // Hanya hitung denda jika statusnya masih aktif dipinjam
+        if ($transaction->status !== 'pinjam') {
             return;
         }
 

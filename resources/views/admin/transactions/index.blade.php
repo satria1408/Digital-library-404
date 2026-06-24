@@ -2,245 +2,298 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Kelola Transaksi</h2>
+<div class="mx-auto" style="max-width:1100px;">
 
-    <a href="{{ route('transactions.create') }}" class="btn btn-primary">
-        Tambah Peminjaman
-    </a>
-</div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+        <h2 class="mb-0">Kelola Transaksi</h2>
 
-{{-- Filter & Search --}}
-<form method="GET" action="{{ route('transactions.index') }}" class="row g-2 mb-3">
-
-    <div class="col-md-5">
-        <input
-            type="text"
-            name="search"
-            class="form-control"
-            placeholder="Cari nama peminjam..."
-            value="{{ request('search') }}">
-    </div>
-
-    <div class="col-md-3">
-        <select name="keterlambatan" class="form-select">
-            <option value="">Semua Keterlambatan</option>
-
-            <option
-                value="terlambat"
-                {{ request('keterlambatan') == 'terlambat' ? 'selected' : '' }}>
-                Terlambat
-            </option>
-
-            <option
-                value="tidak_terlambat"
-                {{ request('keterlambatan') == 'tidak_terlambat' ? 'selected' : '' }}>
-                Tidak Terlambat
-            </option>
-        </select>
-    </div>
-
-    <div class="col-md-2">
-        <select name="status" class="form-select">
-            <option value="">Semua Status</option>
-
-            <option
-                value="pinjam"
-                {{ request('status') == 'pinjam' ? 'selected' : '' }}>
-                Dipinjam
-            </option>
-
-            <option
-                value="kembali"
-                {{ request('status') == 'kembali' ? 'selected' : '' }}>
-                Dikembalikan
-            </option>
-        </select>
-    </div>
-
-    <div class="col-md-2 d-flex gap-2">
-        <button type="submit" class="btn btn-primary w-100">
-            Cari
-        </button>
-
-        <a href="{{ route('transactions.index') }}" class="btn btn-secondary w-100">
-            Reset
+        <a href="{{ route('transactions.create') }}" class="btn btn-primary">
+            Tambah Peminjaman
         </a>
     </div>
 
-</form>
+    {{-- Filter & Search --}}
+    <form method="GET"
+          action="{{ route('transactions.index') }}"
+          class="row g-2 mb-3">
 
-{{-- Info Hasil Filter --}}
-@if(request('search') || request('keterlambatan') || request('status'))
+        <div class="col-12 col-md-5">
+            <input
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Cari nama peminjam..."
+                value="{{ request('search') }}">
+        </div>
 
-    <div class="alert alert-light border">
+        <div class="col-12 col-md-3">
+            <select name="keterlambatan" class="form-select">
 
-        Menampilkan
-        <strong>{{ $transactions->count() }}</strong>
-        hasil
+                <option value="">Semua Keterlambatan</option>
 
-        @if(request('search'))
-            untuk
-            <strong>"{{ request('search') }}"</strong>
-        @endif
+                <option
+                    value="terlambat"
+                    {{ request('keterlambatan') == 'terlambat' ? 'selected' : '' }}>
+                    Terlambat
+                </option>
 
-        @if(request('keterlambatan'))
-            —
-            <strong>
-                {{ request('keterlambatan') == 'terlambat' ? 'Terlambat' : 'Tidak Terlambat' }}
-            </strong>
-        @endif
+                <option
+                    value="tidak_terlambat"
+                    {{ request('keterlambatan') == 'tidak_terlambat' ? 'selected' : '' }}>
+                    Tidak Terlambat
+                </option>
 
-        @if(request('status'))
-            —
-            Status:
-            <strong>{{ ucfirst(request('status')) }}</strong>
-        @endif
+            </select>
+        </div>
 
-    </div>
+        <div class="col-12 col-md-2">
+            <select name="status" class="form-select">
 
-@endif
+                <option value="">Semua Status</option>
 
-<div class="card shadow-sm">
-    <div class="card-body">
+                <option
+                    value="pinjam"
+                    {{ request('status') == 'pinjam' ? 'selected' : '' }}>
+                    Dipinjam
+                </option>
 
-        <table class="table table-bordered table-striped align-middle">
+                <option
+                    value="kembali"
+                    {{ request('status') == 'kembali' ? 'selected' : '' }}>
+                    Dikembalikan
+                </option>
 
-            <thead class="table-dark">
-                <tr>
-                    <th>No</th>
-                    <th>Peminjam</th>
-                    <th>Buku</th>
-                    <th>Tgl Pinjam</th>
-                    <th>Batas Kembali</th>
-                    <th>Status</th>
-                    <th>Denda</th>
-                    <th width="150">Aksi</th>
-                </tr>
-            </thead>
+            </select>
+        </div>
 
-            <tbody>
+        <div class="col-12 col-md-2 d-flex gap-2">
 
-                @forelse($transactions as $trans)
+            <button type="submit" class="btn btn-primary w-100">
+                Cari
+            </button>
 
-                    <tr>
+            <a href="{{ route('transactions.index') }}"
+               class="btn btn-secondary w-100">
+                Reset
+            </a>
 
-                        <td>{{ $loop->iteration }}</td>
+        </div>
 
-                        <td>{{ $trans->user->nama_lengkap }}</td>
+    </form>
 
-                        <td>{{ $trans->book->judul }}</td>
+    {{-- Info Hasil Filter --}}
+    @if(request('search') || request('keterlambatan') || request('status'))
 
-                        <td>
-                            {{ \Carbon\Carbon::parse($trans->tanggal_pinjam)->format('d M Y') }}
-                        </td>
+        <div class="alert alert-light border">
 
-                        <td>
+            Menampilkan
+            <strong>{{ $transactions->count() }}</strong>
+            hasil
 
-                            @if($trans->tanggal_kembali)
+            @if(request('search'))
+                untuk
+                <strong>"{{ request('search') }}"</strong>
+            @endif
 
-                                @php
-                                    $terlambat =
-                                        \Carbon\Carbon::parse($trans->tanggal_kembali)->isPast()
-                                        && $trans->status == 'pinjam';
-                                @endphp
+            @if(request('keterlambatan'))
+                —
+                <strong>
+                    {{ request('keterlambatan') == 'terlambat' ? 'Terlambat' : 'Tidak Terlambat' }}
+                </strong>
+            @endif
 
-                                <span class="{{ $terlambat ? 'text-danger fw-bold' : '' }}">
+            @if(request('status'))
+                —
+                Status:
+                <strong>{{ ucfirst(request('status')) }}</strong>
+            @endif
 
-                                    {{ \Carbon\Carbon::parse($trans->tanggal_kembali)->format('d M Y') }}
+        </div>
 
-                                    @if($terlambat)
-                                        <span class="badge bg-danger ms-1">
-                                            Terlambat
+    @endif
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover table-bordered mb-0 align-middle">
+
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Peminjam</th>
+                            <th>Buku</th>
+                            <th width="120">Tgl Pinjam</th>
+                            <th width="160">Batas Kembali</th>
+                            <th width="100">Status</th>
+                            <th width="180">Denda</th>
+                            <th width="150">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @forelse($transactions as $trans)
+
+                            <tr>
+
+                                <td>{{ $loop->iteration }}</td>
+
+                                <td>{{ $trans->user->nama_lengkap }}</td>
+
+                                <td>{{ $trans->book->judul }}</td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($trans->tanggal_pinjam)->format('d M Y') }}
+                                </td>
+
+                                <td>
+
+                                    @if($trans->tanggal_kembali)
+
+                                        @php
+                                            $terlambat =
+                                                \Carbon\Carbon::parse($trans->tanggal_kembali)->isPast()
+                                                && $trans->status == 'pinjam';
+                                        @endphp
+
+                                        <span class="{{ $terlambat ? 'text-danger fw-bold' : '' }}">
+
+                                            {{ \Carbon\Carbon::parse($trans->tanggal_kembali)->format('d M Y') }}
+
+                                            @if($terlambat)
+                                                <span class="badge bg-danger ms-1">
+                                                    Terlambat
+                                                </span>
+                                            @endif
+
                                         </span>
+
+                                    @else
+
+                                        <span class="text-muted">-</span>
+
                                     @endif
 
-                                </span>
+                                </td>
 
-                            @else
+                                <td>
 
-                                <span class="text-muted">-</span>
+                                    <span class="badge {{ $trans->status == 'pinjam' ? 'bg-warning text-dark' : 'bg-success' }}">
+                                        {{ ucfirst($trans->status) }}
+                                    </span>
 
-                            @endif
+                                </td>
 
-                        </td>
+                                <td>
 
-                        <td>
+                                    @if($trans->denda)
 
-                            <span class="badge {{ $trans->status == 'pinjam' ? 'bg-warning text-dark' : 'bg-success' }}">
-                                {{ ucfirst($trans->status) }}
-                            </span>
+                                        <span class="badge {{ $trans->denda->status == 'lunas' ? 'bg-success' : 'bg-danger' }}">
 
-                        </td>
+                                            Rp {{ number_format($trans->denda->nominal, 0, ',', '.') }}
 
-                        <td>
+                                            ({{ $trans->denda->status == 'lunas' ? 'Lunas' : 'Belum Bayar' }})
 
-                            @if($trans->denda)
+                                        </span>
 
-                                <span class="badge {{ $trans->denda->status == 'lunas' ? 'bg-success' : 'bg-danger' }}">
+                                    @else
 
-                                    Rp {{ number_format($trans->denda->nominal, 0, ',', '.') }}
+                                        <span class="text-muted">-</span>
 
-                                    ({{ $trans->denda->status == 'lunas' ? 'Lunas' : 'Belum Bayar' }})
+                                    @endif
 
-                                </span>
+                                </td>
 
-                            @else
+                                <td>
 
-                                <span class="text-muted">-</span>
+                                    <div class="d-flex flex-wrap gap-1">
 
-                            @endif
+                                        <a
+                                            href="{{ route('transactions.edit', $trans->id) }}"
+                                            class="btn btn-info btn-sm">
+                                            Edit
+                                        </a>
 
-                        </td>
+                                        <form
+                                            action="{{ route('transactions.destroy', $trans->id) }}"
+                                            method="POST"
+                                            class="delete-form">
 
-                        <td>
+                                            @csrf
+                                            @method('DELETE')
 
-                            <a
-                                href="{{ route('transactions.edit', $trans->id) }}"
-                                class="btn btn-info btn-sm">
-                                Edit
-                            </a>
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger btn-sm btn-delete">
+                                                Hapus
+                                            </button>
 
-                            <form
-                                action="{{ route('transactions.destroy', $trans->id) }}"
-                                method="POST"
-                                class="d-inline delete-form">
+                                        </form>
 
-                                @csrf
-                                @method('DELETE')
+                                    </div>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm btn-delete">
-                                    Hapus
-                                </button>
+                                </td>
 
-                            </form>
+                            </tr>
 
-                        </td>
+                        @empty
 
-                    </tr>
+                            <tr>
+                                <td colspan="8" class="text-center text-muted py-4">
+                                    Tidak ada data transaksi.
+                                </td>
+                            </tr>
 
-                @empty
+                        @endforelse
 
-                    <tr>
-                        <td colspan="8" class="text-center text-muted">
-                            Tidak ada data transaksi.
-                        </td>
-                    </tr>
+                    </tbody>
 
-                @endforelse
+                </table>
 
-            </tbody>
+            </div>
 
-        </table>
-
+        </div>
     </div>
+
 </div>
 
 @endsection
 
 @push('scripts')
+
+<style>
+@media (max-width: 768px){
+
+    h2{
+        font-size:1.35rem;
+    }
+
+    .table{
+        font-size:.85rem;
+    }
+
+    .table th,
+    .table td{
+        white-space:nowrap;
+        vertical-align:middle;
+    }
+
+    .btn{
+        font-size:.8rem;
+    }
+
+    .alert{
+        font-size:.9rem;
+    }
+
+    .card{
+        border-radius:12px;
+    }
+}
+</style>
+
 <script>
 
 @if(session('success'))

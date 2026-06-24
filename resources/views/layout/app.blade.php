@@ -20,6 +20,29 @@
             margin:0 !important;
             border-radius:0 !important;
         }
+
+        #realtimeClock{
+            color:#ffffff !important;
+            font-size:14px;
+            font-weight:600;
+            white-space:nowrap;
+        }
+
+        .navbar-text{
+            color:#ffffff !important;
+        }
+
+        @media (max-width: 768px){
+
+            #realtimeClock{
+                font-size:12px;
+            }
+
+            .navbar-text{
+                font-size:13px;
+            }
+
+        }
     </style>
 </head>
 
@@ -38,7 +61,9 @@
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target="#navbarNav">
+
                 <span class="navbar-toggler-icon"></span>
+
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -90,9 +115,15 @@
 
                 </ul>
 
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center gap-3 flex-wrap">
 
-                    <span class="navbar-text text-white me-3">
+                    {{-- Jam Realtime --}}
+                    <span id="realtimeClock">
+                        00/00/0000 | 00:00:00
+                    </span>
+
+                    {{-- Info User --}}
+                    <span class="navbar-text">
                         Halo,
                         <strong>{{ Auth::user()->nama_lengkap }}</strong>
 
@@ -101,6 +132,7 @@
                         </span>
                     </span>
 
+                    {{-- Logout --}}
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
 
@@ -112,6 +144,7 @@
                 </div>
 
             </div>
+
         </div>
     </nav>
     @endauth
@@ -120,6 +153,31 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    {{-- Jam Realtime --}}
+    <script>
+
+        function updateClock() {
+
+            const now = new Date();
+
+            const tanggal = now.toLocaleDateString('id-ID', {
+                day: '2-digit',
+                month: 'short',
+                year: 'numeric'
+            });
+
+            const jam = now.toLocaleTimeString('id-ID');
+
+            document.getElementById('realtimeClock').innerHTML =
+                tanggal + ' | ' + jam;
+        }
+
+        updateClock();
+
+        setInterval(updateClock, 1000);
+
+    </script>
 
     @stack('scripts')
 

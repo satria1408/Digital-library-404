@@ -2,13 +2,13 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 mx-auto" style="max-width:1000px;">
     <h2>Kelola Anggota</h2>
     <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah Anggota</a>
 </div>
 
 {{-- Search --}}
-<form method="GET" action="{{ route('users.index') }}" class="row g-2 mb-3">
+<form method="GET" action="{{ route('users.index') }}" class="row g-2 mb-3 mx-auto" style="max-width:1000px;">
     <div class="col-md-8">
         <input type="text" name="search" class="form-control"
                placeholder="Cari nama, username, atau alamat..."
@@ -23,21 +23,21 @@
 </form>
 
 @if(request('search'))
-    <p class="text-muted small mb-2">
+    <p class="text-muted small mb-2 mx-auto" style="max-width:1000px;">
         Menampilkan {{ $users->count() }} hasil untuk "<strong>{{ request('search') }}</strong>"
     </p>
 @endif
 
-<div class="card">
+<div class="card mx-auto" style="max-width:1000px;">
     <div class="card-body">
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
                 <tr>
-                    <th>No</th>
+                    <th style="width:50px;">No</th>
                     <th>Nama Lengkap</th>
-                    <th>Username</th>
+                    <th style="width:180px;">Username</th>
                     <th>Alamat</th>
-                    <th>Aksi</th>
+                    <th style="width:140px;">Aksi</th>
                 </tr>
             </thead>
             <tbody>

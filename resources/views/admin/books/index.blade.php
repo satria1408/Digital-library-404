@@ -2,176 +2,217 @@
 
 @section('content')
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2>Data Buku</h2>
+<div class="mx-auto" style="max-width:1100px;">
 
-    <a href="{{ route('books.create') }}" class="btn btn-primary">
-        Tambah Buku
-    </a>
-</div>
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
+        <h2 class="mb-0">Data Buku</h2>
 
-<form
-    id="filterForm"
-    method="GET"
-    action="{{ route('books.index') }}"
-    class="row g-2 mb-3">
-
-    <div class="col-md-6">
-        <input
-            id="searchInput"
-            type="text"
-            name="search"
-            class="form-control"
-            placeholder="Cari judul, penulis, penerbit..."
-            value="{{ request('search') }}"
-        >
-    </div>
-
-    <div class="col-md-4">
-        <select
-            id="kategoriSelect"
-            name="kategori"
-            class="form-select">
-
-            <option value="">Semua Kategori</option>
-
-            @foreach($kategoris as $k)
-                <option
-                    value="{{ $k }}"
-                    {{ request('kategori') == $k ? 'selected' : '' }}>
-                    {{ $k }}
-                </option>
-            @endforeach
-
-        </select>
-    </div>
-
-    <div class="col-md-2 d-flex gap-2">
-        <button type="submit" class="btn btn-primary w-100">
-            Cari
-        </button>
-
-        <a href="{{ route('books.index') }}"
-           class="btn btn-secondary w-100">
-            Reset
+        <a href="{{ route('books.create') }}" class="btn btn-primary">
+            Tambah Buku
         </a>
     </div>
 
-</form>
+    <form
+        id="filterForm"
+        method="GET"
+        action="{{ route('books.index') }}"
+        class="row g-2 mb-3">
 
-<div class="card shadow-sm">
-    <div class="card-body p-0">
+        <div class="col-12 col-md-6">
+            <input
+                id="searchInput"
+                type="text"
+                name="search"
+                class="form-control"
+                placeholder="Cari judul, penulis, penerbit..."
+                value="{{ request('search') }}">
+        </div>
 
-        <table class="table table-hover table-bordered mb-0">
+        <div class="col-12 col-md-4">
+            <select
+                id="kategoriSelect"
+                name="kategori"
+                class="form-select">
 
-            <thead class="table-dark">
-                <tr>
-                    <th width="60">No</th>
-                    <th>Judul</th>
-                    <th>Penulis</th>
-                    <th>Penerbit</th>
-                    <th>Kategori</th>
-                    <th width="80">Stok</th>
-                    <th width="180">Aksi</th>
-                </tr>
-            </thead>
+                <option value="">Semua Kategori</option>
 
-            <tbody>
+                @foreach($kategoris as $k)
+                    <option
+                        value="{{ $k }}"
+                        {{ request('kategori') == $k ? 'selected' : '' }}>
+                        {{ $k }}
+                    </option>
+                @endforeach
 
-                @forelse($books as $book)
+            </select>
+        </div>
 
-                    <tr>
+        <div class="col-12 col-md-2 d-flex gap-2">
+            <button type="submit" class="btn btn-primary w-100">
+                Cari
+            </button>
 
-                        <td>{{ $loop->iteration }}</td>
+            <a href="{{ route('books.index') }}"
+               class="btn btn-secondary w-100">
+                Reset
+            </a>
+        </div>
 
-                        <td>{{ $book->judul }}</td>
+    </form>
 
-                        <td>{{ $book->penulis }}</td>
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
 
-                        <td>{{ $book->penerbit }}</td>
+            <div class="table-responsive">
 
-                        <td>
-                            <span class="badge bg-info text-dark">
-                                {{ $book->kategori ?? '-' }}
-                            </span>
-                        </td>
+                <table class="table table-hover table-bordered mb-0 align-middle">
 
-                        <td>
-                            <span class="fw-bold {{ $book->stok > 0 ? 'text-success' : 'text-danger' }}">
-                                {{ $book->stok }}
-                            </span>
-                        </td>
+                    <thead class="table-dark">
+                        <tr>
+                            <th width="60">No</th>
+                            <th>Judul</th>
+                            <th>Penulis</th>
+                            <th>Penerbit</th>
+                            <th>Kategori</th>
+                            <th width="80">Stok</th>
+                            <th width="180">Aksi</th>
+                        </tr>
+                    </thead>
 
-                        <td>
+                    <tbody>
 
-                            <a
-                                href="{{ route('books.edit', $book->id) }}"
-                                class="btn btn-warning btn-sm">
-                                Edit
-                            </a>
+                        @forelse($books as $book)
 
-                            <form
-                                action="{{ route('books.destroy', $book->id) }}"
-                                method="POST"
-                                class="d-inline delete-form">
+                            <tr>
 
-                                @csrf
-                                @method('DELETE')
+                                <td>{{ $loop->iteration }}</td>
 
-                                <button
-                                    type="button"
-                                    class="btn btn-danger btn-sm btn-delete">
-                                    Hapus
-                                </button>
+                                <td>{{ $book->judul }}</td>
 
-                            </form>
+                                <td>{{ $book->penulis }}</td>
 
-                        </td>
+                                <td>{{ $book->penerbit }}</td>
 
-                    </tr>
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        {{ $book->kategori ?? '-' }}
+                                    </span>
+                                </td>
 
-                @empty
+                                <td>
+                                    <span class="fw-bold {{ $book->stok > 0 ? 'text-success' : 'text-danger' }}">
+                                        {{ $book->stok }}
+                                    </span>
+                                </td>
 
-                    <tr>
-                        <td colspan="7" class="text-center text-muted py-4">
-                            Tidak ada buku ditemukan.
-                        </td>
-                    </tr>
+                                <td>
+                                    <div class="d-flex flex-wrap gap-1">
 
-                @endforelse
+                                        <a
+                                            href="{{ route('books.edit', $book->id) }}"
+                                            class="btn btn-warning btn-sm">
+                                            Edit
+                                        </a>
 
-            </tbody>
+                                        <form
+                                            action="{{ route('books.destroy', $book->id) }}"
+                                            method="POST"
+                                            class="delete-form">
 
-        </table>
+                                            @csrf
+                                            @method('DELETE')
 
+                                            <button
+                                                type="button"
+                                                class="btn btn-danger btn-sm btn-delete">
+                                                Hapus
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+                                </td>
+
+                            </tr>
+
+                        @empty
+
+                            <tr>
+                                <td colspan="7" class="text-center text-muted py-4">
+                                    Tidak ada buku ditemukan.
+                                </td>
+                            </tr>
+
+                        @endforelse
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
     </div>
+
+    @if(request('search') || request('kategori'))
+
+        <div class="alert alert-light border mt-3">
+
+            Menampilkan
+            <strong>{{ $books->count() }}</strong>
+            hasil
+
+            @if(request('search'))
+                untuk
+                <strong>"{{ request('search') }}"</strong>
+            @endif
+
+            @if(request('kategori'))
+                dalam kategori
+                <strong>"{{ request('kategori') }}"</strong>
+            @endif
+
+        </div>
+
+    @endif
+
 </div>
-
-@if(request('search') || request('kategori'))
-
-    <div class="alert alert-light border mt-3">
-
-        Menampilkan
-        <strong>{{ $books->count() }}</strong>
-        hasil
-
-        @if(request('search'))
-            untuk
-            <strong>"{{ request('search') }}"</strong>
-        @endif
-
-        @if(request('kategori'))
-            dalam kategori
-            <strong>"{{ request('kategori') }}"</strong>
-        @endif
-
-    </div>
-
-@endif
 
 @endsection
 
 @push('scripts')
+
+<style>
+@media (max-width: 768px){
+
+    h2{
+        font-size: 1.35rem;
+    }
+
+    .table{
+        font-size: .85rem;
+    }
+
+    .table th,
+    .table td{
+        white-space: nowrap;
+        vertical-align: middle;
+    }
+
+    .btn{
+        font-size: .8rem;
+    }
+
+    .alert{
+        font-size: .9rem;
+    }
+
+    .card{
+        border-radius: 12px;
+    }
+}
+</style>
+
 <script>
 
 // SweetAlert Success
@@ -243,4 +284,4 @@ if (kategoriSelect) {
 }
 
 </script>
-@endpush
+@endpush 

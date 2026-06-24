@@ -83,33 +83,39 @@ class DatabaseSeeder extends Seeder
         // TRANSAKSI
         // ==========================
 
-        // Terlambat 5 hari — denda Rp 2.000
+        // Skenario 1: Status masih 'pinjam', jatuh tempo sudah lewat 5 hari yang lalu.
+        // Pinjam 12 hari lalu, harusnya balik 5 hari lalu (tanggal_deadline), tanggal_kembali masih null.
         $trx1 = Transaction::create([
-            'user_id'         => $siswa1->id,
-            'book_id'         => $buku1->id,
-            'tanggal_pinjam'  => Carbon::now()->subDays(12),
-            'tanggal_kembali' => Carbon::now()->subDays(5),
-            'status'          => 'pinjam',
+            'user_id'          => $siswa1->id,
+            'book_id'          => $buku1->id,
+            'tanggal_pinjam'   => Carbon::now()->subDays(12),
+            'tanggal_deadline' => Carbon::now()->subDays(5), 
+            'tanggal_kembali'  => null, 
+            'status'           => 'pinjam',
         ]);
         $buku1->decrement('stok');
 
-        // Terlambat 10 hari — denda Rp 5.000
+        // Skenario 2: Status masih 'pinjam', jatuh tempo sudah lewat 10 hari yang lalu.
+        // Pinjam 17 hari lalu, harusnya balik 10 hari lalu (tanggal_deadline), tanggal_kembali masih null.
         $trx2 = Transaction::create([
-            'user_id'         => $siswa2->id,
-            'book_id'         => $buku2->id,
-            'tanggal_pinjam'  => Carbon::now()->subDays(17),
-            'tanggal_kembali' => Carbon::now()->subDays(10),
-            'status'          => 'pinjam',
+            'user_id'          => $siswa2->id,
+            'book_id'          => $buku2->id,
+            'tanggal_pinjam'   => Carbon::now()->subDays(17),
+            'tanggal_deadline' => Carbon::now()->subDays(10),
+            'tanggal_kembali'  => null,
+            'status'           => 'pinjam',
         ]);
         $buku2->decrement('stok');
 
-        // Sudah dikembalikan tepat waktu — tidak ada denda
+        // Skenario 3: Sudah dikembalikan tepat waktu — tidak ada denda
+        // Pinjam 10 hari lalu, deadline harusnya 3 hari lalu, dan dikembalikan tepat waktu 3 hari lalu.
         Transaction::create([
-            'user_id'         => $siswa1->id,
-            'book_id'         => $buku2->id,
-            'tanggal_pinjam'  => Carbon::now()->subDays(10),
-            'tanggal_kembali' => Carbon::now()->subDays(3),
-            'status'          => 'kembali',
+            'user_id'          => $siswa1->id,
+            'book_id'          => $buku2->id,
+            'tanggal_pinjam'   => Carbon::now()->subDays(10),
+            'tanggal_deadline' => Carbon::now()->subDays(3),
+            'tanggal_kembali'  => Carbon::now()->subDays(3),
+            'status'           => 'kembali',
         ]);
 
         // ==========================
