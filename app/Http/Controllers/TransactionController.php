@@ -186,4 +186,47 @@ class TransactionController extends Controller
             );
         }
     }
+
+    /* =========================================================================
+     * FITUR TAMBAHAN: APPROVAL UTK PERMINTAAN PENDING DARI SISWA
+     * ========================================================================= */
+
+    /**
+     * Admin Menyetujui Pengajuan Peminjaman Buku
+     */
+    public function setujuiPinjaman($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+        $book = Book::findOrFail($transaction->book_id);
+
+        // Validasi stok fisik buku saat disetujui admin
+        if ($book->stok < 1) {
+            return redirect()->back()->with('error', 'Gagal menyetujui. Stok buku ini sudah habis!');
+        }
+
+        // 1. Ubah status transaksi menjadi 'pinjam' (aktif)
+        $transaction->update([
+            'status' => 'pinjam'
+        ]);
+
+        // 2. Kurangi stok buku saat ini juga setelah disetujui resmi oleh admin
+        $book->decrement('stok');
+
+        return redirect()->back()->with('success', 'Permintaan peminjaman buku berhasil disetujui!');
+    }
+
+    /**
+     * Admin Menolak Pengajuan Peminjaman Buku
+     */
+    public function tolakPinjaman($id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        // Ubah status transaksi menjadi 'ditolak'
+        $transaction->update([
+            'status' => 'ditolak'
+        ]);
+
+        return redirect()->back()->with('info', 'Permintaan peminjaman buku telah ditolak.');
+    }
 }

@@ -180,7 +180,7 @@
 
                                 <td>
 
-                                    <span class="badge {{ $trans->status == 'pinjam' ? 'bg-warning text-dark' : 'bg-success' }}">
+                                    <span class="badge {{ $trans->status == 'pinjam' ? 'bg-warning text-dark' : ($trans->status == 'pending' ? 'bg-info text-dark' : 'bg-success') }}">
                                         {{ ucfirst($trans->status) }}
                                     </span>
 
@@ -209,6 +209,20 @@
                                 <td>
 
                                     <div class="d-flex flex-wrap gap-1">
+
+                                        @if($trans->status == 'pending')
+                                            <form action="{{ route('admin.transactions.setujui', $trans->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-success btn-sm fw-bold">Setuju</button>
+                                            </form>
+
+                                            <form action="{{ route('admin.transactions.tolak', $trans->id) }}" method="POST" class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-secondary btn-sm">Tolak</button>
+                                            </form>
+                                        @endif
 
                                         <a
                                             href="{{ route('transactions.edit', $trans->id) }}"

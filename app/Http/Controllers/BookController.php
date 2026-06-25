@@ -27,7 +27,7 @@ class BookController extends Controller
             $query->where('kategori', $request->kategori);
         }
 
-        $books = $query->latest()->get();
+        $books = $query->latest()->paginate(10)->withQueryString();
 
         $kategoris = Book::select('kategori')
             ->whereNotNull('kategori')

@@ -23,7 +23,9 @@ return new class extends Migration
             // Tetap nullable: Diisi nanti saat siswa menekan tombol "Kembalikan"
             $table->date('tanggal_kembali')->nullable(); 
             
-            $table->enum('status', ['pinjam', 'kembali']); 
+            // DIUBAH DI SINI: Menambahkan opsi pending dan ditolak ke dalam enum status
+            $table->enum('status', ['pending', 'pinjam', 'kembali', 'ditolak'])->default('pending'); 
+            
             $table->timestamps(); 
         });
     }

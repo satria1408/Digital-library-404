@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==========================
-        // BUKU
+        // BUKU (Total: 12 Buku)
         // ==========================
         $buku1 = Book::create([
             'judul'    => 'Belajar Laravel 10 untuk Pemula',
@@ -63,7 +63,7 @@ class DatabaseSeeder extends Seeder
             'stok'     => 3,
         ]);
 
-        Book::create([
+        $buku3 = Book::create([
             'judul'    => 'Filosofi Teras',
             'penulis'  => 'Henry Manampiring',
             'penerbit' => 'Kompas',
@@ -79,12 +79,75 @@ class DatabaseSeeder extends Seeder
             'stok'     => 0,
         ]);
 
+        $buku5 = Book::create([
+            'judul'    => 'Clean Code',
+            'penulis'  => 'Robert C. Martin',
+            'penerbit' => 'Prentice Hall',
+            'kategori' => 'Teknologi',
+            'stok'     => 4,
+        ]);
+
+        Book::create([
+            'judul'    => 'Bumi Manusia',
+            'penulis'  => 'Pramoedya Ananta Toer',
+            'penerbit' => 'Lentera Dipantara',
+            'kategori' => 'Novel',
+            'stok'     => 6,
+        ]);
+
+        Book::create([
+            'judul'    => 'Atomic Habits',
+            'penulis'  => 'James Clear',
+            'penerbit' => 'Gramedia',
+            'kategori' => 'Pengembangan Diri',
+            'stok'     => 8,
+        ]);
+
+        Book::create([
+            'judul'    => 'Pulang',
+            'penulis'  => 'Tere Liye',
+            'penerbit' => 'Sabak Grip',
+            'kategori' => 'Novel',
+            'stok'     => 5,
+        ]);
+
+        Book::create([
+            'judul'    => 'Dilan 1990',
+            'penulis'  => 'Pidi Baiq',
+            'penerbit' => 'Pastel Books',
+            'kategori' => 'Novel',
+            'stok'     => 7,
+        ]);
+
+        Book::create([
+            'judul'    => ' canva Pro Design Guide',
+            'penulis'  => 'Rizki Agung',
+            'penerbit' => 'Media Kita',
+            'kategori' => 'Teknologi',
+            'stok'     => 2,
+        ]);
+
+        Book::create([
+            'judul'    => 'Sebuah Seni untuk Bersikap Bodo Amat',
+            'penulis'  => 'Mark Manson',
+            'penerbit' => 'Grasindo',
+            'kategori' => 'Pengembangan Diri',
+            'stok'     => 4,
+        ]);
+
+        Book::create([
+            'judul'    => 'Negeri 5 Menara',
+            'penulis'  => 'A. Fuadi',
+            'penerbit' => 'Gramedia',
+            'kategori' => 'Novel',
+            'stok'     => 5,
+        ]);
+
         // ==========================
         // TRANSAKSI
         // ==========================
 
         // Skenario 1: Status masih 'pinjam', jatuh tempo sudah lewat 5 hari yang lalu.
-        // Pinjam 12 hari lalu, harusnya balik 5 hari lalu (tanggal_deadline), tanggal_kembali masih null.
         $trx1 = Transaction::create([
             'user_id'          => $siswa1->id,
             'book_id'          => $buku1->id,
@@ -96,7 +159,6 @@ class DatabaseSeeder extends Seeder
         $buku1->decrement('stok');
 
         // Skenario 2: Status masih 'pinjam', jatuh tempo sudah lewat 10 hari yang lalu.
-        // Pinjam 17 hari lalu, harusnya balik 10 hari lalu (tanggal_deadline), tanggal_kembali masih null.
         $trx2 = Transaction::create([
             'user_id'          => $siswa2->id,
             'book_id'          => $buku2->id,
@@ -108,7 +170,6 @@ class DatabaseSeeder extends Seeder
         $buku2->decrement('stok');
 
         // Skenario 3: Sudah dikembalikan tepat waktu — tidak ada denda
-        // Pinjam 10 hari lalu, deadline harusnya 3 hari lalu, dan dikembalikan tepat waktu 3 hari lalu.
         Transaction::create([
             'user_id'          => $siswa1->id,
             'book_id'          => $buku2->id,
@@ -116,6 +177,16 @@ class DatabaseSeeder extends Seeder
             'tanggal_deadline' => Carbon::now()->subDays(3),
             'tanggal_kembali'  => Carbon::now()->subDays(3),
             'status'           => 'kembali',
+        ]);
+
+        // Skenario Tambahan: Status 'pending' (Pengajuan Baru dari Siswa)
+        Transaction::create([
+            'user_id'          => $siswa2->id,
+            'book_id'          => $buku5->id,
+            'tanggal_pinjam'   => Carbon::now(),
+            'tanggal_deadline' => Carbon::now()->addDays(7),
+            'tanggal_kembali'  => null,
+            'status'           => 'pending', // Masuk sebagai pending pengajuan siswa
         ]);
 
         // ==========================

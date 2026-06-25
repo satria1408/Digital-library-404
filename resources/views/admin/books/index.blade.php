@@ -85,7 +85,7 @@
 
                             <tr>
 
-                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $books->firstItem() + $loop->index }}</td>
 
                                 <td>{{ $book->judul }}</td>
 
@@ -154,12 +154,22 @@
         </div>
     </div>
 
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 mt-3">
+
+        <small class="text-muted">
+            Menampilkan {{ $books->firstItem() }}–{{ $books->lastItem() }} dari {{ $books->total() }} buku
+        </small>
+
+        {{ $books->links('pagination::bootstrap-5') }}
+
+    </div>
+
     @if(request('search') || request('kategori'))
 
         <div class="alert alert-light border mt-3">
 
             Menampilkan
-            <strong>{{ $books->count() }}</strong>
+            <strong>{{ $books->total() }}</strong>
             hasil
 
             @if(request('search'))
@@ -284,4 +294,4 @@ if (kategoriSelect) {
 }
 
 </script>
-@endpush 
+@endpush

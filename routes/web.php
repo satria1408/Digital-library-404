@@ -43,6 +43,12 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('users', UserController::class);
         Route::resource('transactions', TransactionController::class);
 
+        // Approval System untuk Fitur Pending (Disisipkan tanpa merusak struktur)
+        Route::patch('/transactions/{id}/setujui', [TransactionController::class, 'setujuiPinjaman'])
+            ->name('admin.transactions.setujui');
+        Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
+            ->name('admin.transactions.tolak');
+
         // Denda — ditangani TransactionController
         Route::get('/dendas', [TransactionController::class, 'dendaIndex'])->name('dendas.index');
         Route::patch('/dendas/{id}/bayar', [TransactionController::class, 'dendaBayar'])->name('dendas.bayar');
@@ -58,9 +64,21 @@ Route::middleware(['auth', 'role:siswa'])
     ->prefix('siswa')
     ->group(function () {
 
+        // Halaman Utama Dashboard Menu Card (Menggunakan layout baru)
         Route::get('/dashboard', [SiswaController::class, 'index'])
             ->name('siswa.dashboard');
 
+        // URL Halaman Terpisah Berbasis Struktur Partials
+        Route::get('/partials/stats', [SiswaController::class, 'showStats'])
+            ->name('siswa.stats');
+
+        Route::get('/partials/peminjaman', [SiswaController::class, 'showPeminjaman'])
+            ->name('siswa.peminjaman');
+
+        Route::get('/partials/pengembalian', [SiswaController::class, 'showPengembalian'])
+            ->name('siswa.pengembalian');
+
+        // Logika Proses POST Peminjaman & Pengembalian
         Route::post('/pinjam/{book_id}', [SiswaController::class, 'pinjamBuku'])
             ->name('siswa.pinjam');
 

@@ -28,8 +28,8 @@ class Transaction extends Model
      */
     public function hariTerlambat(): int
     {
-        // Jika statusnya sudah kembali, maka tidak terhitung terlambat lagi di dashboard aktif
-        if ($this->status === 'kembali') {
+        // Jika statusnya sudah kembali, pending (menunggu), atau ditolak, maka tidak terhitung terlambat
+        if ($this->status === 'kembali' || $this->status === 'pending' || $this->status === 'ditolak') {
             return 0;
         }
 
