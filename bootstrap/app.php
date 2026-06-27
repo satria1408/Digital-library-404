@@ -11,9 +11,51 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+
+        /*
+        |--------------------------------------------------------------------------
+        | Global Middleware
+        |--------------------------------------------------------------------------
+        | Middleware SQL Injection dijalankan untuk setiap request
+        |--------------------------------------------------------------------------
+        */
+        $middleware->append(\App\Http\Middleware\SqlInjectionMiddleware::class);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Middleware Alias
+        |--------------------------------------------------------------------------
+        */
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'sql.injection' => \App\Http\Middleware\SqlInjectionMiddleware::class,
         ]);
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect Guest
+        |--------------------------------------------------------------------------
+        */
+        $middleware->redirectGuestsTo(fn() => route('login'));
+
+        /*
+        |--------------------------------------------------------------------------
+        | Redirect User Berdasarkan Role
+        |--------------------------------------------------------------------------
+        */
+        $middleware->redirectUsersTo(function ($request) {
+            $user = auth()->user();
+
+            if ($user?->role === 'admin') {
+                return route('admin.dashboard');
+            }
+
+            if ($user?->role === 'siswa') {
+                return route('siswa.dashboard');
+            }
+
+            return '/';
+        });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

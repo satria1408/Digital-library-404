@@ -20,10 +20,12 @@ class SiswaController extends Controller
 
         // Logika Search bawaan kamu
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%')
-                  ->orWhere('penulis', 'like', '%' . $request->search . '%')
-                  ->orWhere('penerbit', 'like', '%' . $request->search . '%');
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('judul', 'like', '%' . $search . '%')
+                  ->orWhere('penulis', 'like', '%' . $search . '%')
+                  ->orWhere('penerbit', 'like', '%' . $search . '%');
             });
         }
 
@@ -57,15 +59,48 @@ class SiswaController extends Controller
 
     /**
      * Main Dashboard (Halaman Utama / Landing)
+     * ◄ REVISI: Tambah kalkulasi statistik dinamis untuk bagian atas dashboard siswa
      */
     public function index(Request $request)
     {
         $books = $this->getFilteredBooks($request);
         $myBooks = $this->getMyBorrowedBooks();
         
-        $kategoris = Book::select('kategori')->distinct()->pluck('kategori');
+        // 1. Hitung total seluruh koleksi buku yang tersedia di perpustakaan
+        $totalKoleksi = Book::count();
 
-        return view('siswa.dashboard', compact('books', 'myBooks', 'kategoris'));
+        // 2. Hitung total buku milik siswa yang sedang berstatus dipinjam
+        $totalDipinjam = $myBooks->where('status', 'pinjam')->count();
+
+        // 3. Hitung total pengajuan peminjaman siswa yang masih pending
+        $totalPending = $myBooks->where('status', 'pending')->count();
+
+        // 4. Hitung akumulasi total denda berjalan siswa menggunakan rumus bertingkat
+        $totalDendaAman = 0;
+        foreach ($myBooks->where('status', 'pinjam') as $trans) {
+            $deadline = $trans->tanggal_deadline ? Carbon::parse($trans->tanggal_deadline) : null;
+            $today = Carbon::today();
+            
+            if ($deadline && $today->gt($deadline)) {
+                $hariTerlambat = $today->diffInDays($deadline);
+                
+                $dendaPerHari = match(true) {
+                    $hariTerlambat >= 30 => 10000,
+                    $hariTerlambat >= 14 => 8000,
+                    $hariTerlambat >= 7  => 5000,
+                    $hariTerlambat >= 3  => 2000,
+                    $hariTerlambat >= 1  => 1000,
+                    default              => 0,
+                };
+                $totalDendaAman += ($hariTerlambat * $dendaPerHari);
+            }
+        }
+
+        // Mengambil kategori dinamis dari DB agar sinkron dengan seeder baru
+        $kategoris = Book::select('kategori')->whereNotNull('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
+
+        // Di-compact semuanya agar bisa dibaca langsung oleh component row atas di dashboard.blade.php
+        return view('siswa.dashboard', compact('books', 'myBooks', 'kategoris', 'totalKoleksi', 'totalDipinjam', 'totalPending', 'totalDendaAman'));
     }
 
     /**
@@ -87,7 +122,8 @@ class SiswaController extends Controller
         $books = $this->getFilteredBooks($request, paginate: true);
         $myBooks = $this->getMyBorrowedBooks(); 
         
-        $kategoris = Book::select('kategori')->distinct()->pluck('kategori');
+        // Mengambil kategori dinamis dari DB agar sinkron dengan seeder baru
+        $kategoris = Book::select('kategori')->whereNotNull('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
 
         return view('siswa.partials.peminjaman', compact('books', 'myBooks', 'kategoris'));
     }
@@ -99,7 +135,35 @@ class SiswaController extends Controller
     {
         $myBooks = $this->getMyBorrowedBooks();
 
-        return view('siswa.partials.pengembalian', compact('myBooks'));
+        // 1. Hitung total buku yang beneran lagi dipinjam (status pinjam)
+        $totalDipinjam = $myBooks->where('status', 'pinjam')->count();
+
+        // 2. Hitung total form peminjaman yang nunggu konfirmasi admin (status pending)
+        $totalPending = $myBooks->where('status', 'pending')->count();
+
+        // 3. Hitung akumulasi total rupiah denda berjalan dari semua buku terlambat siswa ini
+        $totalDendaAman = 0;
+        foreach ($myBooks->where('status', 'pinjam') as $trans) {
+            $deadline = $trans->tanggal_deadline ? Carbon::parse($trans->tanggal_deadline) : null;
+            $today = Carbon::today();
+            
+            if ($deadline && $today->gt($deadline)) {
+                $hariTerlambat = $today->diffInDays($deadline);
+                
+                $dendaPerHari = match(true) {
+                    $hariTerlambat >= 30 => 10000,
+                    $hariTerlambat >= 14 => 8000,
+                    $hariTerlambat >= 7  => 5000,
+                    $hariTerlambat >= 3  => 2000,
+                    $hariTerlambat >= 1  => 1000,
+                    default              => 0,
+                };
+                $totalDendaAman += ($hariTerlambat * $dendaPerHari);
+            }
+        }
+
+        // Passing semua variabel kalkulasi ke View agar sinkron kinerjanya
+        return view('siswa.partials.pengembalian', compact('myBooks', 'totalDipinjam', 'totalPending', 'totalDendaAman'));
     }
 
 
@@ -112,6 +176,31 @@ class SiswaController extends Controller
      */
     public function pinjamBuku(Request $request, $book_id)
     {
+        // =========================================================
+        // VALIDASI OWNERSHIP 1: Batasan maksimal 5 buku aktif
+        // =========================================================
+        $jumlahAktif = Transaction::where('user_id', Auth::id())
+                                  ->whereIn('status', ['pinjam', 'pending'])
+                                  ->count();
+
+        if ($jumlahAktif >= 5) {
+            return redirect()->route('siswa.pengembalian')
+                             ->with('warning', 'Kamu sudah memiliki 5 buku aktif. Kembalikan salah satu sebelum meminjam lagi.');
+        }
+
+        // =========================================================
+        // VALIDASI OWNERSHIP 2: Cek buku yang sama belum dikembalikan
+        // =========================================================
+        $sudahPinjam = Transaction::where('user_id', Auth::id())
+                                  ->where('book_id', $book_id)
+                                  ->whereIn('status', ['pinjam', 'pending'])
+                                  ->exists();
+
+        if ($sudahPinjam) {
+            return redirect()->route('siswa.pengembalian')
+                             ->with('warning', 'Kamu masih memiliki pinjaman buku ini yang belum dikembalikan.');
+        }
+
         $tanggalPinjamInput = $request->input('tanggal_pinjam');
         $baseDate = $tanggalPinjamInput ? Carbon::parse($tanggalPinjamInput) : Carbon::today();
         $batasMaksimal = $baseDate->copy()->addDays(30)->format('Y-m-d');
@@ -137,13 +226,11 @@ class SiswaController extends Controller
                 'status'           => 'pending' // 👈 STATUS BERUBAH JADI PENDING
             ]);
 
-            // ⚠️ STOK TIDAK DI-DECREMENT DI SINI, stok baru berkurang saat disetujui Admin di TransactionController
-
             // Redirect langsung melempar ke halaman Pengembalian bawa flash message sukses pending
             return redirect()->route('siswa.pengembalian')->with('success', 'Permintaan peminjaman berhasil dikirim! Menunggu persetujuan admin.');
         }
 
-        return back()->with('error', 'Stok habis!');
+        return redirect()->route('siswa.pengembalian')->with('error', 'Stok habis!');
     }
 
     /**
@@ -151,8 +238,13 @@ class SiswaController extends Controller
      */
     public function kembalikanBuku($transaction_id)
     {
+        // =========================================================
+        // VALIDASI OWNERSHIP 3: Pastikan transaksi milik siswa ini
+        // dan statusnya benar-benar 'pinjam' (bukan pending/kembali)
+        // =========================================================
         $transaksi = Transaction::where('id', $transaction_id)
                                 ->where('user_id', Auth::id())
+                                ->where('status', 'pinjam') // 👈 Hanya bisa kembalikan yang sudah disetujui admin
                                 ->firstOrFail();
 
         $transaksi->update([

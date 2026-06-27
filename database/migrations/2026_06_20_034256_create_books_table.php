@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('judul'); 
             $table->string('penulis'); 
             $table->string('penerbit'); 
+            $table->string('cover')->nullable();
             $table->string('kategori')->nullable(); 
             $table->integer('stok'); 
             $table->timestamps(); 

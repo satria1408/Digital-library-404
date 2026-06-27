@@ -1,12 +1,29 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+
+/*
+|--------------------------------------------------------------------------
+| Rate Limiter — Mencegah spam request login & pinjam buku
+|--------------------------------------------------------------------------
+*/
+
+RateLimiter::for('login', function (Request $request) {
+    return Limit::perMinute(5)->by($request->ip());
+});
+
+RateLimiter::for('pinjam', function (Request $request) {
+    return Limit::perMinute(3)->by($request->user()?->id ?: $request->ip());
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -18,11 +35,20 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login'])->name('login.process');
+Route::get('/login', [AuthController::class, 'showLogin'])
+    ->name('login')
+    ->middleware('guest');
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register'])->name('register.store');
+Route::post('/login', [AuthController::class, 'login'])
+    ->name('login.process')
+    ->middleware('throttle:login');
+
+Route::get('/register', [AuthController::class, 'showRegister'])
+    ->name('register')
+    ->middleware('guest');
+
+Route::post('/register', [AuthController::class, 'register'])
+    ->name('register.store');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
@@ -80,8 +106,10 @@ Route::middleware(['auth', 'role:siswa'])
 
         // Logika Proses POST Peminjaman & Pengembalian
         Route::post('/pinjam/{book_id}', [SiswaController::class, 'pinjamBuku'])
-            ->name('siswa.pinjam');
+            ->name('siswa.pinjam')
+            ->middleware('throttle:pinjam');
 
         Route::post('/kembali/{transaction_id}', [SiswaController::class, 'kembalikanBuku'])
-            ->name('siswa.kembali');
+            ->name('siswa.kembali')
+            ->middleware('throttle:pinjam');
     });

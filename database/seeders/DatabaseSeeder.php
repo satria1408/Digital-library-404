@@ -45,7 +45,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==========================
-        // BUKU (Total: 12 Buku)
+        // BUKU (Total: 12 Buku dengan Real Image Link)
         // ==========================
         $buku1 = Book::create([
             'judul'    => 'Belajar Laravel 10 untuk Pemula',
@@ -53,6 +53,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Laravel Press',
             'kategori' => 'Teknologi',
             'stok'     => 5,
+            'cover'    => 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400', // Coding theme
         ]);
 
         $buku2 = Book::create([
@@ -61,6 +62,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Bentang Pustaka',
             'kategori' => 'Novel',
             'stok'     => 3,
+            'cover'    => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=400', // School/Rainbow kids vibe
         ]);
 
         $buku3 = Book::create([
@@ -69,6 +71,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Kompas',
             'kategori' => 'Pengembangan Diri',
             'stok'     => 10,
+            'cover'    => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=400', // Calm/Statue aesthetic
         ]);
 
         Book::create([
@@ -77,6 +80,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Gramedia',
             'kategori' => 'Fiksi',
             'stok'     => 0,
+            'cover'    => 'https://images.unsplash.com/photo-1510172951991-856a654063f9?q=80&w=400', // Magic/Castle vibe
         ]);
 
         $buku5 = Book::create([
@@ -85,6 +89,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Prentice Hall',
             'kategori' => 'Teknologi',
             'stok'     => 4,
+            'cover'    => 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=400', // Clean code screen theme
         ]);
 
         Book::create([
@@ -93,6 +98,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Lentera Dipantara',
             'kategori' => 'Novel',
             'stok'     => 6,
+            'cover'    => 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=400', // Classic old history vibe
         ]);
 
         Book::create([
@@ -101,6 +107,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Gramedia',
             'kategori' => 'Pengembangan Diri',
             'stok'     => 8,
+            'cover'    => 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=400', // Progress checklist vibe
         ]);
 
         Book::create([
@@ -109,6 +116,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Sabak Grip',
             'kategori' => 'Novel',
             'stok'     => 5,
+            'cover'    => 'https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=400', // Train travel vibe
         ]);
 
         Book::create([
@@ -117,14 +125,16 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Pastel Books',
             'kategori' => 'Novel',
             'stok'     => 7,
+            'cover'    => 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=400', // Retro/Love vibe
         ]);
 
         Book::create([
-            'judul'    => ' canva Pro Design Guide',
+            'judul'    => 'Canva Pro Design Guide',
             'penulis'  => 'Rizki Agung',
             'penerbit' => 'Media Kita',
             'kategori' => 'Teknologi',
             'stok'     => 2,
+            'cover'    => 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?q=80&w=400', // UI/UX design vibe
         ]);
 
         Book::create([
@@ -133,6 +143,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Grasindo',
             'kategori' => 'Pengembangan Diri',
             'stok'     => 4,
+            'cover'    => 'https://images.unsplash.com/photo-1531256456869-ce942a665e80?q=80&w=400', // Portrait careless art vibe
         ]);
 
         Book::create([
@@ -141,6 +152,7 @@ class DatabaseSeeder extends Seeder
             'penerbit' => 'Gramedia',
             'kategori' => 'Novel',
             'stok'     => 5,
+            'cover'    => 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=400', // Old mosque/Students tower vibe
         ]);
 
         // ==========================
@@ -186,7 +198,7 @@ class DatabaseSeeder extends Seeder
             'tanggal_pinjam'   => Carbon::now(),
             'tanggal_deadline' => Carbon::now()->addDays(7),
             'tanggal_kembali'  => null,
-            'status'           => 'pending', // Masuk sebagai pending pengajuan siswa
+            'status'           => 'pending',
         ]);
 
         // ==========================

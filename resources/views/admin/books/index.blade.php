@@ -70,7 +70,7 @@
                     <thead class="table-dark">
                         <tr>
                             <th width="60">No</th>
-                            <th>Judul</th>
+                            <th width="80">Cover</th> <th>Judul</th>
                             <th>Penulis</th>
                             <th>Penerbit</th>
                             <th>Kategori</th>
@@ -87,7 +87,13 @@
 
                                 <td>{{ $books->firstItem() + $loop->index }}</td>
 
-                                <td>{{ $book->judul }}</td>
+                                <td>
+                                    <div class="shadow-sm rounded overflow-hidden border bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 70px;">
+                                        <img src="{{ $book->cover_url }}" alt="Cover {{ $book->judul }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                    </div>
+                                </td>
+
+                                <td class="fw-semibold text-dark">{{ $book->judul }}</td>
 
                                 <td>{{ $book->penulis }}</td>
 
@@ -138,8 +144,7 @@
                         @empty
 
                             <tr>
-                                <td colspan="7" class="text-center text-muted py-4">
-                                    Tidak ada buku ditemukan.
+                                <td colspan="8" class="text-center text-muted py-4"> Tidak ada buku ditemukan.
                                 </td>
                             </tr>
 
