@@ -65,6 +65,7 @@
     background:rgba(255,255,255,.1);
     border-bottom:1px solid rgba(255,255,255,.15);
     font-weight:600;
+    border-radius:16px 16px 0 0 !important;
 }
 
 .dashboard-card .card-text{
@@ -73,6 +74,16 @@
 
 .dashboard-card .btn{
     border-radius:10px;
+}
+
+.dashboard-card.security-card {
+    background: rgba(239,68,68,.15);
+    border: 1px solid rgba(239,68,68,.25);
+}
+
+.dashboard-card.security-card .card-header {
+    background: rgba(239,68,68,.2);
+    border-bottom: 1px solid rgba(239,68,68,.25);
 }
 
 /* LIGHT MODE */
@@ -105,10 +116,25 @@ body.light-mode .dashboard-card{
 body.light-mode .dashboard-card .card-header{
     background:#f8fafc;
     border-bottom:1px solid #e2e8f0;
+    color:#0f172a;
 }
 
 body.light-mode .dashboard-card .card-text{
     color:#475569;
+}
+
+body.light-mode .dashboard-card.security-card {
+    background: rgba(239,68,68,.07);
+    border-color: rgba(239,68,68,.2);
+}
+
+body.light-mode .dashboard-card.security-card .card-header {
+    background: rgba(239,68,68,.1);
+    border-bottom-color: rgba(239,68,68,.2);
+}
+
+body.light-mode .dashboard-card.security-card .card-text {
+    color: #7f1d1d;
 }
 </style>
 
@@ -143,78 +169,71 @@ body.light-mode .dashboard-card .card-text{
     <div class="row g-4">
 
         <div class="col-md-4">
-
             <div class="card dashboard-card">
-
                 <div class="card-header">
-                    Kelola Data Buku
+                     Kelola Data Buku
                 </div>
-
                 <div class="card-body">
-
                     <p class="card-text">
                         Tambah, edit, hapus dan kelola data buku perpustakaan.
                     </p>
-
                     <a href="{{ route('books.index') }}"
                        class="btn btn-primary">
                         Buka Menu
                     </a>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md-4">
-
             <div class="card dashboard-card">
-
                 <div class="card-header">
-                    Kelola Anggota
+                     Kelola Anggota
                 </div>
-
                 <div class="card-body">
-
                     <p class="card-text">
                         Manajemen data anggota dan siswa perpustakaan.
                     </p>
-
                     <a href="{{ route('users.index') }}"
                        class="btn btn-primary">
                         Buka Menu
                     </a>
-
                 </div>
-
             </div>
-
         </div>
 
         <div class="col-md-4">
-
             <div class="card dashboard-card">
-
                 <div class="card-header">
-                    Laporan Transaksi
+                     Laporan Transaksi
                 </div>
-
                 <div class="card-body">
-
                     <p class="card-text">
                         Lihat riwayat peminjaman dan pengembalian buku.
                     </p>
-
                     <a href="{{ route('transactions.index') }}"
                        class="btn btn-primary">
                         Buka Menu
                     </a>
-
                 </div>
-
             </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="card dashboard-card security-card">
+                <div class="card-header">
+                    Security Log
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        Pantau dan kelola log percobaan SQL Injection yang terdeteksi sistem.
+                    </p>
+                    <a href="{{ route('security.logs.index') }}"
+                       class="btn btn-danger">
+                        Buka Menu
+                    </a>
+                </div>
+            </div>
         </div>
 
     </div>

@@ -100,6 +100,13 @@
                             </a>
                         </li>
 
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->routeIs('security.logs.*') ? 'active' : '' }}"
+                               href="{{ route('security.logs.index') }}">
+                                Security Log
+                            </a>
+                        </li>
+
                     @endif
 
                     @if(Auth::user()->role == 'siswa')

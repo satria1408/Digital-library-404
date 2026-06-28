@@ -10,6 +10,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SecurityLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,12 @@ Route::middleware(['auth', 'role:admin'])
         // Denda — ditangani TransactionController
         Route::get('/dendas', [TransactionController::class, 'dendaIndex'])->name('dendas.index');
         Route::patch('/dendas/{id}/bayar', [TransactionController::class, 'dendaBayar'])->name('dendas.bayar');
+
+        // Security Log — Anti SQL Injection
+        Route::get('/security-logs', [SecurityLogController::class, 'index'])->name('security.logs.index');
+        Route::get('/security-logs/{securityLog}', [SecurityLogController::class, 'show'])->name('security.logs.show');
+        Route::delete('/security-logs/{securityLog}', [SecurityLogController::class, 'destroy'])->name('security.logs.destroy');
+        Route::delete('/security-logs', [SecurityLogController::class, 'destroyAll'])->name('security.logs.destroyAll');
     });
 
 /*
