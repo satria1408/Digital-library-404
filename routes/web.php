@@ -11,6 +11,7 @@ use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SecurityLogController;
+use App\Http\Controllers\WishlistController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,7 +52,8 @@ Route::get('/register', [AuthController::class, 'showRegister'])
 Route::post('/register', [AuthController::class, 'register'])
     ->name('register.store');
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 
 /*
 |--------------------------------------------------------------------------
@@ -70,21 +72,32 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('users', UserController::class);
         Route::resource('transactions', TransactionController::class);
 
-        // Approval System untuk Fitur Pending (Disisipkan tanpa merusak struktur)
+        // Approval System
         Route::patch('/transactions/{id}/setujui', [TransactionController::class, 'setujuiPinjaman'])
             ->name('admin.transactions.setujui');
+
         Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
             ->name('admin.transactions.tolak');
 
-        // Denda — ditangani TransactionController
-        Route::get('/dendas', [TransactionController::class, 'dendaIndex'])->name('dendas.index');
-        Route::patch('/dendas/{id}/bayar', [TransactionController::class, 'dendaBayar'])->name('dendas.bayar');
+        // Denda
+        Route::get('/dendas', [TransactionController::class, 'dendaIndex'])
+            ->name('dendas.index');
 
-        // Security Log — Anti SQL Injection
-        Route::get('/security-logs', [SecurityLogController::class, 'index'])->name('security.logs.index');
-        Route::get('/security-logs/{securityLog}', [SecurityLogController::class, 'show'])->name('security.logs.show');
-        Route::delete('/security-logs/{securityLog}', [SecurityLogController::class, 'destroy'])->name('security.logs.destroy');
-        Route::delete('/security-logs', [SecurityLogController::class, 'destroyAll'])->name('security.logs.destroyAll');
+        Route::patch('/dendas/{id}/bayar', [TransactionController::class, 'dendaBayar'])
+            ->name('dendas.bayar');
+
+        // Security Log
+        Route::get('/security-logs', [SecurityLogController::class, 'index'])
+            ->name('security.logs.index');
+
+        Route::get('/security-logs/{securityLog}', [SecurityLogController::class, 'show'])
+            ->name('security.logs.show');
+
+        Route::delete('/security-logs/{securityLog}', [SecurityLogController::class, 'destroy'])
+            ->name('security.logs.destroy');
+
+        Route::delete('/security-logs', [SecurityLogController::class, 'destroyAll'])
+            ->name('security.logs.destroyAll');
     });
 
 /*
@@ -97,11 +110,11 @@ Route::middleware(['auth', 'role:siswa'])
     ->prefix('siswa')
     ->group(function () {
 
-        // Halaman Utama Dashboard Menu Card (Menggunakan layout baru)
+        // Dashboard
         Route::get('/dashboard', [SiswaController::class, 'index'])
             ->name('siswa.dashboard');
 
-        // URL Halaman Terpisah Berbasis Struktur Partials
+        // Halaman
         Route::get('/partials/stats', [SiswaController::class, 'showStats'])
             ->name('siswa.stats');
 
@@ -111,7 +124,27 @@ Route::middleware(['auth', 'role:siswa'])
         Route::get('/partials/pengembalian', [SiswaController::class, 'showPengembalian'])
             ->name('siswa.pengembalian');
 
-        // Logika Proses POST Peminjaman & Pengembalian
+        /*
+        |--------------------------------------------------------------------------
+        | Wishlist Buku
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/wishlist', [WishlistController::class, 'index'])
+            ->name('wishlist.index');
+
+        Route::post('/wishlist/{book}', [WishlistController::class, 'store'])
+            ->name('wishlist.store');
+
+        Route::delete('/wishlist/{book}', [WishlistController::class, 'destroy'])
+            ->name('wishlist.destroy');
+
+        /*
+        |--------------------------------------------------------------------------
+        | Peminjaman & Pengembalian
+        |--------------------------------------------------------------------------
+        */
+
         Route::post('/pinjam/{book_id}', [SiswaController::class, 'pinjamBuku'])
             ->name('siswa.pinjam')
             ->middleware('throttle:pinjam');

@@ -161,6 +161,20 @@ textarea{
 
                 <div class="mb-3">
                     <label class="form-label">
+                        Konfirmasi Password
+                    </label>
+
+                    <input
+                        type="password"
+                        name="password_confirmation"
+                        class="form-control"
+                        placeholder="Ulangi password"
+                        required
+                    >
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">
                         Alamat
                     </label>
 

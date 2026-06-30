@@ -170,13 +170,27 @@
                                 @endif
                             </td>
                             <td class="pe-4 text-end">
-                                @if($book->stok > 0)
-                                    <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm" onclick="pinjamBukuLangsung('{{ $book->id }}', '{{ addslashes($book->judul) }}')">
-                                        <i class="bi bi-plus-circle me-1"></i> Pinjam
-                                    </button>
-                                @else
-                                    <button class="btn btn-light btn-sm rounded-pill px-3 text-muted" disabled>Habis</button>
-                                @endif
+                                <div class="d-flex justify-content-end gap-2">
+
+                                    <form action="{{ route('wishlist.store', $book->id) }}" method="POST">
+                                        @csrf
+                                        <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill">
+                                            <i class="bi bi-heart"></i>
+                                        </button>
+                                    </form>
+
+                                    @if($book->stok > 0)
+                                        <button class="btn btn-primary btn-sm rounded-pill px-3 shadow-sm"
+                                            onclick="pinjamBukuLangsung('{{ $book->id }}', '{{ addslashes($book->judul) }}')">
+                                            <i class="bi bi-plus-circle me-1"></i> Pinjam
+                                        </button>
+                                    @else
+                                        <button class="btn btn-light btn-sm rounded-pill px-3 text-muted" disabled>
+                                            Habis
+                                        </button>
+                                    @endif
+
+                                </div>
                             </td>
                         </tr>
                         @empty
@@ -236,16 +250,28 @@
                                             </span>
                                         </div>
                                         
-                                        @if($book->stok > 0)
-                                            <button class="btn btn-primary btn-sm rounded-pill px-3 py-1 fw-semibold text-xs d-flex align-items-center gap-1"
-                                                    onclick="pinjamBukuLangsung('{{ $book->id }}', '{{ addslashes($book->judul) }}')" style="font-size: 0.8rem;">
-                                                Pinjam <i class="bi bi-arrow-right-short fs-6"></i>
-                                            </button>
-                                        @else
-                                            <button class="btn btn-light btn-sm rounded-pill px-3 py-1 text-muted fw-semibold text-xs" style="font-size: 0.8rem;" disabled>
-                                                Habis
-                                            </button>
-                                        @endif
+                                        <div class="d-flex gap-2">
+
+                                            <form action="{{ route('wishlist.store', $book->id) }}" method="POST">
+                                                @csrf
+                                                <button class="btn btn-outline-danger btn-sm rounded-pill">
+                                                    <i class="bi bi-heart"></i>
+                                                </button>
+                                            </form>
+
+                                            @if($book->stok > 0)
+                                                <button
+                                                    class="btn btn-primary btn-sm rounded-pill px-3 py-1 fw-semibold"
+                                                    onclick="pinjamBukuLangsung('{{ $book->id }}', '{{ addslashes($book->judul) }}')">
+                                                    Pinjam
+                                                </button>
+                                            @else
+                                                <button class="btn btn-light btn-sm rounded-pill" disabled>
+                                                    Habis
+                                                </button>
+                                            @endif
+
+                                        </div>
                                     </div>
 
                                 </div>
