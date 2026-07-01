@@ -4,14 +4,15 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\SecurityLogController;
-use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BookController;
+use App\Http\Controllers\Admin\TransactionController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Siswa\SiswaController;
+use App\Http\Controllers\Siswa\WishlistController;
+use App\Http\Controllers\Denda\AdminDendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,11 +80,11 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
             ->name('admin.transactions.tolak');
 
-        // Denda
-        Route::get('/dendas', [TransactionController::class, 'dendaIndex'])
+        // Denda (Diambil dari AdminDendaController di folder Denda baru)
+        Route::get('/dendas', [AdminDendaController::class, 'index'])
             ->name('dendas.index');
 
-        Route::patch('/dendas/{id}/bayar', [TransactionController::class, 'dendaBayar'])
+        Route::patch('/dendas/{id}/bayar', [AdminDendaController::class, 'bayar'])
             ->name('dendas.bayar');
 
         // Security Log

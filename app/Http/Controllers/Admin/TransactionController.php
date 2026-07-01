@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Transaction;
 use App\Models\User;
 use App\Models\Book;
@@ -21,7 +22,6 @@ class TransactionController extends Controller
             });
         }
 
-        // PERBAIKAN FILTER KETERLAMBATAN: Berpatokan pada tanggal_deadline
         if ($request->keterlambatan === 'terlambat') {
             $query->where('status', 'pinjam')
                   ->whereDate('tanggal_deadline', '<', Carbon::today());
@@ -50,12 +50,11 @@ class TransactionController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi menangkap input kalender pengembalian sebagai tanggal_deadline
         $request->validate([
             'user_id'          => 'required|exists:users,id',
             'book_id'          => 'required|exists:books,id',
             'tanggal_pinjam'   => 'required|date',
-            'tanggal_kembali'  => 'required|date|after_or_equal:tanggal_pinjam', // Ini nama input dari kalender Blade kamu
+            'tanggal_kembali'  => 'required|date|after_or_equal:tanggal_pinjam',
             'status'           => 'required',
         ]);
 
@@ -65,15 +64,14 @@ class TransactionController extends Controller
             return back()->with('error', 'Stok buku habis!');
         }
 
-        // Logic menentukan nilai awal tanggal_kembali riil berdasarkan status saat buat transaksi
         $tanggalKembaliRiil = ($request->status == 'kembali') ? Carbon::today() : null;
 
         $transaction = Transaction::create([
             'user_id'          => $request->user_id,
             'book_id'          => $request->book_id,
             'tanggal_pinjam'   => $request->tanggal_pinjam,
-            'tanggal_deadline' => $request->tanggal_kembali, // Input kalender dipetakan ke deadline
-            'tanggal_kembali'  => $tanggalKembaliRiil,       // Diisi tanggal riil jika statusnya langsung 'kembali'
+            'tanggal_deadline' => $request->tanggal_kembali,
+            'tanggal_kembali'  => $tanggalKembaliRiil,
             'status'           => $request->status,
         ]);
 
@@ -102,35 +100,33 @@ class TransactionController extends Controller
         $request->validate([
             'status'          => 'required',
             'tanggal_pinjam'  => 'required|date',
-            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam', // Input dari form edit/kalender
+            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
         ]);
 
         $tanggalKembaliRiil = $transaction->tanggal_kembali;
 
-        // JIKA STATUS BERUBAH DARI PINJAM KE KEMBALI (Siswa memulangkan buku)
         if ($transaction->status == 'pinjam' && $request->status == 'kembali') {
             $book->increment('stok');
-            $tanggalKembaliRiil = Carbon::today(); // Set tanggal kembali asli ke hari ini
+            $tanggalKembaliRiil = Carbon::today();
 
             if ($transaction->denda && $transaction->denda->status == 'belum_bayar') {
                 $transaction->denda->update(['status' => 'lunas']);
             }
         }
 
-        // JIKA STATUS BERUBAH DARI KEMBALI KE PINJAM (Kembali dipinjam lagi)
         if ($transaction->status == 'kembali' && $request->status == 'pinjam') {
             if ($book->stok < 1) {
                 return back()->with('error', 'Stok buku tidak cukup.');
             }
             $book->decrement('stok');
-            $tanggalKembaliRiil = null; // Kosongkan kembali tanggal realisasinya
+            $tanggalKembaliRiil = null;
         }
 
         $transaction->update([
             'user_id'          => $transaction->user_id,
             'book_id'          => $transaction->book_id,
             'tanggal_pinjam'   => $request->tanggal_pinjam,
-            'tanggal_deadline' => $request->tanggal_kembali, // Sinkronisasi target batas waktu
+            'tanggal_deadline' => $request->tanggal_kembali,
             'tanggal_kembali'  => $tanggalKembaliRiil,
             'status'           => $request->status,
         ]);
@@ -153,25 +149,8 @@ class TransactionController extends Controller
         return redirect()->route('transactions.index')->with('success', 'Transaksi dihapus');
     }
 
-    public function dendaIndex()
-    {
-        $dendas = Denda::with(['transaction.user', 'transaction.book'])
-            ->orderBy('status')
-            ->latest()
-            ->get();
-
-        return view('admin.transactions.index', compact('dendas'));
-    }
-
-    public function dendaBayar($id)
-    {
-        Denda::findOrFail($id)->update(['status' => 'lunas']);
-        return redirect()->route('dendas.index')->with('success', 'Denda berhasil dilunasi');
-    }
-
     private function cekDenda(Transaction $transaction): void
     {
-        // Hanya hitung denda jika statusnya masih aktif dipinjam
         if ($transaction->status !== 'pinjam') {
             return;
         }
@@ -187,45 +166,25 @@ class TransactionController extends Controller
         }
     }
 
-    /* =========================================================================
-     * FITUR TAMBAHAN: APPROVAL UTK PERMINTAAN PENDING DARI SISWA
-     * ========================================================================= */
-
-    /**
-     * Admin Menyetujui Pengajuan Peminjaman Buku
-     */
     public function setujuiPinjaman($id)
     {
         $transaction = Transaction::findOrFail($id);
         $book = Book::findOrFail($transaction->book_id);
 
-        // Validasi stok fisik buku saat disetujui admin
         if ($book->stok < 1) {
             return redirect()->back()->with('error', 'Gagal menyetujui. Stok buku ini sudah habis!');
         }
 
-        // 1. Ubah status transaksi menjadi 'pinjam' (aktif)
-        $transaction->update([
-            'status' => 'pinjam'
-        ]);
-
-        // 2. Kurangi stok buku saat ini juga setelah disetujui resmi oleh admin
+        $transaction->update(['status' => 'pinjam']);
         $book->decrement('stok');
 
         return redirect()->back()->with('success', 'Permintaan peminjaman buku berhasil disetujui!');
     }
 
-    /**
-     * Admin Menolak Pengajuan Peminjaman Buku
-     */
     public function tolakPinjaman($id)
     {
         $transaction = Transaction::findOrFail($id);
-
-        // Ubah status transaksi menjadi 'ditolak'
-        $transaction->update([
-            'status' => 'ditolak'
-        ]);
+        $transaction->update(['status' => 'ditolak']);
 
         return redirect()->back()->with('info', 'Permintaan peminjaman buku telah ditolak.');
     }

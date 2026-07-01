@@ -75,9 +75,9 @@
         </div>
     </div>
 
-    <div class="row g-3">
-        
-        <div class="col-12 col-md-4">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+
+        <div class="col">
             <a href="{{ route('siswa.peminjaman') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-primary"></div>
@@ -85,13 +85,13 @@
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-primary position-relative" style="width: 65px; height: 65px; background: rgba(13, 110, 253, 0.06); border: 1px solid rgba(13, 110, 253, 0.15);">
                         <i class="bi bi-journal-plus fs-2"></i>
                     </div>
-                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.2rem; letter-spacing: -0.01em;">Peminjaman Buku</h4>
+                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.1rem; letter-spacing: -0.01em;">Peminjaman Buku</h4>
                     <p class="text-muted mb-0 small px-2 position-relative">Telusuri katalog perpustakaan digital sekolah dan ajukan peminjaman instan.</p>
                 </div>
             </a>
         </div>
 
-        <div class="col-12 col-md-4">
+        <div class="col">
             <a href="{{ route('siswa.pengembalian') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-success"></div>
@@ -99,13 +99,27 @@
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-success position-relative" style="width: 65px; height: 65px; background: rgba(25, 135, 84, 0.06); border: 1px solid rgba(25, 135, 84, 0.15);">
                         <i class="bi bi-journal-check fs-2"></i>
                     </div>
-                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.2rem; letter-spacing: -0.01em;">Pengembalian Buku</h4>
+                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.1rem; letter-spacing: -0.01em;">Pengembalian Buku</h4>
                     <p class="text-muted mb-0 small px-2 position-relative">Cek tenggat waktu buku aktif dan kelola pengembalian mandiri secara terjadwal.</p>
                 </div>
             </a>
         </div>
 
-        <div class="col-12 col-md-4">
+        <div class="col">
+            <a href="{{ route('wishlist.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive wishlist-card" style="border-radius: 16px;">
+                <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
+                    <div class="glow-blueprint bg-danger"></div>
+
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-danger position-relative" style="width: 65px; height: 65px; background: rgba(220, 53, 69, 0.06); border: 1px solid rgba(220, 53, 69, 0.15);">
+                        <i class="bi bi-heart-fill fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.1rem; letter-spacing: -0.01em;">Wishlist Buku</h4>
+                    <p class="text-muted mb-0 small px-2 position-relative">Simpan buku favoritmu dan tandai dengan hati untuk dibaca nanti.</p>
+                </div>
+            </a>
+        </div>
+
+        <div class="col">
             <a href="{{ route('siswa.stats') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-info"></div>
@@ -113,7 +127,7 @@
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-info position-relative" style="width: 65px; height: 65px; background: rgba(13, 202, 240, 0.06); border: 1px solid rgba(13, 202, 240, 0.15);">
                         <i class="bi bi-bar-chart-line fs-2"></i>
                     </div>
-                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.2rem; letter-spacing: -0.01em;">Statistik Riwayat</h4>
+                    <h4 class="fw-bold mb-2 position-relative" style="font-size: 1.1rem; letter-spacing: -0.01em;">Statistik Riwayat</h4>
                     <p class="text-muted mb-0 small px-2 position-relative">Analisis rangkuman data membaca mingguan serta grafik sirkulasi peminjaman.</p>
                 </div>
             </a>
@@ -136,6 +150,11 @@
 
     .luxury-card-interactive:active {
         transform: scale(0.985);
+    }
+
+    .luxury-card-interactive.wishlist-card {
+        background: rgba(220, 53, 69, .04) !important;
+        border: 1px solid rgba(220, 53, 69, .12) !important;
     }
 
     /* Soft Blur Glow effect di belakang card */

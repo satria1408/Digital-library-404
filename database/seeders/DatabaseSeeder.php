@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Book;
 use App\Models\Transaction;
 use App\Models\Denda;
+use App\Models\Wishlist;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -216,6 +217,24 @@ class DatabaseSeeder extends Seeder
             'hari_terlambat' => 10,
             'nominal'        => Denda::hitungNominal(10), // Rp 5.000
             'status'         => 'belum_bayar',
+        ]);
+
+        // ==========================
+        // WISHLIST
+        // ==========================
+        Wishlist::create([
+            'user_id' => $siswa1->id,
+            'book_id' => $buku3->id,
+        ]);
+
+        Wishlist::create([
+            'user_id' => $siswa1->id,
+            'book_id' => $buku5->id,
+        ]);
+
+        Wishlist::create([
+            'user_id' => $siswa2->id,
+            'book_id' => $buku1->id,
         ]);
     }
 }

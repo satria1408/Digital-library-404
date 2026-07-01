@@ -127,7 +127,6 @@
                             <th width="120">Tgl Pinjam</th>
                             <th width="160">Batas Kembali</th>
                             <th width="100">Status</th>
-                            <th width="180">Denda</th>
                             <th width="150">Aksi</th>
                         </tr>
                     </thead>
@@ -188,26 +187,6 @@
 
                                 <td>
 
-                                    @if($trans->denda)
-
-                                        <span class="badge {{ $trans->denda->status == 'lunas' ? 'bg-success' : 'bg-danger' }}">
-
-                                            Rp {{ number_format($trans->denda->nominal, 0, ',', '.') }}
-
-                                            ({{ $trans->denda->status == 'lunas' ? 'Lunas' : 'Belum Bayar' }})
-
-                                        </span>
-
-                                    @else
-
-                                        <span class="text-muted">-</span>
-
-                                    @endif
-
-                                </td>
-
-                                <td>
-
                                     <div class="d-flex flex-wrap gap-1">
 
                                         @if($trans->status == 'pending')
@@ -255,7 +234,7 @@
                         @empty
 
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4">
+                                <td colspan="7" class="text-center text-muted py-4">
                                     Tidak ada data transaksi.
                                 </td>
                             </tr>

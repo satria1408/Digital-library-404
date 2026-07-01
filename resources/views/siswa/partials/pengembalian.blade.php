@@ -31,10 +31,12 @@
                         <tbody>
                             @foreach($myBooks as $trans)
                                 @php
-                                    $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline) : null;
-                                    $today = \Carbon\Carbon::today();
+                                    $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline)->startOfDay() : null;
+                                    $today = \Carbon\Carbon::today()->startOfDay();
                                     $terlambat = $deadline && $today->gt($deadline) && $trans->status == 'pinjam';
-                                    $hariTerlambat = $terlambat ? $today->diffInDays($deadline) : 0;
+                                    
+                                    // Gunakan abs() untuk memastikan nilai hari keterlambatan selalu positif mutlak
+                                    $hariTerlambat = $terlambat ? abs($today->diffInDays($deadline, false)) : 0;
                                     
                                     // SERAGAMKAN LOGIKA DENDA BERTINGKAT
                                     $dendaPerHari = match(true) {
@@ -68,7 +70,7 @@
                                     <td>
                                         @if($trans->status == 'pending')
                                             <span class="badge bg-info text-dark rounded-pill px-2.5 py-1">⏳ Menunggu Persetujuan</span>
-                                        @elseif($terlambat)
+                                        @elseif($terlambat && $hariTerlambat > 0)
                                             <span class="badge bg-danger rounded-3 p-2 text-start d-block" style="font-size: 0.75rem; font-weight: 500; line-height: 1.4;">
                                                 ⚠ Terlambat {{ $hariTerlambat }} hari<br>
                                                 Total: Rp {{ number_format($denda, 0, ',', '.') }} (Rp {{ number_format($dendaPerHari, 0, ',', '.') }}/hari)
@@ -94,10 +96,13 @@
                 <div class="d-md-none px-1 pt-2">
                     @foreach($myBooks as $trans)
                         @php
-                            $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline) : null;
-                            $today = \Carbon\Carbon::today();
+                            $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline)->startOfDay() : null;
+                            $today = \Carbon\Carbon::today()->startOfDay();
                             $terlambat = $deadline && $today->gt($deadline) && $trans->status == 'pinjam';
-                            $hariTerlambat = $terlambat ? $today->diffInDays($deadline) : 0;
+                            
+                            // Gunakan abs() juga di bagian responsive mobile view
+                            $hariTerlambat = $terlambat ? abs($today->diffInDays($deadline, false)) : 0;
+                            
                             $dendaPerHari = match(true) {
                                 $hariTerlambat >= 30 => 10000,
                                 $hariTerlambat >= 14 => 8000,
@@ -109,7 +114,7 @@
                             $denda = $hariTerlambat * $dendaPerHari;
                         @endphp
                         <div class="card mb-3 border-0 shadow-sm"
-                             style="border-left: 4px solid {{ $trans->status == 'pending' ? '#0dcaf0' : ($terlambat ? '#dc3545' : '#198754') }} !important;
+                             style="border-left: 4px solid {{ $trans->status == 'pending' ? '#0dcaf0' : ($terlambat && $hariTerlambat > 0 ? '#dc3545' : '#198754') }} !important;
                                     border-radius: 0 16px 16px 0;">
                             <div class="card-body p-3">
 
@@ -142,7 +147,7 @@
                                                 border-radius:8px; font-size:12px; color:#084298; font-weight:600;">
                                         ⏳ Menunggu Persetujuan Admin
                                     </div>
-                                @elseif($terlambat)
+                                @elseif($terlambat && $hariTerlambat > 0)
                                     <div class="mb-3 px-2 py-2"
                                          style="background:#fff5f5; border:1px solid #f5c2c7;
                                                 border-radius:8px; font-size:12px;">
