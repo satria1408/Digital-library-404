@@ -14,6 +14,20 @@
         </div>
     </div>
 
+    @if(session('success'))
+        <div class="alert alert-success border-0 shadow-sm d-flex align-items-center gap-2 mb-4 animate__animated animate__fadeIn" style="border-radius: 12px; background-color: #d4edda; color: #155724;">
+            <i class="bi bi-check-circle-fill fs-5"></i>
+            <div>{{ session('success') }}</div>
+        </div>
+    @endif
+
+    @if($errors->has('file_excel'))
+        <div class="alert alert-danger border-0 shadow-sm d-flex align-items-center gap-2 mb-4 animate__animated animate__fadeIn" style="border-radius: 12px; background-color: #f8d7da; color: #721c24;">
+            <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+            <div>{{ $errors->first('file_excel') }}</div>
+        </div>
+    @endif
+
     <div class="row g-3 mb-4">
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm bg-white" style="border-radius: 12px;">
@@ -75,7 +89,7 @@
         </div>
     </div>
 
-    <div class="row g-3">
+    <div class="row g-3 mb-4">
 
         <div class="col-12 col-sm-6 col-lg-3">
             <a href="{{ route('books.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
@@ -130,6 +144,45 @@
         </div>
 
     </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm bg-white" style="border-radius: 16px;">
+                <div class="card-body p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="p-2 bg-primary-subtle text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                            <i class="bi bi-file-earmark-excel-fill fs-4"></i>
+                        </div>
+                        <div>
+                            <h4 class="fw-bold mb-0" style="font-size: 1.2rem; letter-spacing: -0.02em;">Fitur Super Admin: Otomatisasi Input 100 Buku / Menit</h4>
+                            <p class="text-muted mb-0 small">Scan barcode atau kumpulkan nomor ISBN di file Excel, upload di sini, dan biarkan sistem bekerja otomatis di latar belakang.</p>
+                        </div>
+                    </div>
+                    
+                    <hr class="border-secondary border-opacity-10 my-3">
+
+                    <form action="{{ route('admin.buku.import') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row align-items-end g-3">
+                            <div class="col-12 col-md-8">
+                                <label for="file_excel" class="form-label small fw-bold text-muted text-uppercase tracking-wider">Pilih File Excel (.xlsx / .xls / .csv)</label>
+                                <div class="input-group">
+                                    <input type="file" class="form-control border-secondary border-opacity-25" name="file_excel" id="file_excel" required style="border-radius: 8px 0 0 8px;">
+                                    <span class="input-group-text bg-light text-muted small"><i class="bi bi-cloud-upload"></i></span>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <button type="submit" class="btn btn-primary w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2" style="border-radius: 8px; transition: all 0.2s;">
+                                    <i class="bi bi-lightning-charge-fill"></i> Mulai Import Massal
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <style>

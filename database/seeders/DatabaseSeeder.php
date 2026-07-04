@@ -7,6 +7,7 @@ use App\Models\Book;
 use App\Models\Transaction;
 use App\Models\Denda;
 use App\Models\Wishlist;
+// Impor Suggestion di sini sudah dihapus karena sudah diurus oleh SuggestionSeeder langsung
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -15,6 +16,17 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        // ==========================
+        // DEVELOPER 
+        // ==========================
+        User::create([
+            'nama_lengkap' => 'Satria Developer',
+            'username'     => 'developer',
+            'password'     => Hash::make('123456'),
+            'role'         => 'developer',
+            'alamat'       => 'Satria si developer nih genk',
+        ]);
+
         // ==========================
         // ADMIN
         // ==========================
@@ -46,121 +58,132 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==========================
-        // BUKU (Total: 12 Buku dengan Real Image Link)
+        // BUKU (Total: 12 Buku dengan ISBN & cover_url)
         // ==========================
         $buku1 = Book::create([
-            'judul'    => 'Belajar Laravel 10 untuk Pemula',
-            'penulis'  => 'Taylor Otwell',
-            'penerbit' => 'Laravel Press',
-            'kategori' => 'Teknologi',
-            'stok'     => 5,
-            'cover'    => 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400', // Coding theme
+            'isbn'      => '9786020523315',
+            'judul'     => 'Belajar Laravel 10 untuk Pemula',
+            'penulis'   => 'Taylor Otwell',
+            'penerbit'  => 'Laravel Press',
+            'kategori'  => 'Teknologi',
+            'stok'      => 5,
+            'cover_url' => 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?q=80&w=400', 
         ]);
 
         $buku2 = Book::create([
-            'judul'    => 'Laskar Pelangi',
-            'penulis'  => 'Andrea Hirata',
-            'penerbit' => 'Bentang Pustaka',
-            'kategori' => 'Novel',
-            'stok'     => 3,
-            'cover'    => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=400', // School/Rainbow kids vibe
+            'isbn'      => '9789791227025',
+            'judul'     => 'Laskar Pelangi',
+            'penulis'   => 'Andrea Hirata',
+            'penerbit'  => 'Bentang Pustaka',
+            'kategori'  => 'Novel',
+            'stok'      => 3,
+            'cover_url' => 'https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=400', 
         ]);
 
         $buku3 = Book::create([
-            'judul'    => 'Filosofi Teras',
-            'penulis'  => 'Henry Manampiring',
-            'penerbit' => 'Kompas',
-            'kategori' => 'Pengembangan Diri',
+            'isbn'      => '9786020633657',
+            'judul'     => 'Filosofi Teras',
+            'penulis'   => 'Henry Manampiring',
+            'penerbit'  => 'Kompas',
+            'kategori'  => 'Pengembangan Diri',
             'stok'     => 10,
-            'cover'    => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=400', // Calm/Statue aesthetic
+            'cover_url' => 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Harry Potter dan Batu Bertuah',
-            'penulis'  => 'J.K. Rowling',
-            'penerbit' => 'Gramedia',
-            'kategori' => 'Fiksi',
-            'stok'     => 0,
-            'cover'    => 'https://images.unsplash.com/photo-1510172951991-856a654063f9?q=80&w=400', // Magic/Castle vibe
+            'isbn'      => '9789792206967',
+            'judul'     => 'Harry Potter dan Batu Bertuah',
+            'penulis'   => 'J.K. Rowling',
+            'penerbit'  => 'Gramedia',
+            'kategori'  => 'Fiksi',
+            'stok'      => 0,
+            'cover_url' => 'https://images.unsplash.com/photo-1510172951991-856a654063f9?q=80&w=400', 
         ]);
 
         $buku5 = Book::create([
-            'judul'    => 'Clean Code',
-            'penulis'  => 'Robert C. Martin',
-            'penerbit' => 'Prentice Hall',
-            'kategori' => 'Teknologi',
-            'stok'     => 4,
-            'cover'    => 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=400', // Clean code screen theme
+            'isbn'      => '9780132350884',
+            'judul'     => 'Clean Code',
+            'penulis'   => 'Robert C. Martin',
+            'penerbit'  => 'Prentice Hall',
+            'kategori'  => 'Teknologi',
+            'stok'      => 4,
+            'cover_url' => 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Bumi Manusia',
-            'penulis'  => 'Pramoedya Ananta Toer',
-            'penerbit' => 'Lentera Dipantara',
-            'kategori' => 'Novel',
-            'stok'     => 6,
-            'cover'    => 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=400', // Classic old history vibe
+            'isbn'      => '9789799731234',
+            'judul'     => 'Bumi Manusia',
+            'penulis'   => 'Pramoedya Ananta Toer',
+            'penerbit'  => 'Lentera Dipantara',
+            'kategori'  => 'Novel',
+            'stok'      => 6,
+            'cover_url' => 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Atomic Habits',
-            'penulis'  => 'James Clear',
-            'penerbit' => 'Gramedia',
-            'kategori' => 'Pengembangan Diri',
-            'stok'     => 8,
-            'cover'    => 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=400', // Progress checklist vibe
+            'isbn'      => '9786020635088',
+            'judul'     => 'Atomic Habits',
+            'penulis'   => 'James Clear',
+            'penerbit'  => 'Gramedia',
+            'kategori'  => 'Pengembangan Diri',
+            'stok'      => 8,
+            'cover_url' => 'https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Pulang',
-            'penulis'  => 'Tere Liye',
-            'penerbit' => 'Sabak Grip',
-            'kategori' => 'Novel',
-            'stok'     => 5,
-            'cover'    => 'https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=400', // Train travel vibe
+            'isbn'      => '9786020822112',
+            'judul'     => 'Pulang',
+            'penulis'   => 'Tere Liye',
+            'penerbit'  => 'Sabak Grip',
+            'kategori'  => 'Novel',
+            'stok'      => 5,
+            'cover_url' => 'https://images.unsplash.com/photo-1488085061387-422e29b40080?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Dilan 1990',
-            'penulis'  => 'Pidi Baiq',
-            'penerbit' => 'Pastel Books',
-            'kategori' => 'Novel',
-            'stok'     => 7,
-            'cover'    => 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=400', // Retro/Love vibe
+            'isbn'      => '9786020165891',
+            'judul'     => 'Dilan 1990',
+            'penulis'   => 'Pidi Baiq',
+            'penerbit'  => 'Pastel Books',
+            'kategori'  => 'Novel',
+            'stok'      => 7,
+            'cover_url' => 'https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Canva Pro Design Guide',
-            'penulis'  => 'Rizki Agung',
-            'penerbit' => 'Media Kita',
-            'kategori' => 'Teknologi',
-            'stok'     => 2,
-            'cover'    => 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?q=80&w=400', // UI/UX design vibe
+            'isbn'      => '9786020542744',
+            'judul'     => 'Canva Pro Design Guide',
+            'penulis'   => 'Rizki Agung',
+            'penerbit'  => 'Media Kita',
+            'kategori'  => 'Teknologi',
+            'stok'      => 2,
+            'cover_url' => 'https://images.unsplash.com/photo-1542744094-3a31f103e35f?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Sebuah Seni untuk Bersikap Bodo Amat',
-            'penulis'  => 'Mark Manson',
-            'penerbit' => 'Grasindo',
-            'kategori' => 'Pengembangan Diri',
-            'stok'     => 4,
-            'cover'    => 'https://images.unsplash.com/photo-1531256456869-ce942a665e80?q=80&w=400', // Portrait careless art vibe
+            'isbn'      => '9786020531256',
+            'judul'     => 'Sebuah Seni untuk Bersikap Bodo Amat',
+            'penulis'   => 'Mark Manson',
+            'penerbit'  => 'Grasindo',
+            'kategori'  => 'Pengembangan Diri',
+            'stok'      => 4,
+            'cover_url' => 'https://images.unsplash.com/photo-1531256456869-ce942a665e80?q=80&w=400', 
         ]);
 
         Book::create([
-            'judul'    => 'Negeri 5 Menara',
-            'penulis'  => 'A. Fuadi',
-            'penerbit' => 'Gramedia',
-            'kategori' => 'Novel',
-            'stok'     => 5,
-            'cover'    => 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=400', // Old mosque/Students tower vibe
+            'isbn'      => '9789791227445',
+            'judul'     => 'Negeri 5 Menara',
+            'penulis'   => 'A. Fuadi',
+            'penerbit'  => 'Gramedia',
+            'kategori'  => 'Novel',
+            'stok'      => 5,
+            'cover_url' => 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=400', 
         ]);
 
         // ==========================
         // TRANSAKSI
         // ==========================
 
-        // Skenario 1: Status masih 'pinjam', jatuh tempo sudah lewat 5 hari yang lalu.
         $trx1 = Transaction::create([
             'user_id'          => $siswa1->id,
             'book_id'          => $buku1->id,
@@ -171,7 +194,6 @@ class DatabaseSeeder extends Seeder
         ]);
         $buku1->decrement('stok');
 
-        // Skenario 2: Status masih 'pinjam', jatuh tempo sudah lewat 10 hari yang lalu.
         $trx2 = Transaction::create([
             'user_id'          => $siswa2->id,
             'book_id'          => $buku2->id,
@@ -182,7 +204,6 @@ class DatabaseSeeder extends Seeder
         ]);
         $buku2->decrement('stok');
 
-        // Skenario 3: Sudah dikembalikan tepat waktu — tidak ada denda
         Transaction::create([
             'user_id'          => $siswa1->id,
             'book_id'          => $buku2->id,
@@ -192,7 +213,6 @@ class DatabaseSeeder extends Seeder
             'status'           => 'kembali',
         ]);
 
-        // Skenario Tambahan: Status 'pending' (Pengajuan Baru dari Siswa)
         Transaction::create([
             'user_id'          => $siswa2->id,
             'book_id'          => $buku5->id,
@@ -208,14 +228,14 @@ class DatabaseSeeder extends Seeder
         Denda::create([
             'transaction_id' => $trx1->id,
             'hari_terlambat' => 5,
-            'nominal'        => Denda::hitungNominal(5), // Rp 2.000
+            'nominal'        => Denda::hitungNominal(5),
             'status'         => 'belum_bayar',
         ]);
 
         Denda::create([
             'transaction_id' => $trx2->id,
             'hari_terlambat' => 10,
-            'nominal'        => Denda::hitungNominal(10), // Rp 5.000
+            'nominal'        => Denda::hitungNominal(10),
             'status'         => 'belum_bayar',
         ]);
 
@@ -235,6 +255,13 @@ class DatabaseSeeder extends Seeder
         Wishlist::create([
             'user_id' => $siswa2->id,
             'book_id' => $buku1->id,
+        ]);
+
+        // ==========================
+        // KOTAK SARAN DEVELOPER
+        // ==========================
+        $this->call([
+            SuggestionSeeder::class,
         ]);
     }
 }

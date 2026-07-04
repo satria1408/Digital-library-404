@@ -20,7 +20,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1" style="font-size: 0.75rem;">Total Pernah Dipinjam</div>
-                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ $totalPernahDipinjam }} Buku</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ $totalPernahDipinjam ?? 0 }} Buku</div>
                         </div>
                         <div class="col-auto">
                             <i class="bi bi-journal-check fs-2 text-gray-300"></i>
@@ -37,7 +37,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-warning text-uppercase mb-1" style="font-size: 0.75rem;">Sedang Dipinjam</div>
-                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ $sedangDipinjam }} Buku</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">{{ $sedangDipinjam ?? 0 }} Buku</div>
                         </div>
                         <div class="col-auto">
                             <i class="bi bi-bookmark-dash fs-2 text-gray-300"></i>
@@ -54,7 +54,7 @@
                     <div class="row no-gutters align-items-center">
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-danger text-uppercase mb-1" style="font-size: 0.75rem;">Denda Berjalan</div>
-                            <div class="h4 mb-0 font-weight-bold text-gray-800">Rp{{ number_format($totalDendaAman, 0, ',', '.') }}</div>
+                            <div class="h4 mb-0 font-weight-bold text-gray-800">Rp{{ number_format($totalDendaAman ?? 0, 0, ',', '.') }}</div>
                         </div>
                         <div class="col-auto">
                             <i class="bi bi-cash-coin fs-2 text-gray-300"></i>
@@ -73,7 +73,7 @@
             </h5>
         </div>
         <div class="card-body p-3 p-md-4">
-            @if($myBooks->isEmpty())
+            @if(($myBooks ?? collect())->isEmpty())
                 <div class="alert alert-info mb-0 text-center rounded-3">Belum ada catatan riwayat aktivitas peminjaman.</div>
             @else
                 

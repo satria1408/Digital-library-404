@@ -186,12 +186,12 @@
     @auth
 
     <nav class="navbar navbar-expand-lg custom-app-nav navbar-dark shadow-sm
-        {{ Request::routeIs('admin.dashboard') ? 'bg-theme-dashboard' : '' }}
-        {{ Request::routeIs('books.*') ? 'bg-theme-books' : '' }}
-        {{ Request::routeIs('users.*') ? 'bg-theme-users' : '' }}
-        {{ Request::routeIs('transactions.*') ? 'bg-theme-transactions' : '' }}
-        {{ Request::routeIs('dendas.*') ? 'bg-theme-dendas' : '' }}
-        {{ Request::routeIs('security.logs.*') ? 'bg-theme-security' : '' }}
+        {{ request()->routeIs('admin.dashboard') ? 'bg-theme-dashboard' : '' }}
+        {{ request()->routeIs('books.*') ? 'bg-theme-books' : '' }}
+        {{ request()->routeIs('users.*') ? 'bg-theme-users' : '' }}
+        {{ request()->routeIs('transactions.*') ? 'bg-theme-transactions' : '' }}
+        {{ request()->routeIs('dendas.*') ? 'bg-theme-dendas' : '' }}
+        {{ request()->routeIs('security.logs.*') ? 'bg-theme-security' : '' }}
     ">
         <div class="container-fluid px-3">
             <button class="btn btn-link text-white p-0 border-0 me-3 d-lg-none shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appMobileDrawer">
@@ -205,32 +205,32 @@
             <div class="collapse navbar-collapse" id="desktopNavRegistry">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
                             <i class="bi bi-speedometer2 me-1"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('books.*') ? 'active' : '' }}" href="{{ route('books.index') }}">
+                        <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}" href="{{ route('books.index') }}">
                             <i class="bi bi-book-half me-1"></i> Kelola Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
                             <i class="bi bi-people-fill me-1"></i> Anggota
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
+                        <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
                             <i class="bi bi-arrow-left-right me-1"></i> Transaksi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('dendas.*') ? 'active' : '' }}" href="{{ route('dendas.index') }}">
+                        <a class="nav-link {{ request()->routeIs('dendas.*') ? 'active' : '' }}" href="{{ route('dendas.index') }}">
                             <i class="bi bi-cash-stack me-1"></i> Denda
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ Request::routeIs('security.logs.*') ? 'active' : '' }}" href="{{ route('security.logs.index') }}">
+                        <a class="nav-link {{ request()->routeIs('security.logs.*') ? 'active' : '' }}" href="{{ route('security.logs.index') }}">
                             <i class="bi bi-shield-lock-fill me-1"></i> Security Log
                         </a>
                     </li>
@@ -247,12 +247,12 @@
                 <div class="dropdown">
                     <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
                         <i class="bi bi-person-circle me-1"></i>
-                        {{ Auth::user()->nama_lengkap }}
+                        {{ auth()->user()->nama_lengkap }}
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow">
                         <li>
                             <span class="dropdown-item-text">
-                                <strong>{{ ucfirst(Auth::user()->role) }}</strong>
+                                <strong>{{ ucfirst(auth()->user()->role) }}</strong>
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
@@ -282,15 +282,15 @@
 
             <div class="drawer-profile-card p-3 d-flex align-items-center gap-3 mb-4">
                 <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 46px; height: 46px; min-width: 46px; font-size: 1.2rem; background: linear-gradient(135deg, #0d6efd, #0b5ed7) !important;">
-                    {{ strtoupper(substr(Auth::user()->nama_lengkap ?? 'A', 0, 1)) }}
+                    {{ strtoupper(substr(auth()->user()->nama_lengkap ?? 'A', 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
-                    <span class="fw-bold d-block text-truncate text-white" style="font-size: 0.9rem;" title="{{ Auth::user()->nama_lengkap }}">
-                        {{ Auth::user()->nama_lengkap }}
+                    <span class="fw-bold d-block text-truncate text-white" style="font-size: 0.9rem;" title="{{ auth()->user()->nama_lengkap }}">
+                        {{ auth()->user()->nama_lengkap }}
                     </span>
                     <div class="d-flex align-items-center gap-1 mt-1">
                         <span class="badge bg-success-subtle text-success rounded-pill px-2 py-0" style="font-size: 0.6rem; font-weight: 700;">ONLINE</span>
-                        <span class="text-white-50 small text-uppercase" style="font-size: 0.65rem; font-weight: 600;">• {{ ucfirst(Auth::user()->role ?? 'Admin') }}</span>
+                        <span class="text-white-50 small text-uppercase" style="font-size: 0.65rem; font-weight: 600;">• {{ ucfirst(auth()->user()->role ?? 'Admin') }}</span>
                     </div>
                 </div>
             </div>
@@ -299,7 +299,7 @@
                 <span class="menu-section-label">Menu Utama</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ Request::routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                             <i class="bi bi-speedometer2 fs-5"></i> Dashboard
                         </a>
                     </li>
@@ -308,22 +308,22 @@
                 <span class="menu-section-label">Manajemen Data</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
-                        <a href="{{ route('books.index') }}" class="nav-link {{ Request::routeIs('books.*') ? 'active active-books' : '' }}">
+                        <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active active-books' : '' }}">
                             <i class="bi bi-book-half fs-5"></i> Kelola Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link {{ Request::routeIs('users.*') ? 'active active-users' : '' }}">
+                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active active-users' : '' }}">
                             <i class="bi bi-people-fill fs-5"></i> Anggota
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('transactions.index') }}" class="nav-link {{ Request::routeIs('transactions.*') ? 'active active-transactions' : '' }}">
+                        <a href="{{ route('transactions.index') }}" class="nav-link {{ request()->routeIs('transactions.*') ? 'active active-transactions' : '' }}">
                             <i class="bi bi-arrow-left-right fs-5"></i> Transaksi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('dendas.index') }}" class="nav-link {{ Request::routeIs('dendas.*') ? 'active active-dendas' : '' }}">
+                        <a href="{{ route('dendas.index') }}" class="nav-link {{ request()->routeIs('dendas.*') ? 'active active-dendas' : '' }}">
                             <i class="bi bi-cash-stack fs-5"></i> Denda
                         </a>
                     </li>
@@ -332,7 +332,7 @@
                 <span class="menu-section-label">Keamanan</span>
                 <ul class="nav nav-pills flex-column gap-1">
                     <li class="nav-item">
-                        <a href="{{ route('security.logs.index') }}" class="nav-link {{ Request::routeIs('security.logs.*') ? 'active active-security' : '' }}">
+                        <a href="{{ route('security.logs.index') }}" class="nav-link {{ request()->routeIs('security.logs.*') ? 'active active-security' : '' }}">
                             <i class="bi bi-shield-lock-fill fs-5"></i> Security Log
                         </a>
                     </li>

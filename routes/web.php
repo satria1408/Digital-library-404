@@ -73,6 +73,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('users', UserController::class);
         Route::resource('transactions', TransactionController::class);
 
+        // ROUTE BARU: Import Buku Massal via Excel
+        Route::post('/buku/import-excel', [AdminController::class, 'importBukuExcel'])
+            ->name('admin.buku.import');
+
         // Approval System
         Route::patch('/transactions/{id}/setujui', [TransactionController::class, 'setujuiPinjaman'])
             ->name('admin.transactions.setujui');

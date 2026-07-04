@@ -24,7 +24,7 @@
                 type="text"
                 name="search"
                 class="form-control"
-                placeholder="Cari judul, penulis, penerbit..."
+                placeholder="Cari ISBN, judul, penulis, penerbit..."
                 value="{{ request('search') }}">
         </div>
 
@@ -70,7 +70,9 @@
                     <thead class="table-dark">
                         <tr>
                             <th width="60">No</th>
-                            <th width="80">Cover</th> <th>Judul</th>
+                            <th width="80">Cover</th> 
+                            <th width="140">ISBN</th>
+                            <th>Judul</th>
                             <th>Penulis</th>
                             <th>Penerbit</th>
                             <th>Kategori</th>
@@ -89,8 +91,16 @@
 
                                 <td>
                                     <div class="shadow-sm rounded overflow-hidden border bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 70px;">
-                                        <img src="{{ $book->cover_url }}" alt="Cover {{ $book->judul }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                        {{-- FIX PERBAIKAN COVER: Deteksi otomatis nama file local storage vs URL Google API luar --}}
+                                        <img src="{{ (str_starts_with($book->getRawOriginal('cover_url'), 'http')) ? $book->cover_url : asset('storage/covers/' . $book->getRawOriginal('cover_url')) }}" 
+                                             alt="Cover {{ $book->judul }}" 
+                                             style="width: 100%; height: 100%; object-fit: cover;"
+                                             onerror="this.onerror=null; this.src='https://placehold.co/50x70?text=No+Cover';">
                                     </div>
+                                </td>
+
+                                <td class="text-muted font-monospace" style="font-size: 0.9rem;">
+                                    {{ $book->isbn ?? '-' }}
                                 </td>
 
                                 <td class="fw-semibold text-dark">{{ $book->judul }}</td>
@@ -144,7 +154,8 @@
                         @empty
 
                             <tr>
-                                <td colspan="8" class="text-center text-muted py-4"> Tidak ada buku ditemukan.
+                                <td colspan="9" class="text-center text-muted py-4">
+                                    Tidak ada buku ditemukan.
                                 </td>
                             </tr>
 

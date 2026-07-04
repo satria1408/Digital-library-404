@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\siswa; // SINKRON: Folder siswa huruf kecil
+namespace App\Http\Controllers\Siswa; // SINKRON: Folder siswa huruf kecil
 
 use App\Http\Controllers\Controller; // PENTING: Panggil file induk sejajar SecurityLog
 use Illuminate\Http\Request;

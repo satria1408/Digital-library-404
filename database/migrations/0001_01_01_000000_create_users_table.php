@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('password'); 
             $table->string('nama_lengkap'); 
             $table->text('alamat')->nullable(); 
-            $table->enum('role', ['admin', 'siswa']);  
+            $table->enum('role', ['admin', 'siswa', 'developer']);  
             $table->rememberToken(); 
             $table->timestamps();
         });

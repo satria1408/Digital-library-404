@@ -13,12 +13,13 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id(); 
+            $table->string('isbn')->unique(); // Menambahkan kolom ISBN yang unik
             $table->string('judul'); 
             $table->string('penulis'); 
             $table->string('penerbit'); 
-            $table->string('cover')->nullable();
+            $table->string('cover_url')->nullable(); // Diubah dari 'cover' menjadi 'cover_url'
             $table->string('kategori')->nullable(); 
-            $table->integer('stok'); 
+            $table->integer('stok')->default(0); 
             $table->timestamps(); 
         });
     }
