@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('Asia/Jakarta');
 
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -46,10 +47,17 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectUsersTo(function ($request) {
             $user = auth()->user();
 
+            // 1. Cek Role Developer
+            if ($user?->role === 'developer') {
+                return route('developer.dashboard');
+            }
+
+            // 2. Cek Role Admin
             if ($user?->role === 'admin') {
                 return route('admin.dashboard');
             }
 
+            // 3. Cek Role Siswa
             if ($user?->role === 'siswa') {
                 return route('siswa.dashboard');
             }

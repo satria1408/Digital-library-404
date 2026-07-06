@@ -13,6 +13,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Siswa\SiswaController;
 use App\Http\Controllers\Siswa\WishlistController;
 use App\Http\Controllers\Denda\AdminDendaController;
+use App\Http\Controllers\Developer\SuggestionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -157,4 +158,38 @@ Route::middleware(['auth', 'role:siswa'])
         Route::post('/kembali/{transaction_id}', [SiswaController::class, 'kembalikanBuku'])
             ->name('siswa.kembali')
             ->middleware('throttle:pinjam');
+    });
+
+/*
+|--------------------------------------------------------------------------
+| Developer (Kotak Saran & Keluhan Sistem)
+|--------------------------------------------------------------------------
+*/
+
+// Route Akses Umum (Bisa diakses dari halaman depan / modal login tanpa harus login)
+Route::post('/saran/kirim', [SuggestionController::class, 'store'])->name('saran.store');
+Route::post('/saran/cek', [SuggestionController::class, 'checkTicket'])->name('saran.check');
+
+// Route Khusus dengan Proteksi Auth & Role Developer
+Route::middleware(['auth', 'role:developer'])
+    ->prefix('developer')
+    ->group(function () {
+
+        Route::get('/dashboard', [SuggestionController::class, 'dashboard'])
+            ->name('developer.dashboard');
+
+        Route::get('/suggestions', [SuggestionController::class, 'indexForDeveloper'])
+            ->name('developer.suggestions.index');
+
+        // ROUTE BARU: Ekspor Data Keluhan ke Excel Otomatis Per Bulan
+        Route::get('/suggestions/export-excel', [SuggestionController::class, 'exportExcel'])
+            ->name('developer.suggestions.export');
+
+        Route::post('/suggestions/{id}/reply', [SuggestionController::class, 'reply'])
+            ->name('developer.suggestions.reply');
+
+        // ROUTE BARU: Hapus laporan/saran
+        Route::delete('/suggestions/{id}', [SuggestionController::class, 'destroy'])
+            ->name('developer.suggestions.destroy');
+
     });

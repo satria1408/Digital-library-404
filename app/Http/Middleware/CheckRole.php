@@ -19,7 +19,6 @@ class CheckRole
         $user = Auth::user();
 
         // Login tapi role tidak sesuai — lempar ke dashboard sesuai role aslinya
-        // Mencegah siswa akses /admin/** dan sebaliknya
         if ($user->role !== $role) {
             if ($user->role === 'admin') {
                 return redirect()->route('admin.dashboard');
@@ -27,6 +26,11 @@ class CheckRole
 
             if ($user->role === 'siswa') {
                 return redirect()->route('siswa.dashboard');
+            }
+            
+            // Tambahan: jika developer nyasar mau masuk ke area admin/siswa, balikin ke dashboard dev
+            if ($user->role === 'developer') {
+                return redirect()->route('developer.dashboard');
             }
 
             // Role tidak dikenal — paksa logout
