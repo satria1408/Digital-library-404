@@ -31,7 +31,7 @@ RateLimiter::for('pinjam', function (Request $request) {
 
 /*
 |--------------------------------------------------------------------------
-| Authentication
+| Authentication (SISTEM SATU PINTU UNIVERSAL)
 |--------------------------------------------------------------------------
 */
 
@@ -39,6 +39,7 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
+// Pintu Masuk Utama & Proses Autentikasi Semua Role (Siswa, Admin, Owner, Dev)
 Route::get('/login', [AuthController::class, 'showLogin'])
     ->name('login')
     ->middleware('guest');
@@ -47,6 +48,7 @@ Route::post('/login', [AuthController::class, 'login'])
     ->name('login.process')
     ->middleware('throttle:login');
 
+// Register & Logout
 Route::get('/register', [AuthController::class, 'showRegister'])
     ->name('register')
     ->middleware('guest');

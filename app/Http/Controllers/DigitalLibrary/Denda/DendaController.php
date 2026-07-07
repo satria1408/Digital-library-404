@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Denda;
+namespace App\Http\Controllers\DigitalLibrary\Denda;
 
 use App\Http\Controllers\Controller;
-use App\Models\Denda;
-use App\Models\Transaction;
+use App\Models\DigitalLibrary\Admin\Denda;
+use App\Models\DigitalLibrary\Admin\Transaction;
 use Carbon\Carbon;
 
 class DendaController extends Controller

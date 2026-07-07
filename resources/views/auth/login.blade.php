@@ -11,7 +11,8 @@
     align-items:center;
     justify-content:center;
 
-    background-image:url('https://images.unsplash.com/photo-1507842217343-583bb7270b66?auto=format&fit=crop&w=3000&q=100');
+    /* BACKGROUND TEMA PERPUSTAKAAN CERAH */
+    background-image:url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?auto=format&fit=crop&w=3000&q=100');
     background-size:cover;
     background-position:center center;
     background-repeat:no-repeat;
@@ -21,7 +22,7 @@
     content:'';
     position:absolute;
     inset:0;
-    background:rgba(0,0,0,.45);
+    background:rgba(255,255,255,.25);
 }
 
 .glass-card{
@@ -29,78 +30,83 @@
     z-index:1;
     width:100%;
     max-width:360px;
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.45);
+    border:1px solid rgba(255,255,255,.4);
     border-radius:14px;
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(16px);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
     overflow:hidden;
 }
 
 .card-header-custom{
     padding:28px 32px 24px;
     text-align:center;
-    border-bottom:1px solid rgba(255,255,255,.1);
+    border-bottom:1px solid rgba(0,0,0,.08);
 }
 
 .card-header-custom h1{
-    color:#fff;
+    color:#1e293b;
     font-size:20px;
+    font-weight: 700;
     margin-bottom:5px;
 }
 
 .card-header-custom p{
-    color:rgba(255,255,255,.7);
+    color:#475569;
     font-size:13px;
     margin:0;
 }
 
 .form-label{
-    color:rgba(255,255,255,.65);
+    color:#334155;
     font-size:12px;
+    font-weight: 600;
     text-transform:uppercase;
     letter-spacing:.05em;
 }
 
 .form-control{
-    background:rgba(255,255,255,.08)!important;
-    border:1px solid rgba(255,255,255,.2)!important;
-    color:#fff!important;
+    background:rgba(255,255,255,.6)!important;
+    border:1px solid rgba(0,0,0,.15)!important;
+    color:#0f172a!important;
     border-radius:8px;
 }
 
 .form-control::placeholder{
-    color:rgba(255,255,255,.35)!important;
+    color:#94a3b8!important;
 }
 
 .form-control:focus{
-    border-color:rgba(100,180,255,.7)!important;
-    box-shadow:0 0 0 .2rem rgba(100,180,255,.15)!important;
+    border-color:#2563eb!important;
+    box-shadow:0 0 0 .2rem rgba(37,99,235,.15)!important;
 }
 
 .divider-line{
-    border-color:rgba(255,255,255,.15);
+    border-color:rgba(0,0,0,.15);
 }
 
 .divider-text{
-    color:rgba(255,255,255,.4);
+    color:#475569;
     font-size:12px;
 }
 
 .btn-daftar{
-    color:rgba(255,255,255,.8);
-    border-color:rgba(255,255,255,.2);
+    color:#2563eb;
+    border-color:rgba(37,99,235,.4);
+    font-weight: 500;
 }
 
 .btn-daftar:hover{
-    background:rgba(255,255,255,.08);
-    color:#fff;
-    border-color:rgba(255,255,255,.4);
+    background:rgba(37,99,235,.08);
+    color:#1d4ed8;
+    border-color:#2563eb;
 }
 
 .alert-danger{
     background:rgba(220,53,69,.15);
     border:1px solid rgba(220,53,69,.3);
-    color:#fff;
+    color:#b91c1c;
+    font-weight: 500;
 }
 
 /* Floating Action Button (FAB) */
@@ -115,43 +121,43 @@
     width: 56px;
     height: 56px;
     border-radius: 50%;
-    background: rgba(255, 255, 255, 0.15);
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.5);
     backdrop-filter: blur(10px);
-    color: #fff;
+    color: #1e293b;
     font-size: 24px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     transition: all 0.3s ease;
 }
 
 .btn-fab:hover {
-    background: rgba(100, 180, 255, 0.3);
-    border-color: rgba(100, 180, 255, 0.5);
-    color: #fff;
+    background: rgba(37, 99, 235, 0.2);
+    border-color: #2563eb;
+    color: #1e293b;
     transform: scale(1.08);
 }
 
 /* Glassmorphism khusus untuk isi Modal Bootstrap */
 .modal-glass {
-    background: rgba(30, 30, 35, 0.85) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
     backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.15) !important;
-    color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    color: #1e293b;
 }
 
 .modal-glass .modal-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .modal-glass .modal-footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .modal-glass .btn-close {
-    filter: invert(1);
+    filter: none;
 }
 </style>
 
@@ -159,8 +165,8 @@
     <div class="glass-card">
 
         <div class="card-header-custom">
-            <h1>Login Perpustakaan</h1>
-            <p>Masukkan akun Anda untuk melanjutkan</p>
+            <h1>Portal Perpustakaan</h1>
+            
         </div>
 
         <div class="p-4">
@@ -181,13 +187,13 @@
                 @csrf
 
                 <div class="mb-3">
-                    <label class="form-label">Username</label>
+                    <label class="form-label">NISN / Username</label>
                     <input
                         type="text"
-                        name="username"
+                        name="login_input"
                         class="form-control"
-                        placeholder="Masukkan username"
-                        value="{{ old('username') }}"
+                        placeholder="Username atau 10 digit NISN"
+                        value="{{ old('login_input') }}"
                         required
                     >
                 </div>
@@ -206,13 +212,13 @@
                 <div class="text-end mb-3">
                     <a href="#"
                        class="text-decoration-none"
-                       style="font-size:12px;color:rgba(100,180,255,.85);">
+                       style="font-size:12px;color:#2563eb;font-weight:500;">
                         Lupa Password?
                     </a>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100">
-                    Masuk
+                <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">
+                    Masuk Aplikasi
                 </button>
             </form>
 
@@ -224,7 +230,7 @@
 
             <a href="{{ route('register') }}"
                class="btn btn-outline-secondary w-100 btn-daftar">
-                Daftar Anggota
+                Daftar Anggota (Siswa)
             </a>
 
         </div>
@@ -232,23 +238,21 @@
     </div>
 </div>
 
-<!-- FLOATING ACTION BUTTON (KOTAK SARAN) -->
 <div class="fab-container">
     <button type="button" class="btn btn-fab" data-bs-toggle="modal" data-bs-target="#suggestionHubModal" title="Kotak Saran & Keluhan">
         <i class="bi bi-chat-left-text-fill"></i>
     </button>
 </div>
 
-<!-- MODAL INDUK UTAMA (PILIHAN KIRIM ATAU CEK STATUS) -->
 <div class="modal fade" id="suggestionHubModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-glass">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold"><i class="bi bi-laptop"></i> Layanan Pengaduan Sistem</h5>
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-laptop"></i> Layanan Pengaduan Sistem</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body text-center py-4">
-                <p class="text-muted-light small mb-4">Punya kendala eror di aplikasi perpustakaan atau saran untuk developer? Silakan pilih menu di bawah ini.</p>
+                <p class="text-secondary small mb-4">Punya kendala eror di aplikasi perpustakaan atau saran untuk developer? Silakan pilih menu di bawah ini.</p>
                 <div class="row g-3">
                     <div class="col-6">
                         <button class="btn btn-outline-primary w-100 py-3 fw-bold" data-bs-target="#createSuggestionModal" data-bs-toggle="modal">
@@ -266,12 +270,11 @@
     </div>
 </div>
 
-<!-- MODAL FORM 1: KIRIM MASUKAN -->
 <div class="modal fade" id="createSuggestionModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-glass">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold"><i class="bi bi-pencil-square"></i> Tulis Keluhan / Saran</h5>
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-pencil-square"></i> Tulis Keluhan / Saran</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="formKirimSaran" action="{{ route('saran.store') }}" method="POST">
@@ -280,19 +283,19 @@
                     <div id="alertSaran" class="alert d-none py-2" style="font-size:13px;"></div>
                     
                     <div class="mb-3">
-                        <label class="form-label text-white">Subjek Masukan</label>
-                        <input type="text" name="subjek" class="form-control" placeholder="Contoh: Eror saat klik pinjam" required>
+                        <label class="form-label text-dark">Subjek Masukan</label>
+                        <input type="text" name="subjek" class="form-control" style="color:#000!important;" placeholder="Contoh: Eror saat klik pinjam" required>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label text-white">Detail Keluhan / Saran</label>
-                        <textarea name="isi_saran" class="form-control" rows="4" placeholder="Tulis rincian kendala yang lo alami secara detail..." required></textarea>
+                        <label class="form-label text-dark">Detail Keluhan / Saran</label>
+                        <textarea name="isi_saran" class="form-control" style="color:#000!important;" rows="4" placeholder="Tulis rincian kendala yang lo alami secara detail..." required></textarea>
                     </div>
-                    <span class="text-muted d-block" style="font-size:11px; color:rgba(255,255,255,.5) !important;">
+                    <span class="text-secondary d-block" style="font-size:11px;">
                         *Pesan ini dikirim anonim jika lo belum masuk ke akun.
                     </span>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-sm btn-outline-secondary text-white border-secondary" data-bs-target="#suggestionHubModal" data-bs-toggle="modal">Kembali</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-target="#suggestionHubModal" data-bs-toggle="modal">Kembali</button>
                     <button type="submit" id="btnSubmitSaran" class="btn btn-sm btn-primary px-3">Kirim Sekarang</button>
                 </div>
             </form>
@@ -300,54 +303,50 @@
     </div>
 </div>
 
-<!-- MODAL FORM 2: CEK STATUS TIKET -->
 <div class="modal fade" id="checkTicketModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-glass">
             <div class="modal-header">
-                <h5 class="modal-title fw-bold"><i class="bi bi-search"></i> Lacak Status Balasan</h5>
+                <h5 class="modal-title fw-bold text-dark"><i class="bi bi-search"></i> Lacak Status Balasan</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="formCekTiket" action="{{ route('saran.check') }}" method="POST">
                     @csrf
                     <div class="input-group mb-3">
-                        <input type="text" name="ticket_code" id="ticket_code_input" class="form-control" placeholder="Masukkan Kode Tiket (Contoh: DEV-XXXXXX)" required>
+                        <input type="text" name="ticket_code" id="ticket_code_input" class="form-control" style="color:#000!important;" placeholder="Masukkan Kode Tiket (Contoh: DEV-XXXXXX)" required>
                         <button class="btn btn-success" type="submit" id="btnCekTiket"><i class="bi bi-search"></i> Cek</button>
                     </div>
                 </form>
 
-                <!-- Container Hasil Pencarian Tiket -->
-                <div id="hasilCekTiket" class="d-none mt-3 p-3 rounded" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                <div id="hasilCekTiket" class="d-none mt-3 p-3 rounded" style="background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.08);">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <h6 class="fw-bold mb-0 text-info" id="resSubjek"></h6>
+                        <h6 class="fw-bold mb-0 text-primary" id="resSubjek"></h6>
                         <span class="badge" id="resStatus"></span>
                     </div>
-                    <p class="small text-muted mb-1" style="font-size:11px;" id="resTanggal"></p>
-                    <div class="p-2 mb-3 rounded text-white-50 small" style="background:rgba(0,0,0,0.2);" id="resIsi"></div>
+                    <p class="small text-secondary mb-1" style="font-size:11px;" id="resTanggal"></p>
+                    <div class="p-2 mb-3 rounded text-dark small" style="background:rgba(0,0,0,0.05RAM);" id="resIsi"></div>
                     
-                    <div class="p-2 rounded small border border-primary" style="background:rgba(100,180,255,0.05);">
+                    <div class="p-2 rounded small border border-primary" style="background:rgba(37,99,235,0.05);">
                         <label class="fw-bold text-primary mb-1 d-block"><i class="bi bi-reply-fill"></i> Respon Developer:</label>
-                        <p class="mb-0 text-white" id="resBalasan" style="white-space: pre-line;"></p>
+                        <p class="mb-0 text-dark" id="resBalasan" style="white-space: pre-line;"></p>
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-sm btn-outline-secondary text-white border-secondary" data-bs-target="#suggestionHubModal" data-bs-toggle="modal">Kembali</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-target="#suggestionHubModal" data-bs-toggle="modal">Kembali</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-  // Script Bawaan Login Lo
   document.querySelector('form').addEventListener('submit', function () {
     const btn = this.querySelector('button[type="submit"]');
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Memproses...';
   });
 
-  // AJAX Prosedur Kirim Saran
   document.getElementById('formKirimSaran').addEventListener('submit', function(e) {
       e.preventDefault();
       const btn = document.getElementById('btnSubmitSaran');
@@ -372,7 +371,7 @@
           alertBox.classList.remove('d-none', 'alert-danger', 'alert-success');
           if(data.success) {
               alertBox.classList.add('alert-success');
-              alertBox.innerHTML = `<strong>Sukses!</strong> ${data.message}<br><br>Gunakan kode tiket ini untuk melacak balasan:<br><strong class="fs-5 text-warning font-monospace d-block text-center mt-1">${data.ticket_code}</strong><br><small>*Salin kode ini sekarang.</small>`;
+              alertBox.innerHTML = `<strong>Sukses!</strong> ${data.message}<br><br>Gunakan kode tiket ini untuk melacak balasan:<br><strong class="fs-5 text-success font-monospace d-block text-center mt-1">${data.ticket_code}</strong><br><small>*Salin kode ini sekarang.</small>`;
               this.reset();
           } else {
               alertBox.classList.add('alert-danger');
@@ -390,7 +389,6 @@
       });
   });
 
-  // AJAX Prosedur Cek Balasan Tiket (IKON PERMANEN DI SINI)
   document.getElementById('formCekTiket').addEventListener('submit', function(e) {
       e.preventDefault();
       const btn = document.getElementById('btnCekTiket');

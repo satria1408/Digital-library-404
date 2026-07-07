@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('owners', function (Blueprint $table) {
+            $table->id();
+            
+            // KUNCI UTAMA: Menghubungkan ID owner ke tabel users
+            // onDelete('cascade') artinya jika user dihapus, data di tabel owner otomatis ikut terhapus
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            
+            // Kolom opsional tambahan khusus profil owner
+            $table->string('no_telepon')->nullable();
+            $table->text('alamat_kantor')->nullable();
+            
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('owners');
+    }
+};

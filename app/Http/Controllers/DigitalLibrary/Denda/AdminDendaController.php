@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Denda;
+namespace App\Http\Controllers\DigitalLibrary\Denda;
 
 use App\Http\Controllers\Controller;
-use App\Models\Denda;
+use App\Models\DigitalLibrary\Admin\Denda;
 
 class AdminDendaController extends Controller
 {

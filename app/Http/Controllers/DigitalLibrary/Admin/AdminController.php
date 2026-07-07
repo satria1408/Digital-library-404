@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\User;
+use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Auth\User;
 use Illuminate\Http\Request;
 use App\Imports\BukuImport;
 use Maatwebsite\Excel\Facades\Excel;

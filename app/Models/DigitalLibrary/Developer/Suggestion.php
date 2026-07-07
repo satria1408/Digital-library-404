@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\DigitalLibrary\Developer;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use DateTimeInterface; // Import ini untuk kustomisasi format serialize
+use DateTimeInterface; 
 
 class Suggestion extends Model
 {

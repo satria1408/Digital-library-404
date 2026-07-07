@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Developer; // <-- Menyesuaikan lokasi folder lo di foto
+namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
-use App\Models\Suggestion;
+use App\Models\DigitalLibrary\Developer\Suggestion;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;

@@ -7,7 +7,7 @@ use App\Models\Book;
 use App\Models\Transaction;
 use App\Models\Denda;
 use App\Models\Wishlist;
-// Impor Suggestion di sini sudah dihapus karena sudah diurus oleh SuggestionSeeder langsung
+use App\Models\Owner; // Tambahkan ini agar bisa memanggil model Owner
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -25,6 +25,25 @@ class DatabaseSeeder extends Seeder
             'password'     => Hash::make('123456'),
             'role'         => 'developer',
             'alamat'       => 'Satria si developer nih genk',
+            'nisn'         => null, // Bukan siswa, kosongkan
+        ]);
+
+        // ==========================
+        // OWNER (Tambahan Baru Terintegrasi Relasi)
+        // ==========================
+        $ownerUser = User::create([
+            'nama_lengkap' => 'Satria Owner Utama',
+            'username'     => 'owner',
+            'password'     => Hash::make('123456'),
+            'role'         => 'owner',
+            'alamat'       => 'Kantor Owner Perpustakaan',
+            'nisn'         => null, // Bukan siswa, kosongkan
+        ]);
+
+        Owner::create([
+            'user_id'       => $ownerUser->id, // Mengikat ID dari user di atas
+            'no_telepon'    => '081234567890',
+            'alamat_kantor' => 'Ruang Kepala Yayasan / Sekolah',
         ]);
 
         // ==========================
@@ -36,10 +55,11 @@ class DatabaseSeeder extends Seeder
             'password'     => Hash::make('123456'),
             'role'         => 'admin',
             'alamat'       => 'Ruang Admin Perpustakaan',
+            'nisn'         => null, // Bukan siswa, kosongkan
         ]);
 
         // ==========================
-        // SISWA
+        // SISWA (Ditambahkan NISN dummy 10 digit)
         // ==========================
         $siswa1 = User::create([
             'nama_lengkap' => 'Budi Santoso',
@@ -47,6 +67,7 @@ class DatabaseSeeder extends Seeder
             'password'     => Hash::make('123456'),
             'role'         => 'siswa',
             'alamat'       => 'Jl. Mawar No. 10',
+            'nisn'         => '0041234561', // Tambahkan NISN unik
         ]);
 
         $siswa2 = User::create([
@@ -55,6 +76,7 @@ class DatabaseSeeder extends Seeder
             'password'     => Hash::make('123456'),
             'role'         => 'siswa',
             'alamat'       => 'Jl. Melati No. 5',
+            'nisn'         => '0041234562', // Tambahkan NISN unik
         ]);
 
         // ==========================
@@ -183,7 +205,6 @@ class DatabaseSeeder extends Seeder
         // ==========================
         // TRANSAKSI
         // ==========================
-
         $trx1 = Transaction::create([
             'user_id'          => $siswa1->id,
             'book_id'          => $buku1->id,
@@ -252,6 +273,9 @@ class DatabaseSeeder extends Seeder
             'book_id' => $buku5->id,
         ]);
 
+        // ==========================
+        // WISHLIST SISWA 2
+        // ==========================
         Wishlist::create([
             'user_id' => $siswa2->id,
             'book_id' => $buku1->id,

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Siswa; // SINKRON: Folder siswa huruf kecil
+namespace App\Http\Controllers\DigitalLibrary\Siswa;
 
-use App\Http\Controllers\Controller; // PENTING: Panggil file induk sejajar SecurityLog
+use App\Http\Controllers\Controller; 
 use Illuminate\Http\Request;
-use App\Models\Book;
-use App\Models\Transaction;
-use App\Models\Wishlist;
+use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Admin\Transaction;
+use App\Models\DigitalLibrary\Wishlist;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon; // Dipakai untuk menyamakan format tanggal dengan admin
 

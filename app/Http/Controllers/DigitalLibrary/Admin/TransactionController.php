@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Transaction;
-use App\Models\User;
-use App\Models\Book;
-use App\Models\Denda;
+use App\Models\DigitalLibrary\Admin\Transaction;
+use App\Models\DigitalLibrary\Auth\User;
+use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Admin\Denda;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 

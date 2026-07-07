@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Siswa;
+namespace App\Http\Controllers\DigitalLibrary\Siswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
-use App\Models\Wishlist;
+use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Wishlist;
 use Illuminate\Http\Request;
 
 class WishlistController extends Controller

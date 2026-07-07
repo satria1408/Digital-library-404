@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Book;
+use App\Models\DigitalLibrary\Admin\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
