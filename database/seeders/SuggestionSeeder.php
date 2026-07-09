@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Suggestion;
-use App\Models\User;
+use App\Models\DigitalLibrary\Developer\Suggestion;
+use App\Models\Auth\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 

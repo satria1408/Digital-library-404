@@ -2,7 +2,7 @@
 
 namespace App\Models\DigitalLibrary\Owner;
 
-use App\Models\DigitalLibrary\Auth\User;
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;

@@ -4,16 +4,21 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
+
+// --- UPDATE CONTROLLERS JALUR UNIVERSAL (DI LUAR DIGITAL LIBRARY) ---
 use App\Http\Controllers\SecurityLogController;
 use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BookController;
-use App\Http\Controllers\Admin\TransactionController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Siswa\SiswaController;
-use App\Http\Controllers\Siswa\WishlistController;
-use App\Http\Controllers\Denda\AdminDendaController;
 use App\Http\Controllers\Developer\SuggestionController;
+use App\Http\Controllers\Owner\OwnerController; 
+
+// --- UPDATE CONTROLLERS JALUR MODUL (DI DALAM DIGITAL LIBRARY) ---
+use App\Http\Controllers\DigitalLibrary\Admin\AdminController;
+use App\Http\Controllers\DigitalLibrary\Admin\BookController;
+use App\Http\Controllers\DigitalLibrary\Admin\TransactionController;
+use App\Http\Controllers\DigitalLibrary\Admin\UserController;
+use App\Http\Controllers\DigitalLibrary\Siswa\SiswaController;
+use App\Http\Controllers\DigitalLibrary\Siswa\WishlistController;
+use App\Http\Controllers\DigitalLibrary\Denda\AdminDendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,7 +66,7 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| Admin
+| Admin (Digital Library Module)
 |--------------------------------------------------------------------------
 */
 
@@ -76,7 +81,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::resource('users', UserController::class);
         Route::resource('transactions', TransactionController::class);
 
-        // ROUTE BARU: Import Buku Massal via Excel
+        // Import Buku Massal via Excel
         Route::post('/buku/import-excel', [AdminController::class, 'importBukuExcel'])
             ->name('admin.buku.import');
 
@@ -87,14 +92,14 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
             ->name('admin.transactions.tolak');
 
-        // Denda (Diambil dari AdminDendaController di folder Denda baru)
+        // Denda (Folder Denda di dalam DigitalLibrary)
         Route::get('/dendas', [AdminDendaController::class, 'index'])
             ->name('dendas.index');
 
         Route::patch('/dendas/{id}/bayar', [AdminDendaController::class, 'bayar'])
             ->name('dendas.bayar');
 
-        // Security Log
+        // Security Log (Universal)
         Route::get('/security-logs', [SecurityLogController::class, 'index'])
             ->name('security.logs.index');
 
@@ -110,7 +115,7 @@ Route::middleware(['auth', 'role:admin'])
 
 /*
 |--------------------------------------------------------------------------
-| Siswa
+| Siswa (Digital School - OneSchool Hub Platform)
 |--------------------------------------------------------------------------
 */
 
@@ -118,11 +123,15 @@ Route::middleware(['auth', 'role:siswa'])
     ->prefix('siswa')
     ->group(function () {
 
-        // Dashboard
+        // 1. HALAMAN UTAMA ONESCHOOL HUB (Menampilkan 2 modul raksasa)
         Route::get('/dashboard', [SiswaController::class, 'index'])
             ->name('siswa.dashboard');
 
-        // Halaman
+        // 2. SUB-DASHBOARD PERPUSTAKAAN DIGITAL (Menampilkan statistik perpus & 4 tombol fitur)
+        Route::get('/digital-library', [SiswaController::class, 'digitalLibraryIndex'])
+            ->name('siswa.digital_library.index');
+
+        // --- Rute Partials Halaman Eksklusif Perpus ---
         Route::get('/partials/stats', [SiswaController::class, 'showStats'])
             ->name('siswa.stats');
 
@@ -133,11 +142,8 @@ Route::middleware(['auth', 'role:siswa'])
             ->name('siswa.pengembalian');
 
         /*
-        |--------------------------------------------------------------------------
         | Wishlist Buku
-        |--------------------------------------------------------------------------
         */
-
         Route::get('/wishlist', [WishlistController::class, 'index'])
             ->name('wishlist.index');
 
@@ -148,11 +154,8 @@ Route::middleware(['auth', 'role:siswa'])
             ->name('wishlist.destroy');
 
         /*
-        |--------------------------------------------------------------------------
         | Peminjaman & Pengembalian
-        |--------------------------------------------------------------------------
         */
-
         Route::post('/pinjam/{book_id}', [SiswaController::class, 'pinjamBuku'])
             ->name('siswa.pinjam')
             ->middleware('throttle:pinjam');
@@ -164,15 +167,15 @@ Route::middleware(['auth', 'role:siswa'])
 
 /*
 |--------------------------------------------------------------------------
-| Developer (Kotak Saran & Keluhan Sistem)
+| Developer (Kotak Saran & Keluhan Sistem - Universal)
 |--------------------------------------------------------------------------
 */
 
-// Route Akses Umum (Bisa diakses dari halaman depan / modal login tanpa harus login)
+// Route Akses Umum
 Route::post('/saran/kirim', [SuggestionController::class, 'store'])->name('saran.store');
 Route::post('/saran/cek', [SuggestionController::class, 'checkTicket'])->name('saran.check');
 
-// Route Khusus dengan Proteksi Auth & Role Developer
+// Route Khusus Proteksi Auth & Role Developer
 Route::middleware(['auth', 'role:developer'])
     ->prefix('developer')
     ->group(function () {
@@ -183,15 +186,31 @@ Route::middleware(['auth', 'role:developer'])
         Route::get('/suggestions', [SuggestionController::class, 'indexForDeveloper'])
             ->name('developer.suggestions.index');
 
-        // ROUTE BARU: Ekspor Data Keluhan ke Excel Otomatis Per Bulan
+        // Ekspor Data Keluhan ke Excel
         Route::get('/suggestions/export-excel', [SuggestionController::class, 'exportExcel'])
             ->name('developer.suggestions.export');
 
         Route::post('/suggestions/{id}/reply', [SuggestionController::class, 'reply'])
             ->name('developer.suggestions.reply');
 
-        // ROUTE BARU: Hapus laporan/saran
+        // Hapus laporan/saran
         Route::delete('/suggestions/{id}', [SuggestionController::class, 'destroy'])
             ->name('developer.suggestions.destroy');
+    });
 
+/*
+|--------------------------------------------------------------------------
+| Owner (Modul Keuangan & Manajemen Bisnis - Universal)
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'role:owner'])
+    ->prefix('owner')
+    ->group(function () {
+
+        Route::get('/dashboard', [OwnerController::class, 'index'])
+            ->name('owner.dashboard');
+
+        Route::post('/profil/update', [OwnerController::class, 'updateProfil'])
+            ->name('owner.profil.update');
     });

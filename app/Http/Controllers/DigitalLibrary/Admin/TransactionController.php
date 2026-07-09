@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Admin\Transaction;
-use App\Models\DigitalLibrary\Auth\User;
 use App\Models\DigitalLibrary\Admin\Book;
 use App\Models\DigitalLibrary\Admin\Denda;
 use Illuminate\Http\Request;
@@ -38,14 +38,14 @@ class TransactionController extends Controller
 
         $transactions = $query->get();
 
-        return view('admin.transactions.index', compact('transactions'));
+        return view('digital_library.admin.transactions.index', compact('transactions'));
     }
 
     public function create()
     {
         $users = User::where('role', 'siswa')->get();
         $books = Book::where('stok', '>', 0)->get();
-        return view('admin.transactions.create', compact('users', 'books'));
+        return view('digital_library.admin.transactions.create', compact('users', 'books'));
     }
 
     public function store(Request $request)
@@ -89,7 +89,7 @@ class TransactionController extends Controller
         $transaction = Transaction::findOrFail($id);
         $users = User::where('role', 'siswa')->get();
         $books = Book::all();
-        return view('admin.transactions.edit', compact('transaction', 'users', 'books'));
+        return view('digital_library.admin.transactions.edit', compact('transaction', 'users', 'books'));
     }
 
     public function update(Request $request, string $id)

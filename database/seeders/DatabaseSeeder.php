@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use App\Models\Book;
-use App\Models\Transaction;
-use App\Models\Denda;
-use App\Models\Wishlist;
-use App\Models\Owner; // Tambahkan ini agar bisa memanggil model Owner
+use App\Models\Auth\User;
+use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Admin\Transaction;
+use App\Models\DigitalLibrary\Admin\Denda;
+use App\Models\DigitalLibrary\Wishlist;
+use App\Models\DigitalLibrary\Owner\Owner;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
             'password'     => Hash::make('123456'),
             'role'         => 'developer',
             'alamat'       => 'Satria si developer nih genk',
-            'nisn'         => null, // Bukan siswa, kosongkan
+            'nisn'         => null, 
         ]);
 
         // ==========================

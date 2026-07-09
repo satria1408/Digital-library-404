@@ -2,6 +2,7 @@
 
 namespace App\Models\DigitalLibrary\Developer;
 
+use App\Models\Auth\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use DateTimeInterface; 

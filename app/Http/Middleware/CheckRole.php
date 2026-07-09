@@ -28,9 +28,14 @@ class CheckRole
                 return redirect()->route('siswa.dashboard');
             }
             
-            // Tambahan: jika developer nyasar mau masuk ke area admin/siswa, balikin ke dashboard dev
+            // Jika developer nyasar, balikin ke dashboard dev
             if ($user->role === 'developer') {
                 return redirect()->route('developer.dashboard');
+            }
+
+            // Tambahan Universal: Jika owner nyasar, balikin ke dashboard owner
+            if ($user->role === 'owner') {
+                return redirect()->route('owner.dashboard');
             }
 
             // Role tidak dikenal — paksa logout

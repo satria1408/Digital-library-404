@@ -35,7 +35,7 @@ class BookController extends Controller
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        return view('admin.books.index', compact('books', 'kategoris'));
+        return view('digital_library.admin.books.index', compact('books', 'kategoris'));
     }
 
     public function create()
@@ -46,7 +46,7 @@ class BookController extends Controller
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        return view('admin.books.create', compact('kategoris'));
+        return view('digital_library.admin.books.create', compact('kategoris'));
     }
 
     public function store(Request $request)
@@ -56,7 +56,7 @@ class BookController extends Controller
             'judul'     => 'required|string|max:255',
             'penulis'   => 'required|string|max:255',
             'penerbit'  => 'required|string|max:255',
-            'kategori'  => 'nullable|string|max:100', // Diubah jadi nullable biar fleksibel
+            'kategori'  => 'nullable|string|max:100', 
             'stok'      => 'required|integer|min:0',
             'cover_url' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
         ]);
@@ -82,7 +82,7 @@ class BookController extends Controller
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        return view('admin.books.edit', compact('book', 'kategoris'));
+        return view('digital_library.admin.books.edit', compact('book', 'kategoris'));
     }
 
     public function update(Request $request, $id)

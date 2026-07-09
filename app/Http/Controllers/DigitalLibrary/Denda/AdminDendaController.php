@@ -18,8 +18,7 @@ class AdminDendaController extends Controller
             ->latest()
             ->get();
 
-        // Diarahkan ke view khusus denda (terpisah dari transactions.index)
-        return view('admin.dendas.index', compact('dendas'));
+        return view('digital_library.admin.dendas.index', compact('dendas'));
     }
 
     /**

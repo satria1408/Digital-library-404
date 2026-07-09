@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Developer;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Developer\Suggestion;
-use App\Models\DigitalLibrary\Auth\User;
 use App\Models\DigitalLibrary\Admin\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

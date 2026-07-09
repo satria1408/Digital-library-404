@@ -22,9 +22,9 @@ class WishlistController extends Controller
 
         if ($request->filled('search')) {
             $query->where(function ($q) use ($request) {
-                $q->where('judul', 'like', '%' . $request->search . '%')
-                  ->orWhere('penulis', 'like', '%' . $request->search . '%')
-                  ->orWhere('penerbit', 'like', '%' . $request->search . '%');
+                $q->where('judul', 'like', '%'.$request->search.'%')
+                    ->orWhere('penulis', 'like', '%'.$request->search.'%')
+                    ->orWhere('penerbit', 'like', '%'.$request->search.'%');
             });
         }
 
@@ -36,14 +36,14 @@ class WishlistController extends Controller
 
         // Daftar kategori hanya diambil dari buku yang ada di wishlist user ini
         $kategoris = Book::whereHas('wishlists', function ($q) {
-                $q->where('user_id', auth()->id());
-            })
+            $q->where('user_id', auth()->id());
+        })
             ->whereNotNull('kategori')
             ->distinct()
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        return view('siswa.wishlish.index', compact('books', 'kategoris'));
+        return view('digital_library.siswa.wishlish.index', compact('books', 'kategoris'));
     }
 
     /**

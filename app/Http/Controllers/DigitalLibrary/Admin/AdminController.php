@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Admin\Book;
-use App\Models\DigitalLibrary\Auth\User;
 use Illuminate\Http\Request;
 use App\Imports\BukuImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -18,7 +18,7 @@ class AdminController extends Controller
     {
         $totalBuku = Book::count();
         $totalSiswa = User::where('role', 'siswa')->count();
-        return view('admin.dashboard', compact('totalBuku', 'totalSiswa'));
+        return view('digital_library.admin.dashboard', compact('totalBuku', 'totalSiswa'));
     }
 
     /**

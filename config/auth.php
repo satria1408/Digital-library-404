@@ -1,6 +1,7 @@
 <?php
 
-use App\Models\User;
+// --- UPDATE JALUR MODEL AUTH UNIVERSAL LO DI SINI ---
+use App\Models\Auth\User;
 
 return [
 
@@ -64,7 +65,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
+            'model' => env('AUTH_MODEL', User::class), // Tetap pakai variabel User karena namespace-nya sudah diganti di atas
         ],
 
         // 'users' => [

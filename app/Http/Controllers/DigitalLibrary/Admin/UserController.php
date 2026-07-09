@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\DigitalLibrary\Auth\User;
+use App\Models\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -16,35 +16,36 @@ class UserController extends Controller
         if ($request->search) {
             $query->where(function ($q) use ($request) {
                 $q->where('nama_lengkap', 'like', '%'.$request->search.'%')
-                  ->orWhere('username', 'like', '%'.$request->search.'%')
-                  ->orWhere('alamat', 'like', '%'.$request->search.'%');
+                    ->orWhere('username', 'like', '%'.$request->search.'%')
+                    ->orWhere('alamat', 'like', '%'.$request->search.'%');
             });
         }
 
         $users = $query->get();
-        return view('admin.users.index', compact('users'));
+
+        return view('digital_library.admin.users.index', compact('users'));
     }
 
     public function create()
     {
-        return view('admin.users.create');
+        return view('digital_library.admin.users.create');
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'nama_lengkap' => 'required',
-            'username'     => 'required|unique:users',
-            'password'     => 'required|min:6',
-            'alamat'       => 'nullable',
+            'username' => 'required|unique:users',
+            'password' => 'required|min:6',
+            'alamat' => 'nullable',
         ]);
 
         User::create([
             'nama_lengkap' => $request->nama_lengkap,
-            'username'     => $request->username,
-            'password'     => Hash::make($request->password),
-            'alamat'       => $request->alamat,
-            'role'         => 'siswa',
+            'username' => $request->username,
+            'password' => Hash::make($request->password),
+            'alamat' => $request->alamat,
+            'role' => 'siswa',
         ]);
 
         return redirect()->route('users.index')->with('success', 'Anggota berhasil ditambahkan');
@@ -53,7 +54,8 @@ class UserController extends Controller
     public function edit(string $id)
     {
         $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
+
+        return view('digital_library.admin.users.edit', compact('user'));
     }
 
     public function update(Request $request, string $id)
@@ -62,14 +64,14 @@ class UserController extends Controller
 
         $request->validate([
             'nama_lengkap' => 'required',
-            'username'     => 'required|unique:users,username,'.$user->id,
-            'alamat'       => 'nullable',
+            'username' => 'required|unique:users,username,'.$user->id,
+            'alamat' => 'nullable',
         ]);
 
         $data = [
             'nama_lengkap' => $request->nama_lengkap,
-            'username'     => $request->username,
-            'alamat'       => $request->alamat,
+            'username' => $request->username,
+            'alamat' => $request->alamat,
         ];
 
         if ($request->filled('password')) {
@@ -84,6 +86,7 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         User::findOrFail($id)->delete();
+
         return redirect()->route('users.index')->with('success', 'Anggota berhasil dihapus');
     }
 }

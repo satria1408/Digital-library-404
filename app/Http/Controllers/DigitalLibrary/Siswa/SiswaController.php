@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\DigitalLibrary\Siswa;
 
-use App\Http\Controllers\Controller; 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\DigitalLibrary\Admin\Book;
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Wishlist;
+use App\Models\DigitalLibrary\Admin\Denda; // Sesuai Seeder: Berada di namespace Admin
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon; // Dipakai untuk menyamakan format tanggal dengan admin
 
 class SiswaController extends Controller
 {
@@ -22,9 +23,9 @@ class SiswaController extends Controller
         if ($request->filled('search')) {
             $search = $request->search;
             $query->where(function ($q) use ($search) {
-                $q->where('judul', 'like', '%' . $search . '%')
-                    ->orWhere('penulis', 'like', '%' . $search . '%')
-                    ->orWhere('penerbit', 'like', '%' . $search . '%');
+                $q->where('judul', 'like', '%'.$search.'%')
+                    ->orWhere('penulis', 'like', '%'.$search.'%')
+                    ->orWhere('penerbit', 'like', '%'.$search.'%');
             });
         }
 
@@ -60,23 +61,52 @@ class SiswaController extends Controller
     }
 
     /**
-     * Dashboard Siswa
+     * =========================================================================
+     * 1. HALAMAN UTAMA ONESCHOOL HUB
+     * =========================================================================
+     * Menampilkan gerbang utama dengan 2 modul besar (Perpus & Pengaduan)
      */
-    public function index(Request $request)
+    public function index()
     {
+        // Mengarah ke file gerbang OneSchool Hub (resources/views/siswa/dashboard.blade.php)
+        return view('digital_library.siswa.dashboard');
+    }
+
+    /**
+     * =========================================================================
+     * 2. SUB-DASHBOARD PERPUSTAKAAN DIGITAL (DigiLib)
+     * =========================================================================
+     * Menampilkan data statistik perpus, filter buku, kategori, dan denda
+     */
+    public function digitalLibraryIndex(Request $request)
+    {
+        $userId = Auth::id();
+        
         $books = $this->getFilteredBooks($request);
         $myBooks = $this->getMyBorrowedBooks();
 
         $totalKoleksi = Book::count();
         $totalDipinjam = $myBooks->where('status', 'pinjam')->count();
         $totalPending = $myBooks->where('status', 'pending')->count();
-        $totalWishlist = Wishlist::where('user_id', Auth::id())->count();
+        $totalWishlist = Wishlist::where('user_id', $userId)->count();
 
-        $kategoris = Book::select('kategori')->whereNotNull('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
+        // Sesuai Seeder: Menarik nominal denda lewat relasi transaction_id milik user yang login
+        $totalDendaAman = Denda::whereHas('transaction', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
+            ->where('status', 'belum_bayar')
+            ->sum('nominal') ?? 0;
 
-        return view('siswa.dashboard', compact(
+        $kategoris = Book::select('kategori')
+            ->whereNotNull('kategori')
+            ->distinct()
+            ->orderBy('kategori')
+            ->pluck('kategori');
+
+        // Memanggil sub-dashboard perpus asli bawaan lo tanpa merubah jalurnya
+        return view('digital_library.siswa.dashboard', compact(
             'books', 'myBooks', 'kategoris', 'totalKoleksi',
-            'totalDipinjam', 'totalPending', 'totalWishlist'
+            'totalDipinjam', 'totalPending', 'totalWishlist', 'totalDendaAman'
         ));
     }
 
@@ -93,7 +123,7 @@ class SiswaController extends Controller
 
         $myBooks = $myAllBooks;
 
-        return view('siswa.partials.stats', compact(
+        return view('digital_library.siswa.partials.stats', compact(
             'books', 'myBooks', 'totalPernahDipinjam', 'sedangDipinjam'
         ));
     }
@@ -109,7 +139,7 @@ class SiswaController extends Controller
 
         $kategoris = Book::select('kategori')->whereNotNull('kategori')->distinct()->orderBy('kategori')->pluck('kategori');
 
-        return view('siswa.partials.peminjaman', compact('books', 'myBooks', 'wishlistIds', 'kategoris'));
+        return view('digital_library.siswa.partials.peminjaman', compact('books', 'myBooks', 'wishlistIds', 'kategoris'));
     }
 
     /**
@@ -122,12 +152,12 @@ class SiswaController extends Controller
         $totalDipinjam = $myBooks->where('status', 'pinjam')->count();
         $totalPending = $myBooks->where('status', 'pending')->count();
 
-        return view('siswa.partials.pengembalian', compact('myBooks', 'totalDipinjam', 'totalPending'));
+        return view('digital_library.siswa.partials.pengembalian', compact('myBooks', 'totalDipinjam', 'totalPending'));
     }
 
     /*
     |--------------------------------------------------------------------------
-    | FUNGSI PROSES UTAMA (SINKRON DENGAN STRUKTUR SEEDER / ADMIN)
+    | FUNGSI PROSES UTAMA
     |--------------------------------------------------------------------------
     */
 
@@ -143,12 +173,12 @@ class SiswaController extends Controller
         }
 
         Transaction::create([
-            'user_id'          => Auth::id(),
-            'book_id'          => $book->id,
-            'tanggal_pinjam'   => Carbon::today(),
-            'tanggal_deadline' => Carbon::today()->addDays(7), // Default tenggat waktu 1 minggu
-            'tanggal_kembali'  => null,                         // Null karena baru mengajukan pinjam
-            'status'           => 'pending',                    // Status masuk ke sistem approval admin lu
+            'user_id' => Auth::id(),
+            'book_id' => $book->id,
+            'tanggal_pinjam' => Carbon::today(),
+            'tanggal_deadline' => Carbon::today()->addDays(7),
+            'tanggal_kembali' => null,
+            'status' => 'pending',
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan peminjaman buku berhasil dikirim!');
@@ -161,10 +191,9 @@ class SiswaController extends Controller
     {
         $transaction = Transaction::findOrFail($transaction_id);
 
-        // Menyamakan struktur pengisian data tanggal_kembali dan status dengan update() admin
         $transaction->update([
-            'tanggal_kembali'  => Carbon::today(),
-            'status'           => 'kembali',
+            'tanggal_kembali' => Carbon::today(),
+            'status' => 'kembali',
         ]);
 
         return redirect()->back()->with('success', 'Buku berhasil dikembalikan!');

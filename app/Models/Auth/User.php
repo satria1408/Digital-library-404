@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\DigitalLibrary\Auth;
+namespace App\Models\Auth;
 
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Wishlist;

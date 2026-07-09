@@ -2,6 +2,7 @@
 
 namespace App\Models\DigitalLibrary\Admin;
 
+use App\Models\Auth\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
