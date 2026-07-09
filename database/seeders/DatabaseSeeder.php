@@ -287,5 +287,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             SuggestionSeeder::class,
         ]);
+
+        $this->call([
+            ComplaintSeeder::class,
+        ]);
     }
 }

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\DigitalLibrary\Admin\Book;
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Wishlist;
-use App\Models\DigitalLibrary\Admin\Denda; // Sesuai Seeder: Berada di namespace Admin
+use App\Models\DigitalLibrary\Admin\Denda; // Sesuai Seeder
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +68,7 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        // Mengarah ke file gerbang OneSchool Hub (resources/views/siswa/dashboard.blade.php)
+        // INI UNTUK HALAMAN HUB UTAMA (2 TOMBOL RAKSASA DI VIDEO LO)
         return view('digital_library.siswa.dashboard');
     }
 
@@ -90,7 +90,7 @@ class SiswaController extends Controller
         $totalPending = $myBooks->where('status', 'pending')->count();
         $totalWishlist = Wishlist::where('user_id', $userId)->count();
 
-        // Sesuai Seeder: Menarik nominal denda lewat relasi transaction_id milik user yang login
+        // Sesuai Seeder
         $totalDendaAman = Denda::whereHas('transaction', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
@@ -103,7 +103,7 @@ class SiswaController extends Controller
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        // Memanggil sub-dashboard perpus asli bawaan lo tanpa merubah jalurnya
+        // INI FIX-NYA, BRO! JALUR VIEW-NYA MANGGIL DASHBOARD SUB-MODUL PERPUS LO
         return view('digital_library.siswa.dashboard', compact(
             'books', 'myBooks', 'kategoris', 'totalKoleksi',
             'totalDipinjam', 'totalPending', 'totalWishlist', 'totalDendaAman'
@@ -162,7 +162,7 @@ class SiswaController extends Controller
     */
 
     /**
-     * Proses pengajuan pinjam buku oleh siswa (Status awal: pending)
+     * Proses pengajuan pinjam buku oleh siswa
      */
     public function pinjamBuku(Request $request, $book_id)
     {

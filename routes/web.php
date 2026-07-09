@@ -16,9 +16,9 @@ use App\Http\Controllers\DigitalLibrary\Admin\AdminController;
 use App\Http\Controllers\DigitalLibrary\Admin\BookController;
 use App\Http\Controllers\DigitalLibrary\Admin\TransactionController;
 use App\Http\Controllers\DigitalLibrary\Admin\UserController;
+use App\Http\Controllers\DigitalLibrary\Admin\AdminDendaController; // Disinkronkan masuk ke subfolder Admin sesuai letak model seeder
 use App\Http\Controllers\DigitalLibrary\Siswa\SiswaController;
 use App\Http\Controllers\DigitalLibrary\Siswa\WishlistController;
-use App\Http\Controllers\DigitalLibrary\Denda\AdminDendaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +92,7 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
             ->name('admin.transactions.tolak');
 
-        // Denda (Folder Denda di dalam DigitalLibrary)
+        // Denda (Sesuai dengan penempatan namespace AdminDendaController baru)
         Route::get('/dendas', [AdminDendaController::class, 'index'])
             ->name('dendas.index');
 
