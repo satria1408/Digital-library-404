@@ -60,9 +60,17 @@ class AuthController extends Controller
             // PENGALIHAN OTOMATIS BERDASARKAN ROLE
             if ($user->role === 'siswa') {
                 return redirect()->intended('/siswa/dashboard');
-            } elseif ($user->role === 'admin') {
+            } 
+            
+            // JALUR CABANG KHUSUS ADMIN (PERPUS VS PENGADUAN)
+            elseif ($user->role === 'admin') {
+                if ($user->username === 'admin_pengaduan') {
+                    return redirect()->intended(route('admin.complaints.dashboard'));
+                }
                 return redirect()->intended('/admin/dashboard');
-            } elseif ($user->role === 'owner') {
+            } 
+            
+            elseif ($user->role === 'owner') {
                 return redirect()->intended('/owner/dashboard');
             } elseif ($user->role === 'developer') {
                 return redirect()->intended('/developer/dashboard');

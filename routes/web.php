@@ -4,21 +4,19 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
-
-// --- UPDATE CONTROLLERS JALUR UNIVERSAL (DI LUAR DIGITAL LIBRARY) ---
 use App\Http\Controllers\SecurityLogController;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Developer\SuggestionController;
 use App\Http\Controllers\Owner\OwnerController; 
-
-// --- UPDATE CONTROLLERS JALUR MODUL (DI DALAM DIGITAL LIBRARY) ---
 use App\Http\Controllers\DigitalLibrary\Admin\AdminController;
 use App\Http\Controllers\DigitalLibrary\Admin\BookController;
 use App\Http\Controllers\DigitalLibrary\Admin\TransactionController;
 use App\Http\Controllers\DigitalLibrary\Admin\UserController;
-use App\Http\Controllers\DigitalLibrary\Admin\AdminDendaController; // Disinkronkan masuk ke subfolder Admin sesuai letak model seeder
+use App\Http\Controllers\DigitalLibrary\Admin\AdminDendaController; 
 use App\Http\Controllers\DigitalLibrary\Siswa\SiswaController;
 use App\Http\Controllers\DigitalLibrary\Siswa\WishlistController;
+use App\Http\Controllers\SaranaPengaduan\Admin\ComplaintController;
+use App\Http\Controllers\SaranaPengaduan\Siswa\SiswaComplaintController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,7 +64,23 @@ Route::post('/logout', [AuthController::class, 'logout'])
 
 /*
 |--------------------------------------------------------------------------
-| Admin (Digital Library Module)
+| RUTE AKSES UMUM / PUBLIK (Tanpa Login - Digunakan di Halaman Depan)
+|--------------------------------------------------------------------------
+*/
+
+// KATEGORI 1: Kotak Saran & Keluhan Sistem (Masuk ke Dashboard Developer)
+Route::post('/saran/kirim', [SuggestionController::class, 'store'])->name('saran.store');
+Route::post('/saran/cek', [SuggestionController::class, 'checkTicket'])->name('saran.check');
+
+// KATEGORI 2: Layanan Pengaduan Sekolah / Fasilitas (Masuk ke Dashboard Admin Pengaduan)
+Route::post('/siswa/pengaduan/kirim-umum', [SiswaComplaintController::class, 'storeUmum'])->name('siswa.complaints.store');
+// FIXED AMAN: Menggunakan Named Route agar pemanggilan dari AJAX / Form Blade tidak salah alamat
+Route::post('/siswa/pengaduan/cek-status', [SiswaComplaintController::class, 'checkSchoolTicket'])->name('siswa.complaints.check');
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin (Digital Library & Sarana Pengaduan Modules)
 |--------------------------------------------------------------------------
 */
 
@@ -74,6 +88,7 @@ Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')
     ->group(function () {
 
+        // --- SUB-MODUL 1: DIGITAL LIBRARY ---
         Route::get('/dashboard', [AdminController::class, 'index'])
             ->name('admin.dashboard');
 
@@ -92,14 +107,29 @@ Route::middleware(['auth', 'role:admin'])
         Route::patch('/transactions/{id}/tolak', [TransactionController::class, 'tolakPinjaman'])
             ->name('admin.transactions.tolak');
 
-        // Denda (Sesuai dengan penempatan namespace AdminDendaController baru)
+        // Denda 
         Route::get('/dendas', [AdminDendaController::class, 'index'])
             ->name('dendas.index');
 
         Route::patch('/dendas/{id}/bayar', [AdminDendaController::class, 'bayar'])
             ->name('dendas.bayar');
 
-        // Security Log (Universal)
+
+        // --- SUB-MODUL 2: SARANA PENGADUAN (INTEGRASI BARU) ---
+        Route::prefix('sarana-pengaduan')->name('admin.complaints.')->group(function () {
+            // Halaman Dashboard Utama (Summary 4 Kotak)
+            Route::get('/dashboard', [ComplaintController::class, 'dashboard'])->name('dashboard');
+            
+            // Halaman Index Laporan (Full Table)
+            Route::get('/laporan', [ComplaintController::class, 'index'])->name('index');
+            
+            // Detail & Tindakan Eksekusi Status
+            Route::get('/laporan/{id}', [ComplaintController::class, 'show'])->name('show');
+            Route::patch('/laporan/{id}/update-status', [ComplaintController::class, 'updateStatus'])->name('update_status');
+        });
+
+
+        // --- GLOBAL SECURITY LOGS (Universal Admin) ---
         Route::get('/security-logs', [SecurityLogController::class, 'index'])
             ->name('security.logs.index');
 
@@ -171,11 +201,7 @@ Route::middleware(['auth', 'role:siswa'])
 |--------------------------------------------------------------------------
 */
 
-// Route Akses Umum
-Route::post('/saran/kirim', [SuggestionController::class, 'store'])->name('saran.store');
-Route::post('/saran/cek', [SuggestionController::class, 'checkTicket'])->name('saran.check');
-
-// Route Khusus Proteksi Auth & Role Developer
+// Rute khusus proteksi Auth & Role Developer internal
 Route::middleware(['auth', 'role:developer'])
     ->prefix('developer')
     ->group(function () {

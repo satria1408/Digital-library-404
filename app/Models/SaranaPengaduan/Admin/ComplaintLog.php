@@ -7,7 +7,7 @@ use App\Models\Auth\User;
 
 class ComplaintLog extends Model
 {
-    protected $table = 'complaints_logs';
+    protected $table = 'complaint_logs';
 
     /**
      * Attributes that are mass assignable.

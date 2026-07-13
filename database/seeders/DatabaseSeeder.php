@@ -47,15 +47,27 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // ==========================
-        // ADMIN
+        // ADMIN 1: PERPUSTAKAAN DIGITAL
         // ==========================
         User::create([
-            'nama_lengkap' => 'Administrator Utama',
+            'nama_lengkap' => 'Administrator Perpustakaan',
             'username'     => 'admin',
             'password'     => Hash::make('123456'),
             'role'         => 'admin',
             'alamat'       => 'Ruang Admin Perpustakaan',
             'nisn'         => null, // Bukan siswa, kosongkan
+        ]);
+
+        // ==========================
+        // ADMIN 2: SARANA PENGADUAN (Akun Baru yang Lo Maksud)
+        // ==========================
+        User::create([
+            'nama_lengkap' => 'Admin Sarana Pengaduan',
+            'username'     => 'admin_pengaduan',
+            'password'     => Hash::make('123456'),
+            'role'         => 'admin', // Tetap admin agar lolos middleware 'role:admin'
+            'alamat'       => 'Ruang Sarpras dan Pengaduan Sekolah',
+            'nisn'         => null,
         ]);
 
         // ==========================
@@ -114,7 +126,7 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'isbn'      => '9789792206967',
-            'judul'     => 'Harry Potter dan Batu Bertuah',
+            'judul'     => 'Harry Potter text dan Batu Bertuah',
             'penulis'   => 'J.K. Rowling',
             'penerbit'  => 'Gramedia',
             'kategori'  => 'Fiksi',
