@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\SaranaPengaduan\Siswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\SaranaPengaduan\Admin\Complaint; // Model induk utama
+use App\Models\SaranaPengaduan\Admin\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -33,16 +33,16 @@ class SiswaComplaintController extends Controller
         // Format judul dan isi laporan ke dalam string deskripsi tunggal
         $fullDescription = "Judul Laporan: " . $request->judul . "\n\n" . $request->isi_laporan;
 
-        // Simpan ke database mengikuti aturan ketat ENUM di migration dan seeder lo
+        // Simpan ke database mengikuti aturan ketat ENUM di migration dan seeder
         Complaint::create([
             'ticket_code'  => $ticketCode,
-            'user_id'      => Auth::check() ? Auth::id() : 1, // Mengikat ke ID seeder siswa 1 jika anonim
-            'type'         => 'keluhan', // FIX ENUM TYPE: Sesuai data seeder lo ['kerusakan', 'keluhan']
+            'user_id'      => Auth::check() ? Auth::id() : 1, 
+            'type'         => 'keluhan', 
             'category'     => 'umum',
             'description'  => $fullDescription,
             'photo_path'   => null,
             'is_anonymous' => true, 
-            'status'       => 'diterima', // FIX ENUM STATUS: Sesuai default migration & seeder lo ['diterima', 'diproses', 'selesai']
+            'status'       => 'diterima', 
             'admin_notes'  => null,
         ]);
 
@@ -55,19 +55,19 @@ class SiswaComplaintController extends Controller
     }
 
     /**
-     * FIXED: Melacak Status Tiket Pengaduan Sekolah via AJAX JSON (Halaman Depan)
+     * Melacak Status Tiket Pengaduan Sekolah via AJAX JSON (Halaman Depan)
      */
     public function checkSchoolTicket(Request $request)
     {
-        // 1. Validasi input kode tiket dari user
+        //  Validasi input kode tiket dari user
         $request->validate([
             'ticket_code' => 'required|string'
         ]);
 
-        // 2. Cari data pengaduan berdasarkan ticket_code
+        //  Cari data pengaduan berdasarkan ticket_code
         $complaint = Complaint::where('ticket_code', $request->ticket_code)->first();
 
-        // 3. Jika tidak ditemukan, return response error JSON
+        //  Jika tidak ditemukan, return response error JSON
         if (!$complaint) {
             return response()->json([
                 'success' => false,
@@ -75,7 +75,7 @@ class SiswaComplaintController extends Controller
             ], 404);
         }
 
-        // 4. Memisahkan kembali Judul Laporan dan Isi Detail dari kolom description
+        //  Memisahkan kembali Judul Laporan dan Isi Detail dari kolom description
         $description = $complaint->description;
         $judulRaw = Str::between($description, 'Judul Laporan: ', "\n\n");
         $isiRaw = Str::after($description, "\n\n");
@@ -84,7 +84,7 @@ class SiswaComplaintController extends Controller
         $judul = $judulRaw ?: 'Pengaduan Sekolah';
         $isiLaporan = $judulRaw ? $isiRaw : $description;
 
-        // 5. Return data sukses berformat JSON sesuai kebutuhan AJAX di login.blade.php
+        //  Return data sukses berformat JSON sesuai kebutuhan AJAX di login.blade.php
         return response()->json([
             'success' => true,
             'data' => [
@@ -110,8 +110,7 @@ class SiswaComplaintController extends Controller
         $complaints = Complaint::where('user_id', Auth::id())
             ->latest()
             ->paginate(10);
-
-        return view('siswa.complaints.index', compact('complaints'));
+        return view('sarana_pengaduan.siswa.index', compact('complaints'));
     }
 
     /**
@@ -119,7 +118,7 @@ class SiswaComplaintController extends Controller
      */
     public function create()
     {
-        return view('siswa.complaints.create');
+        return view('sarana_pengaduan.siswa.create');
     }
 
     /**
@@ -138,12 +137,12 @@ class SiswaComplaintController extends Controller
         Complaint::create([
             'ticket_code'  => $ticketCode,
             'user_id'      => Auth::id(), 
-            'type'         => 'keluhan', // Sesuai aturan enum lo
+            'type'         => 'keluhan', 
             'category'     => 'siswa',
             'description'  => $fullDescription,
             'photo_path'   => null,
             'is_anonymous' => false, 
-            'status'       => 'diterima', // Sesuai aturan enum lo
+            'status'       => 'diterima', 
             'admin_notes'  => null,
         ]);
 
@@ -157,7 +156,6 @@ class SiswaComplaintController extends Controller
     public function show($id)
     {
         $complaint = Complaint::where('user_id', Auth::id())->findOrFail($id);
-
-        return view('siswa.complaints.show', compact('complaint'));
+        return view('sarana_pengaduan.siswa.show', compact('complaint'));
     }
 }

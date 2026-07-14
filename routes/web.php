@@ -73,8 +73,8 @@ Route::post('/saran/kirim', [SuggestionController::class, 'store'])->name('saran
 Route::post('/saran/cek', [SuggestionController::class, 'checkTicket'])->name('saran.check');
 
 // KATEGORI 2: Layanan Pengaduan Sekolah / Fasilitas (Masuk ke Dashboard Admin Pengaduan)
-Route::post('/siswa/pengaduan/kirim-umum', [SiswaComplaintController::class, 'storeUmum'])->name('siswa.complaints.store');
-// FIXED AMAN: Menggunakan Named Route agar pemanggilan dari AJAX / Form Blade tidak salah alamat
+// FIXED: Name route diubah menjadi .store_umum agar tidak bentrok dengan store internal milik siswa
+Route::post('/siswa/pengaduan/kirim-umum', [SiswaComplaintController::class, 'storeUmum'])->name('siswa.complaints.store_umum');
 Route::post('/siswa/pengaduan/cek-status', [SiswaComplaintController::class, 'checkSchoolTicket'])->name('siswa.complaints.check');
 
 
@@ -156,6 +156,23 @@ Route::middleware(['auth', 'role:siswa'])
         // 1. HALAMAN UTAMA ONESCHOOL HUB (Menampilkan 2 modul raksasa)
         Route::get('/dashboard', [SiswaController::class, 'index'])
             ->name('siswa.dashboard');
+
+
+        // =========================================================================
+        // FIXED & INTEGRATED: SUB-MODUL SARANA PENGADUAN INTERNAL SISWA
+        // =========================================================================
+        Route::prefix('sarana-pengaduan')->name('siswa.complaints.')->group(function () {
+            // Tampilan Riwayat Pengaduan Saya
+            Route::get('/laporan', [SiswaComplaintController::class, 'index'])->name('index');
+            
+            // Form & Eksekusi Tambah Pengaduan Internal
+            Route::get('/laporan/buat', [SiswaComplaintController::class, 'create'])->name('create');
+            Route::post('/laporan/simpan', [SiswaComplaintController::class, 'store'])->name('store');
+            
+            // Detail Pengaduan & Tanggapan Admin
+            Route::get('/laporan/{id}', [SiswaComplaintController::class, 'show'])->name('show');
+        });
+
 
         // 2. SUB-DASHBOARD PERPUSTAKAAN DIGITAL (Menampilkan statistik perpus & 4 tombol fitur)
         Route::get('/digital-library', [SiswaController::class, 'digitalLibraryIndex'])
