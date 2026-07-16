@@ -49,9 +49,10 @@ class SiswaComplaintController extends Controller
         // Return data JSON untuk diproses JavaScript di halaman depan
         return response()->json([
             'success'     => true,
+            'status'      => 'success',
             'message'     => 'Laporan pengaduan sekolah berhasil dikirim ke Admin Sarana Pengaduan!',
             'ticket_code' => $ticketCode
-        ]);
+        ], 200);
     }
 
     /**
@@ -59,15 +60,15 @@ class SiswaComplaintController extends Controller
      */
     public function checkSchoolTicket(Request $request)
     {
-        //  Validasi input kode tiket dari user
+        // Validasi input kode tiket dari user
         $request->validate([
             'ticket_code' => 'required|string'
         ]);
 
-        //  Cari data pengaduan berdasarkan ticket_code
+        // Cari data pengaduan berdasarkan ticket_code
         $complaint = Complaint::where('ticket_code', $request->ticket_code)->first();
 
-        //  Jika tidak ditemukan, return response error JSON
+        // Jika tidak ditemukan, return response error JSON
         if (!$complaint) {
             return response()->json([
                 'success' => false,
@@ -75,7 +76,7 @@ class SiswaComplaintController extends Controller
             ], 404);
         }
 
-        //  Memisahkan kembali Judul Laporan dan Isi Detail dari kolom description
+        // Memisahkan kembali Judul Laporan dan Isi Detail dari kolom description
         $description = $complaint->description;
         $judulRaw = Str::between($description, 'Judul Laporan: ', "\n\n");
         $isiRaw = Str::after($description, "\n\n");
@@ -84,7 +85,7 @@ class SiswaComplaintController extends Controller
         $judul = $judulRaw ?: 'Pengaduan Sekolah';
         $isiLaporan = $judulRaw ? $isiRaw : $description;
 
-        //  Return data sukses berformat JSON sesuai kebutuhan AJAX di login.blade.php
+        // Return data sukses berformat JSON sesuai kebutuhan AJAX di login.blade.php
         return response()->json([
             'success' => true,
             'data' => [
@@ -122,7 +123,7 @@ class SiswaComplaintController extends Controller
     }
 
     /**
-     * Menyimpan pengaduan baru dari form internal siswa (setelah login)
+     * Menyimpan pengaduan baru dari form internal siswa (setelah login) - PERBAIKAN UTAMA
      */
     public function store(Request $request)
     {
@@ -141,11 +142,21 @@ class SiswaComplaintController extends Controller
             'category'     => 'siswa',
             'description'  => $fullDescription,
             'photo_path'   => null,
-            'is_anonymous' => false, 
+            'is_anonymous' => $request->has('is_anonymous') ? 1 : 0, // Mengambil status checkbox anonim dari form baru
             'status'       => 'diterima', 
             'admin_notes'  => null,
         ]);
 
+        // Cek jika request dikirim via Fetch/AJAX, maka kembalikan JSON sukses
+        if ($request->ajax() || $request->wantsJson()) {
+            return response()->json([
+                'success' => true,
+                'status'  => 'success',
+                'message' => 'Laporan pengaduan berhasil dikirim ke pihak sekolah.'
+            ], 200);
+        }
+
+        // Backup fallback apabila diakses tanpa JavaScript
         return redirect()->route('siswa.complaints.index')
             ->with('success', 'Pengaduan berhasil dikirim ke pihak sekolah.');
     }
