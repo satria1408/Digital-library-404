@@ -8,7 +8,7 @@
                 <h5 class="mb-0">Edit Data Buku</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('digitallibrary.admin.books.update', $book->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -71,7 +71,6 @@
                             </div>
 
                             <div class="w-100">
-                                <!-- PENTING: name harus "cover_url" biar match sama BookController@update -->
                                 <input type="file" name="cover_url" id="coverInput" class="form-control @error('cover_url') is-invalid @enderror" accept="image/*">
                                 <div class="form-text text-muted" style="font-size: 0.78rem;">
                                     *Kosongkan jika tidak ingin mengubah cover. Format: JPG, JPEG, PNG, WEBP (Max: 2MB).
@@ -84,7 +83,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('books.index') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('digitallibrary.admin.books.index') }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-primary">Update Data</button>
                     </div>
 

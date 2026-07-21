@@ -74,7 +74,7 @@
                 </h5>
                 <p class="text-muted small mb-0 d-none d-md-block mt-0.5">Buku yang kamu tandai untuk dibaca nanti.</p>
             </div>
-            <a href="{{ route('siswa.dashboard') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-medium">
+            <a href="{{ route('digitallibrary.siswa.index') }}" class="btn btn-outline-secondary btn-sm rounded-pill px-3 fw-medium">
                 <i class="bi bi-arrow-left me-1"></i> Kembali
             </a>
         </div>
@@ -82,7 +82,7 @@
         <div class="card-body p-0">
 
             <div class="p-3 bg-light bg-opacity-50 border-bottom border-light">
-                <form action="{{ route('wishlist.index') }}" method="GET" id="searchFilterForm">
+                <form action="{{ route('digitallibrary.siswa.wishlist.index') }}" method="GET" id="searchFilterForm">
                     <input type="hidden" name="kategori" id="filterKategoriInput" value="{{ request('kategori') }}">
 
                     <div class="row g-2">
@@ -96,7 +96,7 @@
                                        value="{{ request('search') }}" style="font-size: 0.88rem; height: 42px;">
                                 @if(request('search') || request('kategori'))
                                     <span class="position-absolute top-50 translate-middle-y end-0 me-3">
-                                        <a href="{{ route('wishlist.index') }}" class="btn btn-light btn-sm rounded-pill py-0.5 px-2 text-xs text-danger" style="font-size: 0.75rem;">
+                                        <a href="{{ route('digitallibrary.siswa.wishlist.index') }}" class="btn btn-light btn-sm rounded-pill py-0.5 px-2 text-xs text-danger" style="font-size: 0.75rem;">
                                             <i class="bi bi-x-circle-fill"></i> Reset Filter
                                         </a>
                                     </span>
@@ -169,7 +169,7 @@
                             <td class="pe-4 text-end">
                                 <div class="d-flex justify-content-end gap-2">
 
-                                    <form action="{{ route('wishlist.destroy', $book->id) }}" method="POST" class="wishlist-remove-form">
+                                    <form action="{{ route('digitallibrary.siswa.wishlist.destroy', $book->id) }}" method="POST" class="wishlist-remove-form">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger btn-sm rounded-pill" title="Keluarkan dari wishlist">
@@ -239,7 +239,7 @@
 
                                         <div class="d-flex gap-2">
 
-                                            <form action="{{ route('wishlist.destroy', $book->id) }}" method="POST" class="wishlist-remove-form">
+                                            <form action="{{ route('digitallibrary.siswa.wishlist.destroy', $book->id) }}" method="POST" class="wishlist-remove-form">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button class="btn btn-danger btn-sm rounded-pill" title="Keluarkan dari wishlist">

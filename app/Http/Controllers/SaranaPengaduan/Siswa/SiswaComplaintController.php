@@ -157,7 +157,7 @@ class SiswaComplaintController extends Controller
         }
 
         // Backup fallback apabila diakses tanpa JavaScript
-        return redirect()->route('siswa.complaints.index')
+        return redirect()->route('saranapengaduan.siswa.index')
             ->with('success', 'Pengaduan berhasil dikirim ke pihak sekolah.');
     }
 

@@ -54,12 +54,12 @@ return Application::configure(basePath: dirname(__DIR__))
 
             // 2. Cek Role Admin
             if ($user?->role === 'admin') {
-                return route('admin.dashboard');
+                return route('digitallibrary.admin.dashboard');
             }
 
             // 3. Cek Role Siswa
             if ($user?->role === 'siswa') {
-                return route('siswa.dashboard');
+                return route('digitallibrary.siswa.dashboard');
             }
 
             return '/';

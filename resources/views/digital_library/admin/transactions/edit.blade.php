@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header bg-warning">Edit Status Transaksi</div>
             <div class="card-body">
-                <form action="{{ route('transactions.update', $transaction->id) }}" method="POST">
+                <form action="{{ route('digitallibrary.admin.transactions.update', $transaction->id) }}" method="POST">
                     @csrf
                     @method('PUT')
 
@@ -50,7 +50,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-primary">Update</button>
-                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Batal</a>
+                    <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="btn btn-secondary">Batal</a>
                 </form>
             </div>
         </div>

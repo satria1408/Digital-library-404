@@ -6,7 +6,7 @@
         <div class="card"> 
             <div class="card-header bg-warning text-dark">Edit Data Anggota</div> 
             <div class="card-body"> 
-                <form action="{{ route('users.update', $user->id) }}" method="POST"> 
+                <form action="{{ route('digitallibrary.admin.users.update', $user->id) }}" method="POST"> 
                     @csrf 
                     @method('PUT') 
                      
@@ -32,7 +32,7 @@
                         <textarea name="alamat" class="form-control" rows="3">{{ $user->alamat }}</textarea> 
                     </div> 
                     <div class="d-flex justify-content-between"> 
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Kembali</a> 
+                        <a href="{{ route('digitallibrary.admin.users.index') }}" class="btn btn-secondary">Kembali</a> 
                         <button type="submit" class="btn btn-primary">Update</button> 
                     </div> 
                 </form> 

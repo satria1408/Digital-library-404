@@ -74,7 +74,7 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content modal-glass">
             <div class="modal-header"><h5 class="modal-title fw-bold text-dark">Buat Pengaduan Sekolah</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-            <form id="formKirimPengaduanSekolah" action="{{ route('siswa.complaints.store') }}" method="POST">
+            <form id="formKirimPengaduanSekolah" action="{{ route('saranapengaduan.siswa.store_umum') }}" method="POST">
                 @csrf
                 <div class="modal-body">
                     <div id="alertSchool" class="alert d-none py-2 small"></div>
@@ -92,7 +92,7 @@
         <div class="modal-content modal-glass">
             <div class="modal-header"><h5 class="modal-title fw-bold text-dark">Lacak Pengaduan Sekolah</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
             <div class="modal-body">
-                <form id="formCekTiketSekolah" action="{{ route('siswa.complaints.check') }}" method="POST">
+                <form id="formCekTiketSekolah" action="{{ route('saranapengaduan.siswa.check') }}" method="POST">
                     @csrf
                     <div class="input-group">
                         <input type="text" id="schoolTicketCode" class="form-control" placeholder="Masukkan Kode Laporan" required>

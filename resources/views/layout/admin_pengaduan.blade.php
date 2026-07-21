@@ -192,7 +192,7 @@
             <span class="sidebar-section-title">Ringkasan Sistem</span>
             <ul class="nav nav-pills flex-column gap-1 mb-4">
                 <li class="nav-item">
-                    <a href="{{ route('admin.complaints.dashboard') }}" class="nav-link {{ request()->routeIs('admin.complaints.dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('saranapengaduan.admin.dashboard') }}" class="nav-link {{ request()->routeIs('saranapengaduan.admin.dashboard') ? 'active' : '' }}">
                         <i class="bi bi-speedometer2 fs-5"></i> Dashboard Overview
                     </a>
                 </li>
@@ -201,7 +201,7 @@
             <span class="sidebar-section-title">Manajemen Laporan</span>
             <ul class="nav nav-pills flex-column gap-1">
                 <li class="nav-item">
-                    <a href="{{ route('admin.complaints.index') }}" class="nav-link {{ request()->routeIs('admin.complaints.index') || request()->routeIs('admin.complaints.show') ? 'active' : '' }}">
+                    <a href="{{ route('saranapengaduan.admin.index') }}" class="nav-link {{ request()->routeIs('saranapengaduan.admin.index') || request()->routeIs('saranapengaduan.admin.show') ? 'active' : '' }}">
                         <i class="bi bi-inboxes-fill fs-5"></i> Antrean Pengaduan
                     </a>
                 </li>

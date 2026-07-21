@@ -33,6 +33,6 @@ class AdminDendaController extends Controller
         ]);
 
         // Redirect balik ke halaman daftar denda dengan pesan sukses
-        return redirect()->route('dendas.index')->with('success', 'Denda berhasil dilunasi');
+        return redirect()->route('digitallibrary.admin.dendas.index')->with('success', 'Denda berhasil dilunasi');
     }
 }

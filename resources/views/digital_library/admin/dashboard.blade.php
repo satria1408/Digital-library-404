@@ -92,7 +92,7 @@
     <div class="row g-3 mb-4">
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="{{ route('books.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
+            <a href="{{ route('digitallibrary.admin.books.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-primary"></div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-primary position-relative" style="width: 65px; height: 65px; background: rgba(13, 110, 253, 0.06); border: 1px solid rgba(13, 110, 253, 0.15);">
@@ -105,7 +105,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="{{ route('users.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
+            <a href="{{ route('digitallibrary.admin.users.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-info"></div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-info position-relative" style="width: 65px; height: 65px; background: rgba(13, 202, 240, 0.06); border: 1px solid rgba(13, 202, 240, 0.15);">
@@ -118,7 +118,7 @@
         </div>
 
         <div class="col-12 col-sm-6 col-lg-3">
-            <a href="{{ route('transactions.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
+            <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="card h-100 border-0 text-decoration-none bg-white p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-success"></div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-success position-relative" style="width: 65px; height: 65px; background: rgba(25, 135, 84, 0.06); border: 1px solid rgba(25, 135, 84, 0.15);">
@@ -161,7 +161,7 @@
                     
                     <hr class="border-secondary border-opacity-10 my-3">
 
-                    <form action="{{ route('admin.buku.import') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('digitallibrary.admin.buku.import') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="row align-items-end g-3">
                             <div class="col-12 col-md-8">

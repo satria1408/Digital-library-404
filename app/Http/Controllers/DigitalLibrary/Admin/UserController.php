@@ -48,7 +48,7 @@ class UserController extends Controller
             'role' => 'siswa',
         ]);
 
-        return redirect()->route('users.index')->with('success', 'Anggota berhasil ditambahkan');
+        return redirect()->route('digitallibrary.admin.users.index')->with('success', 'Anggota berhasil ditambahkan');
     }
 
     public function edit(string $id)
@@ -80,13 +80,13 @@ class UserController extends Controller
 
         $user->update($data);
 
-        return redirect()->route('users.index')->with('success', 'Data anggota diperbarui');
+        return redirect()->route('digitallibrary.admin.users.index')->with('success', 'Data anggota diperbarui');
     }
 
     public function destroy(string $id)
     {
         User::findOrFail($id)->delete();
 
-        return redirect()->route('users.index')->with('success', 'Anggota berhasil dihapus');
+        return redirect()->route('digitallibrary.admin.users.index')->with('success', 'Anggota berhasil dihapus');
     }
 }

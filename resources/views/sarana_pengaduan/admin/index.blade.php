@@ -7,7 +7,7 @@
             <h2 class="h4 mb-1 text-gray-800 fw-bold">Daftar Laporan Masuk</h2>
             <p class="text-muted small mb-0">Manajemen filter keluhan dan kerusakan fasilitas sekolah.</p>
         </div>
-        <a href="{{ route('admin.complaints.dashboard') }}" class="btn btn-outline-secondary btn-sm px-3">
+        <a href="{{ route('saranapengaduan.admin.dashboard') }}" class="btn btn-outline-secondary btn-sm px-3">
             ← Kembali ke Dashboard
         </a>
     </div>
@@ -25,7 +25,7 @@
 
     <div class="card shadow-sm mb-4 border-0">
         <div class="card-body">
-            <form action="{{ route('admin.complaints.index') }}" method="GET" class="row g-3 align-items-end">
+            <form action="{{ route('saranapengaduan.admin.index') }}" method="GET" class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label small fw-bold text-muted">Jenis Pengaduan</label>
                     <select name="type" class="form-select form-select-sm">
@@ -92,7 +92,7 @@
                             @endif
                         </td>
                         <td class="text-end pe-3">
-                            <a href="{{ route('admin.complaints.show', $complaint->id) }}" class="btn btn-outline-primary btn-sm px-3">
+                            <a href="{{ route('saranapengaduan.admin.show', $complaint->id) }}" class="btn btn-outline-primary btn-sm px-3">
                                 Detail & Respon
                             </a>
                         </td>

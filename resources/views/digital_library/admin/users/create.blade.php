@@ -6,7 +6,7 @@
         <div class="card"> 
             <div class="card-header bg-primary text-white">Tambah Anggota Baru</div> 
             <div class="card-body"> 
-                <form action="{{ route('users.store') }}" method="POST"> 
+                <form action="{{ route('digitallibrary.admin.users.store') }}" method="POST"> 
                     @csrf 
                      
                     <div class="mb-3"> 
@@ -30,7 +30,7 @@
                     </div> 
  
                     <div class="d-flex justify-content-between"> 
-                        <a href="{{ route('users.index') }}" class="btn btn-secondary">Kembali</a> 
+                        <a href="{{ route('digitallibrary.admin.users.index') }}" class="btn btn-secondary">Kembali</a> 
                         <button type="submit" class="btn btn-success">Simpan</button> 
                     </div> 
                 </form> 

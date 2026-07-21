@@ -113,7 +113,7 @@
                         <a class="nav-link nav-link-custom" href="#">Dashboard</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link nav-link-custom active" href="{{ route('siswa.complaints.index') }}">Pengaduan</a>
+                        <a class="nav-link nav-link-custom active" href="{{ route('saranapengaduan.siswa.index') }}">Pengaduan</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link nav-link-custom" href="#">Perpustakaan</a>

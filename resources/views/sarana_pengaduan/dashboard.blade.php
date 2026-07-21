@@ -98,7 +98,7 @@
     <div class="row g-3 mb-4">
         <!-- Menu Antrean Masuk -->
         <div class="col-12 col-md-6">
-            <a href="{{ route('admin.complaints.index') }}" class="card h-100 border-0 text-decoration-none adaptive-card p-3 luxury-card-interactive" style="border-radius: 16px;">
+            <a href="{{ route('saranapengaduan.admin.index') }}" class="card h-100 border-0 text-decoration-none adaptive-card p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-info"></div>
                     <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-info position-relative" style="width: 65px; height: 65px; background: rgba(13, 202, 240, 0.06); border: 1px solid rgba(13, 202, 240, 0.15);">

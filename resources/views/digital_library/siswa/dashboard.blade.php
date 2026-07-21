@@ -46,7 +46,7 @@
                 <h5 class="fw-bold text-dark mb-3"><i class="bi bi-layers-half text-primary me-2"></i>Pilih Fitur Perpustakaan:</h5>
                 <div class="row g-3">
                     <div class="col-12 col-md-3">
-                        <a href="{{ route('siswa.peminjaman') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('digitallibrary.siswa.peminjaman') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-primary-subtle text-primary me-3"><i class="bi bi-book"></i></div>
                                 <div>
@@ -57,7 +57,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-md-3">
-                        <a href="{{ route('siswa.pengembalian') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('digitallibrary.siswa.pengembalian') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-success-subtle text-success me-3"><i class="bi bi-arrow-counterclockwise"></i></div>
                                 <div>
@@ -68,7 +68,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-md-3">
-                        <a href="{{ route('wishlist.index') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('digitallibrary.siswa.wishlist.index') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-info-subtle text-info me-3"><i class="bi bi-heart"></i></div>
                                 <div>
@@ -79,7 +79,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-md-3">
-                        <a href="{{ route('siswa.stats') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('digitallibrary.siswa.stats') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-warning-subtle text-warning me-3"><i class="bi bi-bar-chart-line"></i></div>
                                 <div>
@@ -123,7 +123,7 @@
                 <h5 class="fw-bold text-dark mb-3"><i class="bi bi-layers-half text-warning me-2"></i>Pilih Layanan Pengaduan & Sarana:</h5>
                 <div class="row g-3">
                     <div class="col-12 col-md-4">
-                        <a href="{{ route('siswa.complaints.create') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('saranapengaduan.siswa.create') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-warning-subtle text-warning me-3"><i class="bi bi-pencil-square"></i></div>
                                 <div>
@@ -134,7 +134,7 @@
                         </a>
                     </div>
                     <div class="col-12 col-md-4">
-                        <a href="{{ route('siswa.complaints.index') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
+                        <a href="{{ route('saranapengaduan.siswa.index') }}" class="btn btn-light w-100 p-3 border rounded-3 text-start sub-menu-item">
                             <div class="d-flex align-items-center">
                                 <div class="icon-box bg-primary-subtle text-primary me-3"><i class="bi bi-clock-history"></i></div>
                                 <div>

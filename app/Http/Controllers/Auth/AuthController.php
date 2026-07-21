@@ -65,7 +65,7 @@ class AuthController extends Controller
             // JALUR CABANG KHUSUS ADMIN (PERPUS VS PENGADUAN)
             elseif ($user->role === 'admin') {
                 if ($user->username === 'admin_pengaduan') {
-                    return redirect()->intended(route('admin.complaints.dashboard'));
+                    return redirect()->intended(route('saranapengaduan.admin.dashboard'));
                 }
                 return redirect()->intended('/admin/dashboard');
             } 

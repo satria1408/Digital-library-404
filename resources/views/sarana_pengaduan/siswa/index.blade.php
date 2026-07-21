@@ -88,7 +88,7 @@
                         
                         <!-- Tombol Kembali Terkunci Menuju Dashboard Utama -->
                         <div class="d-flex align-items-center gap-3">
-                            <a href="{{ route('siswa.dashboard') }}" class="btn btn-back-custom rounded-circle shadow-sm" title="Kembali ke Dashboard">
+                            <a href="{{ route('saranapengaduan.siswa.index') }}" class="btn btn-back-custom rounded-circle shadow-sm" title="Kembali ke Dashboard">
                                 <i class="bi bi-arrow-left fs-5"></i>
                             </a>
                             <div>
@@ -97,7 +97,7 @@
                             </div>
                         </div>
 
-                        <a href="{{ route('siswa.complaints.create') }}" class="btn btn-primary rounded-pill px-4 btn-sm fw-semibold shadow-sm d-flex align-items-center gap-2">
+                        <a href="{{ route('saranapengaduan.siswa.create') }}" class="btn btn-primary rounded-pill px-4 btn-sm fw-semibold shadow-sm d-flex align-items-center gap-2">
                             <i class="bi bi-pencil-square"></i>
                             <span>Buat Laporan Baru</span>
                         </a>
@@ -166,7 +166,7 @@
                                             @endif
                                         </td>
                                         <td class="text-center">
-                                            <a href="{{ route('siswa.complaints.show', $complaint->id) }}" class="btn btn-outline-primary btn-action rounded-pill">
+                                            <a href="{{ route('saranapengaduan.siswa.show', $complaint->id) }}" class="btn btn-outline-primary btn-action rounded-pill">
                                                 <i class="bi bi-eye-fill me-1"></i> Detail
                                             </a>
                                         </td>
@@ -228,7 +228,7 @@
                                                 <i class="bi bi-calendar3 me-1"></i>
                                                 {{ $complaint->created_at ? $complaint->created_at->isoFormat('D MMM Y') : '-' }}
                                             </span>
-                                            <a href="{{ route('siswa.complaints.show', $complaint->id) }}" class="btn btn-outline-primary btn-action rounded-pill">
+                                            <a href="{{ route('saranapengaduan.siswa.show', $complaint->id) }}" class="btn btn-outline-primary btn-action rounded-pill">
                                                 Detail
                                             </a>
                                         </div>

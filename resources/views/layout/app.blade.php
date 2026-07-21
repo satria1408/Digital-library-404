@@ -186,11 +186,11 @@
     @auth
 
     <nav class="navbar navbar-expand-lg custom-app-nav navbar-dark shadow-sm
-        {{ request()->routeIs('admin.dashboard') ? 'bg-theme-dashboard' : '' }}
-        {{ request()->routeIs('books.*') ? 'bg-theme-books' : '' }}
-        {{ request()->routeIs('users.*') ? 'bg-theme-users' : '' }}
-        {{ request()->routeIs('transactions.*') ? 'bg-theme-transactions' : '' }}
-        {{ request()->routeIs('dendas.*') ? 'bg-theme-dendas' : '' }}
+        {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'bg-theme-dashboard' : '' }}
+        {{ request()->routeIs('digitallibrary.admin.books.*') ? 'bg-theme-books' : '' }}
+        {{ request()->routeIs('digitallibrary.admin.users.*') ? 'bg-theme-users' : '' }}
+        {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'bg-theme-transactions' : '' }}
+        {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'bg-theme-dendas' : '' }}
         {{ request()->routeIs('security.logs.*') ? 'bg-theme-security' : '' }}
     ">
         <div class="container-fluid px-3">
@@ -198,34 +198,34 @@
                 <i class="bi bi-text-left fs-2"></i>
             </button>
 
-            <a class="brand-ident navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('admin.dashboard') }}">
-                <i class="bi bi-book-half fs-5"></i> DigiLib <span class="badge bg-light text-primary ms-1" style="font-size:.6rem;">Admin</span>
+            <a class="brand-ident navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('digitallibrary.admin.dashboard') }}">
+                <i class="bi bi-book-half fs-5"></i> Oneschool <span class="badge bg-light text-primary ms-1" style="font-size:.6rem;">Admin</span>
             </a>
 
             <div class="collapse navbar-collapse" id="desktopNavRegistry">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}" href="{{ route('admin.dashboard') }}">
+                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.dashboard') }}">
                             <i class="bi bi-speedometer2 me-1"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}" href="{{ route('books.index') }}">
+                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.books.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.books.index') }}">
                             <i class="bi bi-book-half me-1"></i> Kelola Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}" href="{{ route('users.index') }}">
+                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.users.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.users.index') }}">
                             <i class="bi bi-people-fill me-1"></i> Anggota
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('transactions.*') ? 'active' : '' }}" href="{{ route('transactions.index') }}">
+                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.transactions.index') }}">
                             <i class="bi bi-arrow-left-right me-1"></i> Transaksi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('dendas.*') ? 'active' : '' }}" href="{{ route('dendas.index') }}">
+                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.dendas.index') }}">
                             <i class="bi bi-cash-stack me-1"></i> Denda
                         </a>
                     </li>
@@ -240,7 +240,7 @@
             <div class="d-flex align-items-center gap-3 ms-auto">
                 <button id="themeSwitcherToggle" class="btn btn-link p-0 border-0 text-white shadow-none" onclick="switchAppTheme()" title="Ganti Mode Visual">
                     <i id="themeToggleStateIcon" class="bi bi-moon-stars-fill fs-5"></i>
-                </button>
+                </button> 
 
                 <span id="liveClockDisplay" class="d-none d-sm-inline small fw-medium text-opacity-75">00/00/0000 | 00:00:00</span>
 
@@ -299,7 +299,7 @@
                 <span class="menu-section-label">Menu Utama</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
-                        <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.dashboard') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'active' : '' }}">
                             <i class="bi bi-speedometer2 fs-5"></i> Dashboard
                         </a>
                     </li>
@@ -308,22 +308,22 @@
                 <span class="menu-section-label">Manajemen Data</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
-                        <a href="{{ route('books.index') }}" class="nav-link {{ request()->routeIs('books.*') ? 'active active-books' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.books.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.books.*') ? 'active active-books' : '' }}">
                             <i class="bi bi-book-half fs-5"></i> Kelola Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link {{ request()->routeIs('users.*') ? 'active active-users' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.users.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.users.*') ? 'active active-users' : '' }}">
                             <i class="bi bi-people-fill fs-5"></i> Anggota
                         </a>
-                    </li>
+                    </li> 
                     <li class="nav-item">
-                        <a href="{{ route('transactions.index') }}" class="nav-link {{ request()->routeIs('transactions.*') ? 'active active-transactions' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'active active-transactions' : '' }}">
                             <i class="bi bi-arrow-left-right fs-5"></i> Transaksi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('dendas.index') }}" class="nav-link {{ request()->routeIs('dendas.*') ? 'active active-dendas' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.dendas.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'active active-dendas' : '' }}">
                             <i class="bi bi-cash-stack fs-5"></i> Denda
                         </a>
                     </li>

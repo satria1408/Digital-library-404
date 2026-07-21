@@ -8,7 +8,7 @@
                 <h5 class="mb-0">Tambah Buku Baru</h5>
             </div>
             <div class="card-body">
-                <form action="{{ route('books.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('digitallibrary.admin.books.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
 
                     <div class="mb-3">
@@ -83,7 +83,7 @@
                     </div>
 
                     <div class="d-flex justify-content-between mt-4">
-                        <a href="{{ route('books.index') }}" class="btn btn-secondary">Kembali</a>
+                        <a href="{{ route('digitallibrary.admin.books.index') }}" class="btn btn-secondary">Kembali</a>
                         <button type="submit" class="btn btn-success">Simpan Buku</button>
                     </div>
 

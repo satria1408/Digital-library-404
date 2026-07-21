@@ -3,7 +3,7 @@
 @section('content')
 <div class="container py-3 py-md-4">
     <div class="d-flex align-items-center gap-3 mb-4">
-        <a href="{{ route('siswa.complaints.index') }}" class="btn btn-outline-secondary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
+        <a href="{{ route('saranapengaduan.siswa.index') }}" class="btn btn-outline-secondary btn-sm rounded-circle p-0 d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
             <i class="bi bi-arrow-left fs-5"></i>
         </a>
         <div>

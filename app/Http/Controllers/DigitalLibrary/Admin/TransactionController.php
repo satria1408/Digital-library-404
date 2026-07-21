@@ -81,7 +81,7 @@ class TransactionController extends Controller
 
         $this->cekDenda($transaction);
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi berhasil ditambahkan');
+        return redirect()->route('digitallibrary.admin.transactions.index')->with('success', 'Transaksi berhasil ditambahkan');
     }
 
     public function edit(string $id)
@@ -133,7 +133,7 @@ class TransactionController extends Controller
 
         $this->cekDenda($transaction->fresh());
 
-        return redirect()->route('transactions.index')->with('success', 'Data transaksi diperbarui');
+        return redirect()->route('digitallibrary.admin.transactions.index')->with('success', 'Data transaksi diperbarui');
     }
 
     public function destroy(string $id)
@@ -146,7 +146,7 @@ class TransactionController extends Controller
 
         $transaction->delete();
 
-        return redirect()->route('transactions.index')->with('success', 'Transaksi dihapus');
+        return redirect()->route('digitallibrary.admin.transactions.index')->with('success', 'Transaksi dihapus');
     }
 
     private function cekDenda(Transaction $transaction): void

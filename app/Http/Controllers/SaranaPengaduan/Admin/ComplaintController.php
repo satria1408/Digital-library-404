@@ -95,6 +95,6 @@ class ComplaintController extends Controller
             ]);
         });
 
-        return redirect()->route('admin.complaints.index')->with('success', 'Status laporan #'.$complaint->ticket_code.' berhasil diperbarui!');
+        return redirect()->route('saranapengaduan.admin.index')->with('success', 'Status laporan #'.$complaint->ticket_code.' berhasil diperbarui!');
     }
 }

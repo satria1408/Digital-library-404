@@ -80,7 +80,7 @@
                 
                 <div class="card-header bg-transparent border-0 px-3 pt-3 pb-2">
                     <div class="d-flex align-items-center gap-3">
-                        <a href="{{ route('siswa.dashboard') }}" class="btn btn-back-custom rounded-circle shadow-sm" title="Kembali ke Dashboard">
+                        <a href="{{ route('saranapengaduan.siswa.index') }}" class="btn btn-back-custom rounded-circle shadow-sm" title="Kembali ke Dashboard">
                             <i class="bi bi-arrow-left fs-5"></i>
                         </a>
                         <div>
@@ -91,7 +91,7 @@
                 </div>
 
                 <div class="card-body px-3 pt-3">
-                    <form id="formPengaduan" action="{{ route('siswa.complaints.store') }}" method="POST">
+                    <form id="formPengaduan" action="{{ route('saranapengaduan.siswa.store') }}" method="POST">
                         @csrf
 
                         <div class="mb-3.5">
@@ -142,7 +142,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end gap-2 border-top pt-3">
-                            <a href="{{ route('siswa.dashboard') }}" class="btn btn-light rounded-pill px-4 btn-sm fw-medium text-secondary">Batal</a>
+                            <a href="{{ route('saranapengaduan.siswa.index') }}" class="btn btn-light rounded-pill px-4 btn-sm fw-medium text-secondary">Batal</a>
                             <button type="submit" id="btnSubmit" class="btn btn-primary rounded-pill px-4 btn-sm fw-semibold shadow-sm d-flex align-items-center justify-content-center gap-2">
                                 <i class="bi bi-send-fill" id="iconSubmit"></i>
                                 <span id="textSubmit">Kirim Aduan</span>
@@ -233,7 +233,7 @@
                     allowOutsideClick: false
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.replace("{{ route('siswa.complaints.index') }}");
+                        window.location.replace("{{ route('saranapengaduan.siswa.index') }}");
                     }
                 });
             })

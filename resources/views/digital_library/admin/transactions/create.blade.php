@@ -6,7 +6,7 @@
         <div class="card"> 
             <div class="card-header bg-primary text-white">Tambah Peminjaman (Admin)</div> 
             <div class="card-body"> 
-                <form action="{{ route('transactions.store') }}" method="POST"> 
+                <form action="{{ route('digitallibrary.admin.transactions.store') }}" method="POST"> 
                     @csrf 
                      
                     <div class="mb-3"> 
@@ -43,7 +43,7 @@
                     </div> 
  
                     <button type="submit" class="btn btn-success">Simpan Transaksi</button> 
-                    <a href="{{ route('transactions.index') }}" class="btn btn-secondary">Batal</a> 
+                    <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="btn btn-secondary">Batal</a> 
                 </form>
             </div> 
         </div> 

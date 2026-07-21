@@ -7,7 +7,7 @@
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <h2 class="mb-0">Data Buku</h2>
 
-        <a href="{{ route('books.create') }}" class="btn btn-primary">
+        <a href="{{ route('digitallibrary.admin.books.create') }}" class="btn btn-primary">
             Tambah Buku
         </a>
     </div>
@@ -15,7 +15,7 @@
     <form
         id="filterForm"
         method="GET"
-        action="{{ route('books.index') }}"
+        action="{{ route('digitallibrary.admin.books.index') }}"
         class="row g-2 mb-3">
 
         <div class="col-12 col-md-6">
@@ -52,7 +52,7 @@
                 Cari
             </button>
 
-            <a href="{{ route('books.index') }}"
+            <a href="{{ route('digitallibrary.admin.books.index') }}"
                class="btn btn-secondary w-100">
                 Reset
             </a>
@@ -91,7 +91,6 @@
 
                                 <td>
                                     <div class="shadow-sm rounded overflow-hidden border bg-light d-flex align-items-center justify-content-center" style="width: 50px; height: 70px;">
-                                        {{-- FIX PERBAIKAN COVER: Deteksi otomatis nama file local storage vs URL Google API luar --}}
                                         <img src="{{ (str_starts_with($book->getRawOriginal('cover_url'), 'http')) ? $book->cover_url : asset('storage/covers/' . $book->getRawOriginal('cover_url')) }}" 
                                              alt="Cover {{ $book->judul }}" 
                                              style="width: 100%; height: 100%; object-fit: cover;"
@@ -125,13 +124,13 @@
                                     <div class="d-flex flex-wrap gap-1">
 
                                         <a
-                                            href="{{ route('books.edit', $book->id) }}"
+                                            href="{{ route('digitallibrary.admin.books.edit', $book->id) }}"
                                             class="btn btn-warning btn-sm">
                                             Edit
                                         </a>
 
                                         <form
-                                            action="{{ route('books.destroy', $book->id) }}"
+                                            action="{{ route('digitallibrary.admin.books.destroy', $book->id) }}"
                                             method="POST"
                                             class="delete-form">
 

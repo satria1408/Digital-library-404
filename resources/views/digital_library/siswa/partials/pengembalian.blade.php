@@ -8,7 +8,7 @@
             <h5 class="mb-0 fw-bold d-flex align-items-center gap-2">
                 <i class="bi bi-journal-arrow-down"></i> Pengembalian Buku
             </h5>
-            <a href="{{ route('siswa.dashboard') }}" class="btn btn-light btn-sm fw-bold text-success rounded-pill px-3">
+            <a href="{{ route('digitallibrary.siswa.index') }}" class="btn btn-light btn-sm fw-bold text-success rounded-pill px-3">
                 ← Kembali ke Menu
             </a>
         </div>
@@ -72,7 +72,7 @@
                                             <span class="badge bg-info text-dark rounded-pill px-2.5 py-1">⏳ Menunggu Persetujuan</span>
                                         @elseif($terlambat && $hariTerlambat > 0)
                                             <span class="badge bg-danger rounded-3 p-2 text-start d-block" style="font-size: 0.75rem; font-weight: 500; line-height: 1.4;">
-                                                ⚠ Terlambat {{ $hariTerlambat }} hari<br>
+                                                 Terlambat {{ $hariTerlambat }} hari<br>
                                                 Total: Rp {{ number_format($denda, 0, ',', '.') }} (Rp {{ number_format($dendaPerHari, 0, ',', '.') }}/hari)
                                             </span>
                                         @else
@@ -80,7 +80,7 @@
                                         @endif
                                     </td>
                                     <td class="text-end">
-                                        <form action="{{ route('siswa.kembali', $trans->id) }}" method="POST" class="m-0">
+                                        <form action="{{ route('digitallibrary.siswa.kembali', $trans->id) }}" method="POST" class="m-0">
                                             @csrf
                                             <button type="submit" class="btn btn-warning btn-sm w-100 fw-bold rounded-pill shadow-sm" {{ $trans->status == 'pending' ? 'disabled' : '' }}>
                                                 {{ $trans->status == 'pending' ? 'Pending' : 'Kembalikan' }}
@@ -167,7 +167,7 @@
                                     </div>
                                 @endif
 
-                                <form action="{{ route('siswa.kembali', $trans->id) }}" method="POST" class="m-0">
+                                <form action="{{ route('digitallibrary.siswa.kembali', $trans->id) }}" method="POST" class="m-0">
                                     @csrf
                                     <button type="submit" class="btn btn-sm w-100 fw-bold shadow-sm"
                                             {{ $trans->status == 'pending' ? 'disabled' : '' }}

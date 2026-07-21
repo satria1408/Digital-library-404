@@ -70,7 +70,7 @@ class BookController extends Controller
 
         Book::create($validated);
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil ditambahkan');
+        return redirect()->route('digitallibrary.admin.books.index')->with('success', 'Buku berhasil ditambahkan');
     }
 
     public function edit($id)
@@ -118,7 +118,7 @@ class BookController extends Controller
 
         $book->update($validated);
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil diperbarui');
+        return redirect()->route('digitallibrary.admin.books.index')->with('success', 'Buku berhasil diperbarui');
     }
 
     public function destroy($id)
@@ -132,6 +132,6 @@ class BookController extends Controller
 
         $book->delete();
 
-        return redirect()->route('books.index')->with('success', 'Buku berhasil dihapus');
+        return redirect()->route('digitallibrary.admin.books.index')->with('success', 'Buku berhasil dihapus');
     }
 }

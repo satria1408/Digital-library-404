@@ -51,7 +51,7 @@
                                 </td>
                                 <td class="text-center pe-4">
                                     @if ($denda->status !== 'lunas')
-                                        <form action="{{ route('dendas.bayar', $denda->id) }}" method="POST" class="m-0">
+                                        <form action="{{ route('digitallibrary.admin.dendas.bayar', $denda->id) }}" method="POST" class="m-0">
                                             @csrf
                                             @method('PATCH')
                                             <button type="submit" class="btn btn-sm btn-outline-success rounded-pill px-3">

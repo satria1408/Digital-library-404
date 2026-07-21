@@ -21,7 +21,6 @@
         </div>
     </div>
 
-    <!-- Statistik Ringkas Overview (Buku Dihapus, Menjadi 3 Kolom Sejajar) -->
     <div class="row g-3 mb-4">
         <div class="col-12 col-md-4">
             <div class="card border shadow-sm rounded p-3 h-100">

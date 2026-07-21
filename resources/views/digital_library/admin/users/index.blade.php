@@ -4,11 +4,11 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3 mx-auto" style="max-width:1000px;">
     <h2>Kelola Anggota</h2>
-    <a href="{{ route('users.create') }}" class="btn btn-primary">Tambah Anggota</a>
+    <a href="{{ route('digitallibrary.admin.users.create') }}" class="btn btn-primary">Tambah Anggota</a>
 </div>
 
 {{-- Search --}}
-<form method="GET" action="{{ route('users.index') }}" class="row g-2 mb-3 mx-auto" style="max-width:1000px;">
+<form method="GET" action="{{ route('digitallibrary.admin.users.index') }}" class="row g-2 mb-3 mx-auto" style="max-width:1000px;">
     <div class="col-md-8">
         <input type="text" name="search" class="form-control"
                placeholder="Cari nama, username, atau alamat..."
@@ -18,7 +18,7 @@
         <button type="submit" class="btn btn-primary w-100">Cari</button>
     </div>
     <div class="col-md-2">
-        <a href="{{ route('users.index') }}" class="btn btn-secondary w-100">Reset</a>
+        <a href="{{ route('digitallibrary.admin.users.index') }}" class="btn btn-secondary w-100">Reset</a>
     </div>
 </form>
 
@@ -48,9 +48,9 @@
                     <td>{{ $user->username }}</td>
                     <td>{{ $user->alamat ?? '-' }}</td>
                     <td>
-                        <a href="{{ route('users.edit', $user->id) }}"
+                        <a href="{{ route('digitallibrary.admin.users.edit', $user->id) }}"
                            class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('users.destroy', $user->id) }}"
+                        <form action="{{ route('digitallibrary.admin.users.destroy', $user->id) }}"
                               method="POST" class="d-inline delete-form">
                             @csrf @method('DELETE')
                             <button type="button" class="btn btn-danger btn-sm btn-delete">Hapus</button>

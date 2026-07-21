@@ -199,7 +199,7 @@
                                         </div>
                                     @else
                                         <div class="text-center py-2 bg-danger-subtle text-danger border border-danger border-opacity-25 fw-bold rounded-3" style="font-size: 12px; color: #842029 !important;">
-                                            ⚠ Terlambat
+                                            Terlambat
                                         </div>
                                     @endif
                                 </div>

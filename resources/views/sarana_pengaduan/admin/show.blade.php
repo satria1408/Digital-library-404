@@ -4,7 +4,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
-            <a href="{{ route('admin.complaints.index') }}" class="text-decoration-none small fw-bold text-muted">
+            <a href="{{ route('saranapengaduan.admin.index') }}" class="text-decoration-none small fw-bold text-muted">
                 ← Kembali ke Daftar Laporan
             </a>
             <h2 class="h4 mb-0 mt-1 text-gray-800 fw-bold">Detail Pengaduan #{{ $complaint->ticket_code }}</h2>
@@ -109,7 +109,7 @@
                 <div class="card-body">
                     <h5 class="card-title fw-bold text-dark mb-3">Eksekusi Tindakan</h5>
                     
-                    <form action="{{ route('admin.complaints.update_status', $complaint->id) }}" method="POST">
+                    <form action="{{ route('saranapengaduan.admin.update_status', $complaint->id) }}" method="POST">
                         @csrf
                         @method('PATCH')
 

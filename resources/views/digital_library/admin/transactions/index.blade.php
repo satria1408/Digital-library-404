@@ -7,14 +7,14 @@
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3">
         <h2 class="mb-0">Kelola Transaksi</h2>
 
-        <a href="{{ route('transactions.create') }}" class="btn btn-primary">
+        <a href="{{ route('digitallibrary.admin.transactions.create') }}" class="btn btn-primary">
             Tambah Peminjaman
         </a>
     </div>
 
     {{-- Filter & Search --}}
     <form method="GET"
-          action="{{ route('transactions.index') }}"
+          action="{{ route('digitallibrary.admin.transactions.index') }}"
           class="row g-2 mb-3">
 
         <div class="col-12 col-md-5">
@@ -72,7 +72,7 @@
                 Cari
             </button>
 
-            <a href="{{ route('transactions.index') }}"
+            <a href="{{ route('digitallibrary.admin.transactions.index') }}"
                class="btn btn-secondary w-100">
                 Reset
             </a>
@@ -190,13 +190,13 @@
                                     <div class="d-flex flex-wrap gap-1">
 
                                         @if($trans->status == 'pending')
-                                            <form action="{{ route('admin.transactions.setujui', $trans->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('digitallibrary.admin.transactions.setujui', $trans->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-success btn-sm fw-bold">Setuju</button>
                                             </form>
 
-                                            <form action="{{ route('admin.transactions.tolak', $trans->id) }}" method="POST" class="d-inline">
+                                            <form action="{{ route('digitallibrary.admin.transactions.tolak', $trans->id) }}" method="POST" class="d-inline">
                                                 @csrf
                                                 @method('PATCH')
                                                 <button type="submit" class="btn btn-secondary btn-sm">Tolak</button>
@@ -204,13 +204,13 @@
                                         @endif
 
                                         <a
-                                            href="{{ route('transactions.edit', $trans->id) }}"
+                                            href="{{ route('digitallibrary.admin.transactions.edit', $trans->id) }}"
                                             class="btn btn-info btn-sm">
                                             Edit
                                         </a>
 
                                         <form
-                                            action="{{ route('transactions.destroy', $trans->id) }}"
+                                            action="{{ route('digitallibrary.admin.transactions.destroy', $trans->id) }}"
                                             method="POST"
                                             class="delete-form">
 
