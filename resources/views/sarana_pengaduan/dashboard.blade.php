@@ -1,4 +1,4 @@
-@extends('layout.admin_pengaduan')
+@extends('layout.app')
 
 @section('content')
 <div class="container-fluid py-2">
@@ -23,7 +23,7 @@
         </div>
     @endif
 
-    <!-- 1. BARIS STATISTIK UTAMA (TEKS & ANGKA ADAPTIF PENUH) -->
+    <!-- 1. BARIS STATISTIK UTAMA -->
     <div class="row g-3 mb-4">
         <!-- Antrean -->
         <div class="col-6 col-md-3">
@@ -41,7 +41,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Diproses -->
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm adaptive-card" style="border-radius: 12px;">
@@ -58,7 +58,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Selesai -->
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm adaptive-card" style="border-radius: 12px;">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Ditolak -->
         <div class="col-6 col-md-3">
             <div class="card border-0 shadow-sm adaptive-card" style="border-radius: 12px;">
@@ -97,7 +97,7 @@
     <!-- 2. TOMBOL INTERAKTIF NAVIGASI CEPAT -->
     <div class="row g-3 mb-4">
         <!-- Menu Antrean Masuk -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
             <a href="{{ route('saranapengaduan.admin.index') }}" class="card h-100 border-0 text-decoration-none adaptive-card p-3 luxury-card-interactive" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-info"></div>
@@ -110,8 +110,22 @@
             </a>
         </div>
 
+        {{-- CARD BARU: BALIK KE PERPUSTAKAAN DIGITAL --}}
+        <div class="col-12 col-md-4">
+            <a href="{{ route('digitallibrary.admin.dashboard') }}" class="card h-100 border-0 text-decoration-none adaptive-card p-3 luxury-card-interactive" style="border-radius: 16px;">
+                <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
+                    <div class="glow-blueprint bg-primary"></div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center mb-3 shadow-sm text-primary position-relative" style="width: 65px; height: 65px; background: rgba(13, 110, 253, 0.06); border: 1px solid rgba(13, 110, 253, 0.15);">
+                        <i class="bi bi-book-half fs-2"></i>
+                    </div>
+                    <h4 class="fw-bold mb-2 position-relative adaptive-title" style="font-size: 1.1rem; letter-spacing: -0.01em;">Perpustakaan Digital</h4>
+                    <p class="adaptive-muted mb-0 small px-2 position-relative">Kembali ke dashboard utama perpustakaan sekolah.</p>
+                </div>
+            </a>
+        </div>
+
         <!-- Menu Log Sistem Keamanan -->
-        <div class="col-12 col-md-6">
+        <div class="col-12 col-md-4">
             <a href="{{ route('security.logs.index') }}" class="card h-100 border-0 text-decoration-none adaptive-card p-3 luxury-card-interactive security-card" style="border-radius: 16px;">
                 <div class="card-body text-center d-flex flex-column align-items-center justify-content-center py-4 position-relative overflow-hidden">
                     <div class="glow-blueprint bg-danger"></div>
@@ -128,27 +142,21 @@
 </div>
 
 <style>
-    /* Efek Micro-Interaction Premium */
     .luxury-card-interactive {
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.02) !important;
         transition: all 0.3s cubic-bezier(0.215, 0.610, 0.355, 1);
     }
-
     .luxury-card-interactive:hover {
         transform: translateY(-6px);
         box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05) !important;
     }
-
     .luxury-card-interactive:active {
         transform: scale(0.985);
     }
-
     .luxury-card-interactive.security-card {
         background: rgba(220, 53, 69, .04) !important;
         border: 1px solid rgba(220, 53, 69, .12) !important;
     }
-
-    /* Soft Blur Glow Effect */
     .glow-blueprint {
         position: absolute;
         width: 100px;
@@ -160,7 +168,6 @@
         filter: blur(20px);
         transition: all 0.3s ease;
     }
-
     .luxury-card-interactive:hover .glow-blueprint {
         opacity: 0.08;
         transform: scale(1.8);

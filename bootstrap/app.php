@@ -28,7 +28,8 @@ return Application::configure(basePath: dirname(__DIR__))
         |--------------------------------------------------------------------------
         */
         $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRole::class,
+            'auth'          => \Illuminate\Auth\Middleware\Authenticate::class, // <-- DIDAFTARKAN KEMBALI DI SINI
+            'role'          => \App\Http\Middleware\CheckRole::class,
             'sql.injection' => \App\Http\Middleware\SqlInjectionMiddleware::class,
         ]);
 
@@ -52,14 +53,19 @@ return Application::configure(basePath: dirname(__DIR__))
                 return route('developer.dashboard');
             }
 
-            // 2. Cek Role Admin
+            // 2. Cek Role Admin — masuk lewat HUB dulu
             if ($user?->role === 'admin') {
                 return route('digitallibrary.admin.dashboard');
             }
 
-            // 3. Cek Role Siswa
+            // 3. Cek Role Siswa — masuk lewat HUB dulu
             if ($user?->role === 'siswa') {
-                return route('digitallibrary.siswa.dashboard');
+                return route('siswa.dashboard');
+            }
+
+            // 4. Cek Role Owner
+            if ($user?->role === 'owner') {
+                return route('owner.dashboard');
             }
 
             return '/';

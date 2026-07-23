@@ -21,7 +21,7 @@ class CheckRole
         // Login tapi role tidak sesuai — lempar ke dashboard sesuai role aslinya
         if ($user->role !== $role) {
             if ($user->role === 'admin') {
-                return redirect()->route('admin.dashboard');
+                return redirect()->route('digitallibrary.admin.dashboard');
             }
 
             if ($user->role === 'siswa') {

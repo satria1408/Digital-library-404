@@ -5,6 +5,10 @@ namespace App\Http\Controllers\DigitalLibrary\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Admin\Book;
+use App\Models\DigitalLibrary\Admin\Transaction;
+use App\Models\DigitalLibrary\Admin\Denda;
+use App\Models\SaranaPengaduan\Admin\Complaint;
+use App\Models\SecurityLog;
 use Illuminate\Http\Request;
 use App\Imports\BukuImport;
 use Maatwebsite\Excel\Facades\Excel;
@@ -17,8 +21,26 @@ class AdminController extends Controller
     public function index()
     {
         $totalBuku = Book::count();
-        $totalSiswa = User::where('role', 'siswa')->count();
-        return view('digital_library.admin.dashboard', compact('totalBuku', 'totalSiswa'));
+        $totalAnggota = User::where('role', 'siswa')->count();
+        $totalTransaksiAktif = Transaction::whereIn('status', ['pinjam', 'pending'])->count();
+        $totalDendaBelumLunas = Denda::where('status', 'belum_bayar')->sum('nominal');
+
+        $totalPengaduanBaru = Complaint::where('status', 'diterima')->count();
+        $totalPengaduanDiproses = Complaint::where('status', 'diproses')->count();
+        $totalPengaduanSelesai = Complaint::where('status', 'selesai')->count();
+
+        $totalSecurityLog = SecurityLog::count();
+
+        return view('digital_library.admin.dashboard', compact(
+            'totalBuku',
+            'totalAnggota',
+            'totalTransaksiAktif',
+            'totalDendaBelumLunas',
+            'totalPengaduanBaru',
+            'totalPengaduanDiproses',
+            'totalPengaduanSelesai',
+            'totalSecurityLog'
+        ));
     }
 
     /**
@@ -27,14 +49,11 @@ class AdminController extends Controller
      */
     public function importBukuExcel(Request $request)
     {
-        // 1. Validasi file agar hanya menerima format Excel/CSV
         $request->validate([
             'file_excel' => 'required|mimes:xlsx,xls,csv'
         ]);
 
         try {
-            // 2. Proses import langsung. Baris yang ISBN-nya duplikat atau kosong
-            //    otomatis dilewati oleh BukuImport.
             $import = new BukuImport;
             Excel::import($import, $request->file('file_excel'));
 
@@ -43,7 +62,6 @@ class AdminController extends Controller
                 'Import buku selesai. Data baru sudah langsung tersimpan di daftar buku.'
             );
         } catch (\Exception $e) {
-            // 3. Menangani error jika file corrupt atau format tidak sesuai
             return redirect()->back()->with('error', 'Gagal memproses file Excel: ' . $e->getMessage());
         }
     }

@@ -5,7 +5,7 @@ use App\Http\Controllers\DigitalLibrary\Admin\AdminController;
 use App\Http\Controllers\DigitalLibrary\Admin\BookController;
 use App\Http\Controllers\DigitalLibrary\Admin\TransactionController;
 use App\Http\Controllers\DigitalLibrary\Admin\UserController;
-use App\Http\Controllers\DigitalLibrary\Admin\AdminDendaController;
+use App\Http\Controllers\DigitalLibrary\Denda\AdminDendaController;
 
 Route::middleware(['auth', 'role:admin'])
     ->prefix('admin')

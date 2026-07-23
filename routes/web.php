@@ -2,16 +2,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes — Loader
-|--------------------------------------------------------------------------
-| File ini cuma nge-load semua route module. Jangan taro logic route
-| langsung di sini. Tambahan module baru cukup daftarin di bawah.
-|--------------------------------------------------------------------------
-*/
+require __DIR__.'/limiters.php';
 
 require __DIR__.'/auth.php';
+
+require __DIR__.'/modules/siswa.php';
 
 require __DIR__.'/modules/digitallibrary/admin.php';
 require __DIR__.'/modules/digitallibrary/siswa.php';

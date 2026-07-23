@@ -4,28 +4,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Informasi Perpustakaan</title>
+    <title>Sistem Informasi Perpustakaan & Portal Sekolah</title>
 
+    <!-- Bootstrap 5 & Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    
+    <!-- Google Font: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-    /* Konfigurasi Dasar Aplikasi */
     :root {
         --app-surface-bg: #f8fafc;
-        --app-text-main: #212529;
-        --navigation-bar-bg: #0d6efd;
-        --navigation-text: #ffffff;
-        --navigation-dimmed: rgba(255, 255, 255, 0.70);
-        --navigation-divider: rgba(255, 255, 255, 0.12);
-        --drawer-bg: #1e293b;
+        --app-text-main: #0f172a;
+        --drawer-bg: #0f172a;
         --drawer-text: #f8fafc;
     }
 
     body.dark-mode {
-        --app-surface-bg: #121212;
+        --app-surface-bg: #0b0f17;
         --app-text-main: #f3f4f6;
-        --drawer-bg: #0f172a;
+        --drawer-bg: #0b0f17;
         --drawer-text: #f3f4f6;
     }
 
@@ -36,7 +37,7 @@
         background-color: var(--app-surface-bg) !important;
         color: var(--app-text-main) !important;
         transition: background-color 0.25s ease, color 0.25s ease;
-        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     }
 
     .base-layout-container {
@@ -46,79 +47,69 @@
         background-color: var(--app-surface-bg) !important;
     }
 
-    .dynamic-view-viewport {
-        flex: 1;
-    }
+    .dynamic-view-viewport { flex: 1; }
 
+    /* Custom Clean Top Navbar */
     .custom-app-nav {
-        margin: 0 !important;
-        border-radius: 0 !important;
-        border-bottom: 1px solid var(--navigation-divider);
-        transition: background-color 0.3s ease;
+        background-color: #ffffff !important;
+        border-bottom: 1px solid #e2e8f0;
+        transition: all 0.3s ease;
     }
-
-    /* Variasi warna tema bar atas per halaman admin */
-    .bg-theme-dashboard     { background-color: #0d6efd !important; }
-    .bg-theme-books         { background-color: #6f42c1 !important; }
-    .bg-theme-users         { background-color: #0d9488 !important; }
-    .bg-theme-transactions  { background-color: #198754 !important; }
-    .bg-theme-dendas        { background-color: #f59e0b !important; }
-    .bg-theme-security      { background-color: #dc3545 !important; }
 
     body.dark-mode .custom-app-nav {
-        background-color: #1f2937 !important;
+        background-color: #1e293b !important;
+        border-bottom-color: #334155;
     }
 
-    .brand-ident, .nav-info-text, #liveClockDisplay {
-        color: var(--navigation-text) !important;
+    .nav-pill-custom {
+        color: #64748b;
+        font-weight: 600;
+        font-size: 0.88rem;
+        padding: 0.5rem 0.9rem;
+        border-radius: 9999px;
+        transition: all 0.2s ease;
     }
 
-    /* FIX DARK MODE UNTUK TULISAN */
+    .nav-pill-custom:hover {
+        background-color: #f1f5f9;
+        color: #0d6efd;
+    }
+
+    .nav-pill-custom.active {
+        background-color: rgba(13, 110, 253, 0.1);
+        color: #0d6efd !important;
+    }
+
+    body.dark-mode .nav-pill-custom { color: #94a3b8; }
+    body.dark-mode .nav-pill-custom:hover { background-color: #334155; color: #38bdf8; }
+    body.dark-mode .nav-pill-custom.active { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8 !important; }
+
+    /* Dark mode override */
     body.dark-mode .text-dark,
-    body.dark-mode h1,
-    body.dark-mode h2,
-    body.dark-mode h3,
-    body.dark-mode h4,
-    body.dark-mode h5,
-    body.dark-mode h6,
-    body.dark-mode .card h4,
-    body.dark-mode .card h5 {
-        color: #ffffff !important;
-    }
+    body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
+    body.dark-mode h4, body.dark-mode h5, body.dark-mode h6,
+    body.dark-mode .card h4, body.dark-mode .card h5 { color: #ffffff !important; }
 
-    body.dark-mode .text-muted {
-        color: #9ca3af !important;
-    }
+    body.dark-mode .text-muted { color: #9ca3af !important; }
 
     body.dark-mode .card {
-        background-color: #1f2937 !important;
-        border-color: #374151 !important;
+        background-color: #1e293b !important;
+        border-color: #334155 !important;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25) !important;
     }
 
-    body.dark-mode .bg-white {
-        background-color: #1f2937 !important;
-    }
+    body.dark-mode .bg-white { background-color: #1e293b !important; }
 
-    /* ==========================================================================
-       DRAWER SIDEBAR PREMIUM
-       ========================================================================== */
+    /* Offcanvas Drawer Styling */
     .custom-drawer {
         background-color: var(--drawer-bg) !important;
         color: var(--drawer-text) !important;
-        backdrop-filter: blur(10px);
     }
 
     .drawer-profile-card {
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 12px;
-        transition: all 0.3s ease;
-    }
-
-    .drawer-profile-card:hover {
-        background: rgba(255, 255, 255, 0.07);
-        border-color: rgba(255, 255, 255, 0.15);
     }
 
     .menu-section-label {
@@ -134,11 +125,11 @@
 
     .custom-drawer .nav-link {
         color: rgba(255, 255, 255, 0.7) !important;
-        font-size: 0.92rem;
+        font-size: 0.9rem;
         font-weight: 500;
         border-radius: 10px;
         padding: 10px 14px !important;
-        transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: all 0.2s ease;
         display: flex;
         align-items: center;
         gap: 12px;
@@ -146,8 +137,8 @@
 
     .custom-drawer .nav-link:hover {
         color: #ffffff !important;
-        background: rgba(255, 255, 255, 0.05) !important;
-        transform: translateX(4px);
+        background: rgba(255, 255, 255, 0.08) !important;
+        transform: translateX(3px);
     }
 
     .custom-drawer .nav-link.active {
@@ -156,28 +147,6 @@
         font-weight: 600;
         box-shadow: 0 4px 12px rgba(13, 110, 253, 0.25);
     }
-
-    .custom-drawer .nav-link.active-books {
-        background: linear-gradient(135deg, #6f42c1, #59339d) !important;
-        box-shadow: 0 4px 12px rgba(111, 66, 193, 0.25);
-    }
-    .custom-drawer .nav-link.active-users {
-        background: linear-gradient(135deg, #0d9488, #0b7a70) !important;
-        box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
-    }
-    .custom-drawer .nav-link.active-transactions {
-        background: linear-gradient(135deg, #198754, #146c43) !important;
-        box-shadow: 0 4px 12px rgba(25, 135, 84, 0.25);
-    }
-    .custom-drawer .nav-link.active-dendas {
-        background: linear-gradient(135deg, #f59e0b, #d97706) !important;
-        box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
-        color: #212529 !important;
-    }
-    .custom-drawer .nav-link.active-security {
-        background: linear-gradient(135deg, #dc3545, #b02a37) !important;
-        box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
-    }
 </style>
 
 </head>
@@ -185,94 +154,141 @@
     <div class="base-layout-container">
     @auth
 
-    <nav class="navbar navbar-expand-lg custom-app-nav navbar-dark shadow-sm
-        {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'bg-theme-dashboard' : '' }}
-        {{ request()->routeIs('digitallibrary.admin.books.*') ? 'bg-theme-books' : '' }}
-        {{ request()->routeIs('digitallibrary.admin.users.*') ? 'bg-theme-users' : '' }}
-        {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'bg-theme-transactions' : '' }}
-        {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'bg-theme-dendas' : '' }}
-        {{ request()->routeIs('security.logs.*') ? 'bg-theme-security' : '' }}
-    ">
-        <div class="container-fluid px-3">
-            <button class="btn btn-link text-white p-0 border-0 me-3 d-lg-none shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appMobileDrawer">
-                <i class="bi bi-text-left fs-2"></i>
+    <!-- TOP NAVBAR CLEAN & MODERN -->
+    <nav class="navbar navbar-expand-lg custom-app-nav sticky-top py-2 shadow-sm">
+        <div class="container-fluid px-3 px-lg-4">
+            
+            <!-- Mobile Menu Toggle Button -->
+            <button class="btn btn-link text-dark p-0 border-0 me-3 d-lg-none shadow-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#appMobileDrawer">
+                <i class="bi bi-list fs-2"></i>
             </button>
 
-            <a class="brand-ident navbar-brand fw-bold d-flex align-items-center gap-2" href="{{ route('digitallibrary.admin.dashboard') }}">
-                <i class="bi bi-book-half fs-5"></i> Oneschool <span class="badge bg-light text-primary ms-1" style="font-size:.6rem;">Admin</span>
+            <!-- Brand Logo -->
+            <a class="navbar-brand d-flex align-items-center gap-2 me-4" href="{{ route('digitallibrary.admin.dashboard') }}">
+                <div class="bg-primary bg-opacity-10 text-primary rounded-3 d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                    <i class="bi bi-building-gear fs-5"></i>
+                </div>
+                <div>
+                    <span class="fw-bold text-dark fs-6 d-block lh-1">Oneschool</span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 rounded-pill mt-1" style="font-size: 0.62rem;">Admin Hub</span>
+                </div>
             </a>
 
+            <!-- Desktop Nav Menu -->
             <div class="collapse navbar-collapse" id="desktopNavRegistry">
-                <ul class="navbar-nav me-auto">
+                <ul class="navbar-nav me-auto gap-1">
+                    
+                    <!-- 1. Dashboard Utama -->
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.dashboard') }}">
-                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        <a class="nav-link nav-pill-custom d-flex align-items-center gap-1.5 {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.dashboard') }}">
+                            <i class="bi bi-grid-fill text-primary"></i> Dashboard Utama
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.books.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.books.index') }}">
-                            <i class="bi bi-book-half me-1"></i> Kelola Buku
+
+                    <!-- 2. Dropdown Pilih Modul Active -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link nav-pill-custom dropdown-toggle d-flex align-items-center gap-1.5" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-layers-fill text-secondary"></i> Kelola Modul
                         </a>
+                        <ul class="dropdown-menu border-0 shadow-lg rounded-4 p-2 mt-2" style="width: 260px;">
+                            
+                            <!-- Sub Modul 1: Digital Library -->
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2.5" href="{{ route('digitallibrary.admin.books.index') }}">
+                                    <div class="bg-purple-subtle text-purple p-2 rounded-3 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-book-half text-primary fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small">Perpustakaan Digital</div>
+                                        <small class="text-muted d-block" style="font-size: 0.72rem;">Buku, Anggota, Transaksi</small>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider my-1"></li>
+
+                            <!-- Sub Modul 2: Sarana Pengaduan -->
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2.5" href="{{ route('saranapengaduan.admin.dashboard') }}">
+                                    <div class="bg-warning-subtle text-warning p-2 rounded-3 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-chat-square-text-fill text-warning fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small">Sarana Pengaduan</div>
+                                        <small class="text-muted d-block" style="font-size: 0.72rem;">Kelola aduan fasilitas</small>
+                                    </div>
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider my-1"></li>
+
+                            <!-- Sub Modul 3: Security Log -->
+                            <li>
+                                <a class="dropdown-item rounded-3 py-2 d-flex align-items-center gap-2.5" href="{{ route('security.logs.index') }}">
+                                    <div class="bg-danger-subtle text-danger p-2 rounded-3 d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-shield-lock-fill text-danger fs-5"></i>
+                                    </div>
+                                    <div>
+                                        <div class="fw-bold text-dark small">Security Log</div>
+                                        <small class="text-muted d-block" style="font-size: 0.72rem;">Pantau riwayat aktivitas</small>
+                                    </div>
+                                </a>
+                            </li>
+
+                        </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.users.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.users.index') }}">
-                            <i class="bi bi-people-fill me-1"></i> Anggota
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.transactions.index') }}">
-                            <i class="bi bi-arrow-left-right me-1"></i> Transaksi
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'active' : '' }}" href="{{ route('digitallibrary.admin.dendas.index') }}">
-                            <i class="bi bi-cash-stack me-1"></i> Denda
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('security.logs.*') ? 'active' : '' }}" href="{{ route('security.logs.index') }}">
-                            <i class="bi bi-shield-lock-fill me-1"></i> Security Log
-                        </a>
-                    </li>
+
                 </ul>
             </div>
 
+            <!-- Right Controls: Theme Switcher, Clock, Profile -->
             <div class="d-flex align-items-center gap-3 ms-auto">
-                <button id="themeSwitcherToggle" class="btn btn-link p-0 border-0 text-white shadow-none" onclick="switchAppTheme()" title="Ganti Mode Visual">
-                    <i id="themeToggleStateIcon" class="bi bi-moon-stars-fill fs-5"></i>
+                
+                <!-- Dark Mode Toggle -->
+                <button id="themeSwitcherToggle" class="btn btn-light rounded-circle border-0 p-2 shadow-none d-flex align-items-center justify-content-center" onclick="switchAppTheme()" title="Ganti Mode Visual" style="width: 36px; height: 36px;">
+                    <i id="themeToggleStateIcon" class="bi bi-moon-stars-fill text-dark fs-6"></i>
                 </button> 
 
-                <span id="liveClockDisplay" class="d-none d-sm-inline small fw-medium text-opacity-75">00/00/0000 | 00:00:00</span>
+                <!-- Jam Realtime -->
+                <span id="liveClockDisplay" class="d-none d-xl-inline small fw-semibold text-secondary">00/00/0000 | 00:00:00</span>
 
+                <!-- Profile Dropdown -->
                 <div class="dropdown">
-                    <button class="btn btn-outline-light btn-sm dropdown-toggle" data-bs-toggle="dropdown">
-                        <i class="bi bi-person-circle me-1"></i>
-                        {{ auth()->user()->nama_lengkap }}
+                    <button class="btn btn-outline-secondary border-0 rounded-pill btn-sm dropdown-toggle d-flex align-items-center gap-2 p-1 pe-3" data-bs-toggle="dropdown">
+                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width: 30px; height: 30px; font-size: 0.8rem;">
+                            {{ strtoupper(substr(auth()->user()->nama_lengkap ?? 'A', 0, 1)) }}
+                        </div>
+                        <span class="fw-semibold small text-dark d-none d-md-inline">{{ auth()->user()->nama_lengkap }}</span>
                     </button>
-                    <ul class="dropdown-menu dropdown-menu-end shadow">
+                    <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 rounded-4 p-2 mt-2">
                         <li>
-                            <span class="dropdown-item-text">
-                                <strong>{{ ucfirst(auth()->user()->role) }}</strong>
-                            </span>
+                            <div class="px-3 py-2">
+                                <span class="d-block fw-bold small text-dark">{{ auth()->user()->nama_lengkap }}</span>
+                                <span class="badge bg-primary-subtle text-primary border border-primary border-opacity-25 rounded-pill" style="font-size: 0.65rem;">
+                                    {{ ucfirst(auth()->user()->role ?? 'Admin') }}
+                                </span>
+                            </div>
                         </li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <form action="{{ route('logout') }}" method="POST">
                                 @csrf
-                                <button class="dropdown-item text-danger">
-                                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                                <button class="dropdown-item text-danger rounded-3 fw-semibold small d-flex align-items-center gap-2">
+                                    <i class="bi bi-box-arrow-right"></i> Logout
                                 </button>
                             </form>
                         </li>
                     </ul>
                 </div>
+
             </div>
         </div>
     </nav>
 
+    <!-- MOBILE DRAWER (OFFCANVAS) -->
     <div class="offcanvas offcanvas-start custom-drawer border-0 shadow-lg" tabindex="-1" id="appMobileDrawer" style="width: 280px;">
         <div class="offcanvas-header border-bottom border-secondary border-opacity-10 py-3 px-4">
-            <h5 class="offcanvas-title fw-bold text-white d-flex align-items-center gap-2" style="font-size: 1.1rem; letter-spacing: -0.02em;">
+            <h5 class="offcanvas-title fw-bold text-white d-flex align-items-center gap-2" style="font-size: 1.1rem;">
                 <i class="bi bi-shield-lock-fill text-primary"></i> Portal Admin
             </h5>
             <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="offcanvas" style="font-size: 0.8rem;"></button>
@@ -280,51 +296,67 @@
 
         <div class="offcanvas-body px-3 py-4">
 
+            <!-- Profile Card -->
             <div class="drawer-profile-card p-3 d-flex align-items-center gap-3 mb-4">
-                <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 46px; height: 46px; min-width: 46px; font-size: 1.2rem; background: linear-gradient(135deg, #0d6efd, #0b5ed7) !important;">
+                <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center fw-bold shadow-sm" style="width: 42px; height: 42px; min-width: 42px; font-size: 1.1rem; background: linear-gradient(135deg, #0d6efd, #0b5ed7) !important;">
                     {{ strtoupper(substr(auth()->user()->nama_lengkap ?? 'A', 0, 1)) }}
                 </div>
                 <div class="overflow-hidden">
-                    <span class="fw-bold d-block text-truncate text-white" style="font-size: 0.9rem;" title="{{ auth()->user()->nama_lengkap }}">
+                    <span class="fw-bold d-block text-truncate text-white" style="font-size: 0.88rem;">
                         {{ auth()->user()->nama_lengkap }}
                     </span>
-                    <div class="d-flex align-items-center gap-1 mt-1">
+                    <div class="d-flex align-items-center gap-1 mt-0.5">
                         <span class="badge bg-success-subtle text-success rounded-pill px-2 py-0" style="font-size: 0.6rem; font-weight: 700;">ONLINE</span>
-                        <span class="text-white-50 small text-uppercase" style="font-size: 0.65rem; font-weight: 600;">• {{ ucfirst(auth()->user()->role ?? 'Admin') }}</span>
+                        <span class="text-white-50 small text-uppercase" style="font-size: 0.65rem;">• {{ ucfirst(auth()->user()->role ?? 'Admin') }}</span>
                     </div>
                 </div>
             </div>
 
+            <!-- Drawer Menu Navigation -->
             <div class="menu-navigation-wrapper">
                 <span class="menu-section-label">Menu Utama</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
                         <a href="{{ route('digitallibrary.admin.dashboard') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.dashboard') ? 'active' : '' }}">
-                            <i class="bi bi-speedometer2 fs-5"></i> Dashboard
+                            <i class="bi bi-grid-fill fs-5 text-primary"></i> Dashboard Utama
                         </a>
                     </li>
                 </ul>
 
-                <span class="menu-section-label">Manajemen Data</span>
+                <span class="menu-section-label">Perpustakaan Digital</span>
                 <ul class="nav nav-pills flex-column gap-1 mb-4">
                     <li class="nav-item">
-                        <a href="{{ route('digitallibrary.admin.books.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.books.*') ? 'active active-books' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.books.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.books.*') ? 'active' : '' }}">
                             <i class="bi bi-book-half fs-5"></i> Kelola Buku
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('digitallibrary.admin.users.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.users.*') ? 'active active-users' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.users.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.users.*') ? 'active' : '' }}">
                             <i class="bi bi-people-fill fs-5"></i> Anggota
                         </a>
                     </li> 
                     <li class="nav-item">
-                        <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'active active-transactions' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.transactions.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.transactions.*') ? 'active' : '' }}">
                             <i class="bi bi-arrow-left-right fs-5"></i> Transaksi
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ route('digitallibrary.admin.dendas.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'active active-dendas' : '' }}">
+                        <a href="{{ route('digitallibrary.admin.dendas.index') }}" class="nav-link {{ request()->routeIs('digitallibrary.admin.dendas.*') ? 'active' : '' }}">
                             <i class="bi bi-cash-stack fs-5"></i> Denda
+                        </a>
+                    </li>
+                </ul>
+
+                <span class="menu-section-label">Sarana Pengaduan</span>
+                <ul class="nav nav-pills flex-column gap-1 mb-4">
+                    <li class="nav-item">
+                        <a href="{{ route('saranapengaduan.admin.dashboard') }}" class="nav-link {{ request()->routeIs('saranapengaduan.admin.dashboard') ? 'active' : '' }}">
+                            <i class="bi bi-speedometer2 fs-5"></i> Dashboard Pengaduan
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ route('saranapengaduan.admin.index') }}" class="nav-link {{ request()->routeIs('saranapengaduan.admin.index') || request()->routeIs('saranapengaduan.admin.show') ? 'active' : '' }}">
+                            <i class="bi bi-card-list fs-5"></i> Daftar Laporan
                         </a>
                     </li>
                 </ul>
@@ -332,7 +364,7 @@
                 <span class="menu-section-label">Keamanan</span>
                 <ul class="nav nav-pills flex-column gap-1">
                     <li class="nav-item">
-                        <a href="{{ route('security.logs.index') }}" class="nav-link {{ request()->routeIs('security.logs.*') ? 'active active-security' : '' }}">
+                        <a href="{{ route('security.logs.index') }}" class="nav-link {{ request()->routeIs('security.logs.*') ? 'active' : '' }}">
                             <i class="bi bi-shield-lock-fill fs-5"></i> Security Log
                         </a>
                     </li>
@@ -342,12 +374,15 @@
     </div>
     @endauth
 
+    <!-- VIEWPORT CONTENT -->
     <div class="dynamic-view-viewport">
         @yield('content')
     </div>
     </div>
 
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <script>
     function renderLiveDateTime() {
         const currentDateInstance = new Date();
@@ -363,9 +398,9 @@
         document.body.classList.toggle('dark-mode');
         const contextualIcon = document.getElementById('themeToggleStateIcon');
         if (document.body.classList.contains('dark-mode')) {
-            if (contextualIcon) contextualIcon.className = 'bi bi-sun-fill fs-5 text-warning';
+            if (contextualIcon) contextualIcon.className = 'bi bi-sun-fill fs-6 text-warning';
         } else {
-            if (contextualIcon) contextualIcon.className = 'bi bi-moon-stars-fill fs-5 text-white';
+            if (contextualIcon) contextualIcon.className = 'bi bi-moon-stars-fill fs-6 text-dark';
         }
     }
 </script>
