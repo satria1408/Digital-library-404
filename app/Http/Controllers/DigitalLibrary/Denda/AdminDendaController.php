@@ -4,6 +4,10 @@ namespace App\Http\Controllers\DigitalLibrary\Denda;
 
 use App\Http\Controllers\Controller;
 use App\Models\DigitalLibrary\Admin\Denda;
+use App\Exports\DendaBulananExport;
+use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class AdminDendaController extends Controller
 {
@@ -34,5 +38,20 @@ class AdminDendaController extends Controller
 
         // Redirect balik ke halaman daftar denda dengan pesan sukses
         return redirect()->route('digitallibrary.admin.dendas.index')->with('success', 'Denda berhasil dilunasi');
+    }
+
+    /**
+     * Export rekap denda satu bulan ke file Excel, dikelompokkan per tanggal.
+     * Jika bulan/tahun tidak dikirim, default ke bulan berjalan.
+     */
+    public function exportBulanan(Request $request)
+    {
+        $bulan = (int) $request->query('bulan', now()->month);
+        $tahun = (int) $request->query('tahun', now()->year);
+
+        $namaBulan = Carbon::create($tahun, $bulan, 1)->translatedFormat('F_Y');
+        $filename = "Rekap_Denda_{$namaBulan}.xlsx";
+
+        return Excel::download(new DendaBulananExport($bulan, $tahun), $filename);
     }
 }

@@ -18,7 +18,8 @@ return new class extends Migration
             // Mencatat ID siswa yang melapor secara internal di database
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade'); 
             
-            $table->enum('type', ['kerusakan', 'keluhan']);
+            // Opsi 'pengaduan' sudah ditambahkan agar sesuai dengan Seeder
+            $table->enum('type', ['kerusakan', 'keluhan', 'pengaduan']);
             $table->string('category');
             $table->text('description');
             $table->string('photo_path')->nullable();

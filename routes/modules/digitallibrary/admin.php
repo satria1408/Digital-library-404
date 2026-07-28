@@ -34,6 +34,10 @@ Route::middleware(['auth', 'role:admin'])
         Route::get('/dendas', [AdminDendaController::class, 'index'])
             ->name('dendas.index');
 
+        
+        Route::get('/dendas/export', [AdminDendaController::class, 'exportBulanan'])
+            ->name('dendas.export');
+
         Route::patch('/dendas/{id}/bayar', [AdminDendaController::class, 'bayar'])
             ->name('dendas.bayar');
     });

@@ -12,11 +12,14 @@ class Denda extends Model
     {
         return $this->belongsTo(Transaction::class);
     }
-
     public static function hitungNominal(int $hari): int
     {
+        if ($hari >= 30) {
+            $bulanTelat = (int) ceil($hari / 30);
+            return $bulanTelat * 10000;
+        }
+
         return match(true) {
-            $hari >= 30 => 10000,
             $hari >= 14 => 8000,
             $hari >= 7  => 5000,
             $hari >= 3  => 2000,

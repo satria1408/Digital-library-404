@@ -34,20 +34,22 @@
                                     $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline)->startOfDay() : null;
                                     $today = \Carbon\Carbon::today()->startOfDay();
                                     $terlambat = $deadline && $today->gt($deadline) && $trans->status == 'pinjam';
-                                    
-                                    // Gunakan abs() untuk memastikan nilai hari keterlambatan selalu positif mutlak
+
                                     $hariTerlambat = $terlambat ? abs($today->diffInDays($deadline, false)) : 0;
-                                    
-                                    // SERAGAMKAN LOGIKA DENDA BERTINGKAT
-                                    $dendaPerHari = match(true) {
-                                        $hariTerlambat >= 30 => 10000,
-                                        $hariTerlambat >= 14 => 8000,
-                                        $hariTerlambat >= 7  => 5000,
-                                        $hariTerlambat >= 3  => 2000,
-                                        $hariTerlambat >= 1  => 1000,
-                                        default              => 0,
-                                    };
-                                    $denda = $hariTerlambat * $dendaPerHari;
+
+                                    // LOGIKA DENDA: flat per tier untuk < 30 hari, per bulan untuk >= 30 hari
+                                    if ($hariTerlambat >= 30) {
+                                        $bulanTelat = (int) ceil($hariTerlambat / 30);
+                                        $denda = $bulanTelat * 10000;
+                                    } else {
+                                        $denda = match(true) {
+                                            $hariTerlambat >= 14 => 8000,
+                                            $hariTerlambat >= 7  => 5000,
+                                            $hariTerlambat >= 3  => 2000,
+                                            $hariTerlambat >= 1  => 1000,
+                                            default              => 0,
+                                        };
+                                    }
                                 @endphp
                                 <tr>
                                     <td>
@@ -73,7 +75,7 @@
                                         @elseif($terlambat && $hariTerlambat > 0)
                                             <span class="badge bg-danger rounded-3 p-2 text-start d-block" style="font-size: 0.75rem; font-weight: 500; line-height: 1.4;">
                                                  Terlambat {{ $hariTerlambat }} hari<br>
-                                                Total: Rp {{ number_format($denda, 0, ',', '.') }} (Rp {{ number_format($dendaPerHari, 0, ',', '.') }}/hari)
+                                                Total: Rp {{ number_format($denda, 0, ',', '.') }}
                                             </span>
                                         @else
                                             <span class="badge bg-success-subtle text-success border border-success border-opacity-25 rounded-pill px-2.5 py-1">Aman / Tidak Denda</span>
@@ -99,19 +101,22 @@
                             $deadline = $trans->tanggal_deadline ? \Carbon\Carbon::parse($trans->tanggal_deadline)->startOfDay() : null;
                             $today = \Carbon\Carbon::today()->startOfDay();
                             $terlambat = $deadline && $today->gt($deadline) && $trans->status == 'pinjam';
-                            
-                            // Gunakan abs() juga di bagian responsive mobile view
+
                             $hariTerlambat = $terlambat ? abs($today->diffInDays($deadline, false)) : 0;
-                            
-                            $dendaPerHari = match(true) {
-                                $hariTerlambat >= 30 => 10000,
-                                $hariTerlambat >= 14 => 8000,
-                                $hariTerlambat >= 7  => 5000,
-                                $hariTerlambat >= 3  => 2000,
-                                $hariTerlambat >= 1  => 1000,
-                                default              => 0,
-                            };
-                            $denda = $hariTerlambat * $dendaPerHari;
+
+                            // LOGIKA DENDA: flat per tier untuk < 30 hari, per bulan untuk >= 30 hari
+                            if ($hariTerlambat >= 30) {
+                                $bulanTelat = (int) ceil($hariTerlambat / 30);
+                                $denda = $bulanTelat * 10000;
+                            } else {
+                                $denda = match(true) {
+                                    $hariTerlambat >= 14 => 8000,
+                                    $hariTerlambat >= 7  => 5000,
+                                    $hariTerlambat >= 3  => 2000,
+                                    $hariTerlambat >= 1  => 1000,
+                                    default              => 0,
+                                };
+                            }
                         @endphp
                         <div class="card mb-3 border-0 shadow-sm"
                              style="border-left: 4px solid {{ $trans->status == 'pending' ? '#0dcaf0' : ($terlambat && $hariTerlambat > 0 ? '#dc3545' : '#198754') }} !important;
@@ -155,7 +160,6 @@
                                             ⚠ Terlambat {{ $hariTerlambat }} hari
                                         </div>
                                         <div style="color:#842029;">
-                                            Rp {{ number_format($dendaPerHari, 0, ',', '.') }}/hari ·
                                             Total denda: <strong>Rp {{ number_format($denda, 0, ',', '.') }}</strong>
                                         </div>
                                     </div>

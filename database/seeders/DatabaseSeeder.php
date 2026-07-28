@@ -257,18 +257,29 @@ class DatabaseSeeder extends Seeder
 
         // ==========================
         // DENDA
+        // Dihitung dari selisih tanggal beneran (tanggal_deadline -> hari ini),
+        // BUKAN angka hardcode. Supaya nilai di seeder selalu match sama
+        // tanggal_deadline yang di-generate di atas, walau formula tier berubah.
         // ==========================
+        $hariTerlambatTrx1 = Carbon::now()->startOfDay()->diffInDays(
+            Carbon::parse($trx1->tanggal_deadline)->startOfDay()
+        );
+
         Denda::create([
             'transaction_id' => $trx1->id,
-            'hari_terlambat' => 5,
-            'nominal'        => Denda::hitungNominal(5),
+            'hari_terlambat' => $hariTerlambatTrx1,
+            'nominal'        => Denda::hitungNominal($hariTerlambatTrx1),
             'status'         => 'belum_bayar',
         ]);
 
+        $hariTerlambatTrx2 = Carbon::now()->startOfDay()->diffInDays(
+            Carbon::parse($trx2->tanggal_deadline)->startOfDay()
+        );
+
         Denda::create([
             'transaction_id' => $trx2->id,
-            'hari_terlambat' => 10,
-            'nominal'        => Denda::hitungNominal(10),
+            'hari_terlambat' => $hariTerlambatTrx2,
+            'nominal'        => Denda::hitungNominal($hariTerlambatTrx2),
             'status'         => 'belum_bayar',
         ]);
 
