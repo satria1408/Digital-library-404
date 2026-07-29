@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Book\StoreBookRequest;
+use App\Http\Requests\Admin\Book\UpdateBookRequest;
 use App\Models\DigitalLibrary\Admin\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -49,17 +51,9 @@ class BookController extends Controller
         return view('digital_library.admin.books.create', compact('kategoris'));
     }
 
-    public function store(Request $request)
+    public function store(StoreBookRequest $request)
     {
-        $validated = $request->validate([
-            'isbn'      => 'required|string|max:50|unique:books,isbn',
-            'judul'     => 'required|string|max:255',
-            'penulis'   => 'required|string|max:255',
-            'penerbit'  => 'required|string|max:255',
-            'kategori'  => 'nullable|string|max:100', 
-            'stok'      => 'required|integer|min:0',
-            'cover_url' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('cover_url')) {
             $file = $request->file('cover_url');
@@ -85,19 +79,10 @@ class BookController extends Controller
         return view('digital_library.admin.books.edit', compact('book', 'kategoris'));
     }
 
-    public function update(Request $request, $id)
+    public function update(UpdateBookRequest $request, $id)
     {
         $book = Book::findOrFail($id);
-
-        $validated = $request->validate([
-            'isbn'      => 'required|string|max:50|unique:books,isbn,' . $book->id,
-            'judul'     => 'required|string|max:255',
-            'penulis'   => 'required|string|max:255',
-            'penerbit'  => 'required|string|max:255',
-            'kategori'  => 'nullable|string|max:100', // Diubah jadi nullable menyesuaikan isi Form Blade
-            'stok'      => 'required|integer|min:0',
-            'cover_url' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
-        ]);
+        $validated = $request->validated();
 
         if ($request->hasFile('cover_url')) {
             $file = $request->file('cover_url');
@@ -112,7 +97,7 @@ class BookController extends Controller
 
             $validated['cover_url'] = $filename;
         } else {
-            // Unset dari data agar cover_url lama tidak tertimpa NULL bawaan validator
+            // Unset agar cover_url tidak tertimpa null jika gambar tidak diubah
             unset($validated['cover_url']);
         }
 

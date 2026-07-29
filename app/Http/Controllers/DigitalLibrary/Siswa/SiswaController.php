@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\DigitalLibrary\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DigitalLibrary\BorrowBookRequest;
 use App\Models\DigitalLibrary\Admin\Book;
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Wishlist;
-use App\Models\DigitalLibrary\Admin\Denda; // Sesuai Seeder
+use App\Models\DigitalLibrary\Admin\Denda;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -68,7 +69,6 @@ class SiswaController extends Controller
      */
     public function index()
     {
-        // INI UNTUK HALAMAN HUB UTAMA (2 TOMBOL RAKSASA DI VIDEO LO)
         return view('digital_library.siswa.dashboard');
     }
 
@@ -90,7 +90,6 @@ class SiswaController extends Controller
         $totalPending = $myBooks->where('status', 'pending')->count();
         $totalWishlist = Wishlist::where('user_id', $userId)->count();
 
-        // Sesuai Seeder
         $totalDendaAman = Denda::whereHas('transaction', function ($query) use ($userId) {
                 $query->where('user_id', $userId);
             })
@@ -103,7 +102,6 @@ class SiswaController extends Controller
             ->orderBy('kategori')
             ->pluck('kategori');
 
-        // INI FIX-NYA, BRO! JALUR VIEW-NYA MANGGIL DASHBOARD SUB-MODUL PERPUS LO
         return view('digital_library.siswa.dashboard', compact(
             'books', 'myBooks', 'kategoris', 'totalKoleksi',
             'totalDipinjam', 'totalPending', 'totalWishlist', 'totalDendaAman'
@@ -163,22 +161,17 @@ class SiswaController extends Controller
 
     /**
      * Proses pengajuan pinjam buku oleh siswa
+     * Validasi stok & ketersediaan buku ditangani oleh BorrowBookRequest.
      */
-    public function pinjamBuku(Request $request, $book_id)
+    public function pinjamBuku(BorrowBookRequest $request, $book_id)
     {
-        $book = Book::findOrFail($book_id);
-
-        if ($book->stok < 1) {
-            return back()->with('error', 'Stok buku habis!');
-        }
-
         Transaction::create([
-            'user_id' => Auth::id(),
-            'book_id' => $book->id,
-            'tanggal_pinjam' => Carbon::today(),
+            'user_id'          => Auth::id(),
+            'book_id'          => $book_id,
+            'tanggal_pinjam'   => Carbon::today(),
             'tanggal_deadline' => Carbon::today()->addDays(7),
-            'tanggal_kembali' => null,
-            'status' => 'pending',
+            'tanggal_kembali'  => null,
+            'status'           => 'pending',
         ]);
 
         return redirect()->back()->with('success', 'Pengajuan peminjaman buku berhasil dikirim!');
@@ -189,11 +182,11 @@ class SiswaController extends Controller
      */
     public function kembalikanBuku($transaction_id)
     {
-        $transaction = Transaction::findOrFail($transaction_id);
+        $transaction = Transaction::where('user_id', Auth::id())->findOrFail($transaction_id);
 
         $transaction->update([
             'tanggal_kembali' => Carbon::today(),
-            'status' => 'kembali',
+            'status'          => 'kembali',
         ]);
 
         return redirect()->back()->with('success', 'Buku berhasil dikembalikan!');

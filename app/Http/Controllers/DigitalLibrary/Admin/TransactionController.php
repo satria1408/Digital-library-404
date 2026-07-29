@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Transaction\StoreTransactionRequest;
+use App\Http\Requests\Admin\Transaction\UpdateTransactionRequest;
 use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Admin\Book;
@@ -48,34 +50,28 @@ class TransactionController extends Controller
         return view('digital_library.admin.transactions.create', compact('users', 'books'));
     }
 
-    public function store(Request $request)
+    public function store(StoreTransactionRequest $request)
     {
-        $request->validate([
-            'user_id'          => 'required|exists:users,id',
-            'book_id'          => 'required|exists:books,id',
-            'tanggal_pinjam'   => 'required|date',
-            'tanggal_kembali'  => 'required|date|after_or_equal:tanggal_pinjam',
-            'status'           => 'required',
-        ]);
+        $validated = $request->validated();
 
-        $book = Book::findOrFail($request->book_id);
+        $book = Book::findOrFail($validated['book_id']);
 
         if ($book->stok < 1) {
             return back()->with('error', 'Stok buku habis!');
         }
 
-        $tanggalKembaliRiil = ($request->status == 'kembali') ? Carbon::today() : null;
+        $tanggalKembaliRiil = ($validated['status'] == 'kembali') ? Carbon::today() : null;
 
         $transaction = Transaction::create([
-            'user_id'          => $request->user_id,
-            'book_id'          => $request->book_id,
-            'tanggal_pinjam'   => $request->tanggal_pinjam,
-            'tanggal_deadline' => $request->tanggal_kembali,
+            'user_id'          => $validated['user_id'],
+            'book_id'          => $validated['book_id'],
+            'tanggal_pinjam'   => $validated['tanggal_pinjam'],
+            'tanggal_deadline' => $validated['tanggal_kembali'],
             'tanggal_kembali'  => $tanggalKembaliRiil,
-            'status'           => $request->status,
+            'status'           => $validated['status'],
         ]);
 
-        if ($request->status == 'pinjam') {
+        if ($validated['status'] == 'pinjam') {
             $book->decrement('stok');
         }
 
@@ -92,20 +88,16 @@ class TransactionController extends Controller
         return view('digital_library.admin.transactions.edit', compact('transaction', 'users', 'books'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateTransactionRequest $request, string $id)
     {
+        $validated = $request->validated();
+        
         $transaction = Transaction::findOrFail($id);
         $book        = Book::findOrFail($transaction->book_id);
 
-        $request->validate([
-            'status'          => 'required',
-            'tanggal_pinjam'  => 'required|date',
-            'tanggal_kembali' => 'required|date|after_or_equal:tanggal_pinjam',
-        ]);
-
         $tanggalKembaliRiil = $transaction->tanggal_kembali;
 
-        if ($transaction->status == 'pinjam' && $request->status == 'kembali') {
+        if ($transaction->status == 'pinjam' && $validated['status'] == 'kembali') {
             $book->increment('stok');
             $tanggalKembaliRiil = Carbon::today();
 
@@ -114,7 +106,7 @@ class TransactionController extends Controller
             }
         }
 
-        if ($transaction->status == 'kembali' && $request->status == 'pinjam') {
+        if ($transaction->status == 'kembali' && $validated['status'] == 'pinjam') {
             if ($book->stok < 1) {
                 return back()->with('error', 'Stok buku tidak cukup.');
             }
@@ -125,10 +117,10 @@ class TransactionController extends Controller
         $transaction->update([
             'user_id'          => $transaction->user_id,
             'book_id'          => $transaction->book_id,
-            'tanggal_pinjam'   => $request->tanggal_pinjam,
-            'tanggal_deadline' => $request->tanggal_kembali,
+            'tanggal_pinjam'   => $validated['tanggal_pinjam'],
+            'tanggal_deadline' => $validated['tanggal_kembali'],
             'tanggal_kembali'  => $tanggalKembaliRiil,
-            'status'           => $request->status,
+            'status'           => $validated['status'],
         ]);
 
         $this->cekDenda($transaction->fresh());

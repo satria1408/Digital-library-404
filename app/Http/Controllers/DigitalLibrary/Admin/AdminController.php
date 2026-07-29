@@ -3,13 +3,13 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\DigitalLibrary\ImportBookRequest;
 use App\Models\Auth\User;
 use App\Models\DigitalLibrary\Admin\Book;
 use App\Models\DigitalLibrary\Admin\Transaction;
 use App\Models\DigitalLibrary\Admin\Denda;
 use App\Models\SaranaPengaduan\Admin\Complaint;
 use App\Models\SecurityLog;
-use Illuminate\Http\Request;
 use App\Imports\BukuImport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -44,15 +44,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Fungsi untuk memproses upload file Excel berisi data buku.
-     * Diproses langsung (sync) saat request ini berjalan, tanpa antrean/worker.
+     * Memproses upload file Excel berisi data buku.
+     * Validasi file sepenuhnya diserahkan ke ImportBookRequest.
      */
-    public function importBukuExcel(Request $request)
+    public function importBukuExcel(ImportBookRequest $request)
     {
-        $request->validate([
-            'file_excel' => 'required|mimes:xlsx,xls,csv'
-        ]);
-
         try {
             $import = new BukuImport;
             Excel::import($import, $request->file('file_excel'));

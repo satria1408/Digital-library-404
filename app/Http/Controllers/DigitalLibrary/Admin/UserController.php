@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\DigitalLibrary\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\StoreUserRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
 use App\Models\Auth\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -31,22 +33,13 @@ class UserController extends Controller
         return view('digital_library.admin.users.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $request->validate([
-            'nama_lengkap' => 'required',
-            'username' => 'required|unique:users',
-            'password' => 'required|min:6',
-            'alamat' => 'nullable',
-        ]);
+        $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
+        $validated['role'] = 'siswa';
 
-        User::create([
-            'nama_lengkap' => $request->nama_lengkap,
-            'username' => $request->username,
-            'password' => Hash::make($request->password),
-            'alamat' => $request->alamat,
-            'role' => 'siswa',
-        ]);
+        User::create($validated);
 
         return redirect()->route('digitallibrary.admin.users.index')->with('success', 'Anggota berhasil ditambahkan');
     }
@@ -58,27 +51,18 @@ class UserController extends Controller
         return view('digital_library.admin.users.edit', compact('user'));
     }
 
-    public function update(Request $request, string $id)
+    public function update(UpdateUserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
-
-        $request->validate([
-            'nama_lengkap' => 'required',
-            'username' => 'required|unique:users,username,'.$user->id,
-            'alamat' => 'nullable',
-        ]);
-
-        $data = [
-            'nama_lengkap' => $request->nama_lengkap,
-            'username' => $request->username,
-            'alamat' => $request->alamat,
-        ];
+        $validated = $request->validated();
 
         if ($request->filled('password')) {
-            $data['password'] = Hash::make($request->password);
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
-        $user->update($data);
+        $user->update($validated);
 
         return redirect()->route('digitallibrary.admin.users.index')->with('success', 'Data anggota diperbarui');
     }
